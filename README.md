@@ -34,25 +34,13 @@ Welcome to the Code Commanders GitHub repository! We're a team dedicated to buil
 
 At Code Commanders, we're passionate about creating mobile solutions that make a difference. As participants in the Andela Technical Leadership Program (ATLP), we're committed to honing our technical skills and leadership abilities to drive impactful change in the technology industry.
 
-Our current project, the RN-Medica app, aims to revolutionize the healthcare industry by providing a user-friendly platform for managing medical records and accessing health-related information remortly.
+Our current project, the RN-Medica app, aims to revolutionize the healthcare industry by providing a user-friendly Mobile application platform for managing medical records and accessing health-related information remortly.
 
-### Badges by Shields.io
-
-This repository utilizes badges provided by [Shields.io][shields.io], a service for concise, consistent, and legible badges in SVG and raster format. These badges can easily be included in GitHub readmes or any other web page, allowing us to showcase important information about our project.
-
-The badges provided by Shields.io cover a wide range of categories, including continuous integration services, package registries, distributions, app stores, social networks, code coverage services, and code analysis services. By including these badges in our README file, we aim to provide quick access to important project metrics and information.
-
-We're excited to be using Shields.io to enhance our project documentation and showcase our progress and achievements as participants in the Andela Technical Leadership Program. Stay tuned for more updates as we continue to develop and improve our RN-Medica app!
-
-
-[vscode]: https://github.com/Microsoft/vscode
-[appwrite]: https://github.com/appwrite
-[tailwind]: https://tailwind.build/classes
 
 This repo hosts:
 
 
-- [calebcartwright](https://github.com/Dodo) (Dieudonne Mukunzi Manager)
+- [Dodos](https://github.com/mukunzidd) (Dieudonne Mukunzi Manager)
 - [Adadie](https://github.com/Adadie/Adadie) (Adadie Kashumba TTL)
 - [Emmanuel NKUBITO ](https://github.com/Nkbtemmy/)
 
@@ -84,15 +72,15 @@ This repo hosts:
 
 Maintainers:
 
-- [calebcartwright](https://github.com/Dodo) (Dieudonne Mukunzi Manager)
+- [Dodos](https://github.com/mukunzidd) (Dieudonne Mukunzi Manager)
 - [Adadie](https://github.com/Adadie/Adadie) (Adadie Kashumba TTL)
 - [Emmanuel NKUBITO ](https://github.com/Nkbtemmy/)
 
 Operations:
 
-- [calebcartwright](https://github.com/Dodo)
-- [chris48s](https://github.com/Adadie/Adadie)
-- [Emmanuel NKUBITO ](https://github.com/Nkbtemmy/)
+- [Dodo](https://github.com/mukunzidd)
+- [Adadie](https://github.com/Adadie/Adadie)
+- [NKUBITO ](https://github.com/Nkbtemmy/)
 
 ## Community
 
