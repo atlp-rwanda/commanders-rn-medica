@@ -1,0 +1,6 @@
+{
+  "preset": "react-native",
+  "collectCoverage": true,
+  "coverageReporters": ["text"],
+  "transformIgnorePatterns": ["node_modules/(?!@react-native|react-native)"]
+}
