@@ -1,56 +1,46 @@
-name: Lint
+name: Super-Linter
 
-on: 
+on:
   push:
-    branches:
-      - main
-
-permissions: { }
+    branches-ignore:
+      - '*'
+  pull_request:
+    branches-ignore:
+      - '*'
 
 jobs:
-  build:
-    name: Lint
+  linter:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
     runs-on: ${{ matrix.os }}
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
+
+      # Install dependencies and linters
+      - name: Setup
+        uses: github/super-linter@v4
         with:
-          fetch-depth: 0
+          linters: |
+            ...
+            - prettier
+            ...
 
-      - name: Check for changes
-        id: changes
-        run: echo ::set-output name=changed_files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-
-      - name: Super-linter
-        uses: super-linter/super-linter@v6.4.1
-        with:
-          changed-files: ${{ steps.changes.outputs.changed_files }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install Prettier
-        run: npm install --save-dev prettier
-
+      # Run Prettier
       - name: Format code with Prettier
         run: npx prettier --write .
 
-      - name: Add changes made by Prettier
-        run: git add .
-
-      - name: Commit changes made by Prettier
-        run: git commit -m "Apply Prettier formatting"
-
-      - name: Push changes made by Prettier
-        uses: ad-m/github-push-action@v0.5.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+      # Run Super-Linter
+      - name: Lint code
+        run: |
+          if [ -x "$(command -v bash)" ]; then
+            /action/libraries/bash/linter.sh
+          elif [ -x "$(command -v pwsh)" ]; then
+            /action/libraries/powershell/linter.ps1
+          else
+            echo "Unsupported shell"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
