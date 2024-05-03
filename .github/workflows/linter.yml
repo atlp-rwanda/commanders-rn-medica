@@ -1,0 +1,46 @@
+name: Super-Linter
+
+on:
+  push:
+    branches-ignore:
+      - '*'
+  pull_request:
+    branches-ignore:
+      - '*'
+
+jobs:
+  linter:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Install dependencies and linters
+      - name: Setup
+        uses: github/super-linter@v4
+        with:
+          linters: |
+            ...
+            - prettier
+            ...
+
+      # Run Prettier
+      - name: Format code with Prettier
+        run: npx prettier --write .
+
+      # Run Super-Linter
+      - name: Lint code
+        run: |
+          if [ -x "$(command -v bash)" ]; then
+            /action/libraries/bash/linter.sh
+          elif [ -x "$(command -v pwsh)" ]; then
+            /action/libraries/powershell/linter.ps1
+          else
+            echo "Unsupported shell"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
