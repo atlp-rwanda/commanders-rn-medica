@@ -18,26 +18,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Install Node.js (required for ESLint and Prettier)
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      # Install ESLint, Prettier, and Super-Linter
+      # Install dependencies and linters
       - name: Setup
         uses: github/super-linter@v4
         with:
           linters: |
-            - eslint
+            ...
             - prettier
-
-      # Run Prettier to format code
+            ...
+      # Run Prettier
       - name: Format code with Prettier
         run: npx prettier --write .
 
-      # Run ESLint to lint JavaScript files
-      - name: Lint code with ESLint
-        run: npx eslint .
+      # Run Super-Linter
+      - name: Lint code
+        run: |
+          if [ -x "$(command -v bash)" ]; then
+            /action/libraries/bash/linter.sh
+          elif [ -x "$(command -v pwsh)" ]; then
+            /action/libraries/powershell/linter.ps1
+          else
+            echo "Unsupported shell"
+            exit 1
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
