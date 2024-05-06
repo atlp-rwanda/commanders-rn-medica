@@ -2,14 +2,12 @@ import { View, Text } from "react-native";
 import React from "react";
 import { containerStyle, titleStyle } from "../styles/common";
 import Button from "../components/button";
+import LetsYouIn from "./LetsYouIn";
 
-const App = () => {
+const Index = () => {
   return (
-    <View style={containerStyle}>
-      <Text style={titleStyle}>Medica App</Text>
-      <Button title={"Click me"} />
-    </View>
+    <LetsYouIn />
   );
 };
 
-export default App;
+export default Index;
