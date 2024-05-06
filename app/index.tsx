@@ -1,19 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import Counter from "./counter/Counter";
 import { Link } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function App() {
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" />
       <Text>Medica App</Text>
       <Text>Open up App.tsx to start working on your app!</Text>
       <Pressable>
-        <Link href="(tabs)">
+        <Link href="/(tabs)">Tabs</Link>
+        <Link href="/counter/Counter">
           <Text>Click me to test redux</Text>
         </Link>
       </Pressable>
-      <StatusBar style="auto" />
+      <Link href="/reset-password/" style={{ marginTop: 20 }}>
+        Forgot Password
+      </Link>
     </View>
   );
 }
