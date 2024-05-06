@@ -1,11 +1,13 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { btnStyle, textStyle } from "../styles/common";
-import { AntDesign } from "@expo/vector-icons"; // Import AntDesign from @expo/vector-icons
+import { AntDesign } from "@expo/vector-icons"; 
+
+type IconName = "facebook-square" | "apple1" | "google" | undefined;
 
 interface Props {
   title: string;
-  iconName?: string;
+  iconName?: IconName; 
   color?: string;
 }
 
@@ -33,7 +35,7 @@ const SiginButton: React.FC<Props> = ({
           justifyContent: "space-between",
         }}
       >
-        {iconName && <AntDesign iconname={iconName} size={24} />}
+        {iconName && <AntDesign name={iconName} size={24} />}
         <Text style={[textStyle, { marginLeft: iconName ? 5 : 0 }]}>
           {title}
         </Text>
