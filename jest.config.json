@@ -1,6 +1,5 @@
 {
-  "preset": "react-native",
+  "preset": "jest-expo",
   "collectCoverage": true,
-  "coverageReporters": ["text"],
-  "transformIgnorePatterns": ["node_modules/(?!@react-native|react-native)"]
+  "coverageReporters": ["text"]
 }
