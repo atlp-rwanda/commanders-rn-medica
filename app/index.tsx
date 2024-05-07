@@ -1,13 +1,11 @@
-import { View, Text } from "react-native";
-import React from "react";
-import { containerStyle, titleStyle } from "../styles/common";
-import Button from "../components/button";
+import React from 'react';
+import { View, Text } from 'react-native'; 
+
 
 const App = () => {
   return (
-    <View style={containerStyle}>
-      <Text style={titleStyle}>Medica App</Text>
-      <Button title={"Click me"} />
+    <View className='flex-1 items-center justify-center bg-white'>
+       <Text>Wellcome to medica app</Text>
     </View>
   );
 };
