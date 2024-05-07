@@ -26,12 +26,6 @@ TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.5.4-blue)](https://img.shields.io/badge/TypeScript-4.5.4-blue)
 <button onclick="copyToClipboard('https://img.shields.io/badge/TypeScript-4.5.4-blue')">Copy Link</button>
 
-## Appwrite Badge
-Appwrite is a self-hosted backend server for building web and mobile apps.
-
-[![Appwrite](https://img.shields.io/badge/Appwrite-v0.10.7-orange)](https://img.shields.io/badge/Appwrite-v0.10.7-orange)
-<button onclick="copyToClipboard('https://img.shields.io/badge/Appwrite-v0.10.7-orange')">Copy Link</button>
-
 ## Tailwind CSS Badge
 Tailwind CSS is a utility-first CSS framework for creating custom designs without writing CSS.
 
@@ -56,17 +50,34 @@ This badge indicates that the project has passed testing.
 [![Testing](https://img.shields.io/badge/Testing-Passed-success)](https://img.shields.io/badge/Testing-Passed-success)
 <button onclick="copyToClipboard('https://img.shields.io/badge/Testing-Passed-success')">Copy Link</button>
 
-<script>
-function copyToClipboard(text) {
-  var dummy = document.createElement("textarea");
-  document.body.appendChild(dummy);
-  dummy.value = text;
-  dummy.select();
-  document.execCommand("copy");
-  document.body.removeChild(dummy);
-  alert("Link copied to clipboard!");
-}
-</script>
+
+## Linting Badge
+
+Ensure code quality and consistency with our linting setup. Click the badge to learn more about our linting rules and configurations.
+[![Linting](https://img.shields.io/badge/Linting-Passing-brightgreen)](link-to-your-linter)
+
+### Guidelines:
+- **Passing**: All code adheres to our linting standards.
+- **Failing**: There are issues that need attention. Check the linter documentation for guidance on resolving them.
+
+## npm Package Badge
+
+Get the latest version of our npm package. Click the badge to view the package on npm.
+[![npm](https://img.shields.io/npm/v/your-package-name)](link-to-your-npm-package)
+
+### Guidelines:
+- **Versioning**: We follow Semantic Versioning (SemVer) for our package versioning.
+- **Updates**: Regularly update to the latest version to access new features and fixes.
+
+## Testing Badge
+
+This badge indicates that the project has passed testing.
+[![Testing](https://img.shields.io/badge/Testing-Passed-success)](https://img.shields.io/badge/Testing-Passed-success)
+
+### Guidelines:
+- **Passed**: All tests have been successfully executed.
+- **Failed**: Some tests have failed. Review the test results for any issues that need to be addressed.
+
 
 
 ## Project leaders
