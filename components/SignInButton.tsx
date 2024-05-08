@@ -1,20 +1,15 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Image } from "react-native";
 import React from "react";
 import { btnStyle, textStyle } from "../styles/common";
-import { AntDesign } from "@expo/vector-icons"; 
-
-type IconName = "facebook-square" | "apple1" | "google" | undefined;
 
 interface Props {
   title: string;
-  iconName?: IconName; 
-  color?: string;
+  logo: any; 
 }
 
 const SiginButton: React.FC<Props> = ({
   title,
-  iconName,
-  color = "transparent",
+  logo,
 }) => {
   return (
     <TouchableOpacity
@@ -22,8 +17,8 @@ const SiginButton: React.FC<Props> = ({
         btnStyle,
         {
           borderColor: "rgba(0, 0, 0, 0.2)",
+          backgroundColor: "#fff",
           borderWidth: 1,
-          backgroundColor: color,
           borderRadius: 16,
         },
       ]}
@@ -35,8 +30,8 @@ const SiginButton: React.FC<Props> = ({
           justifyContent: "space-between",
         }}
       >
-        {iconName && <AntDesign name={iconName} size={24} />}
-        <Text style={[textStyle, { marginLeft: iconName ? 5 : 0 }]}>
+        <Image  source={logo}/>
+        <Text style={[textStyle, { marginLeft: logo ? 5 : 0 }]}>
           {title}
         </Text>
       </View>
