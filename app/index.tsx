@@ -1,15 +1,26 @@
-import { View, Text } from "react-native";
-import React from "react";
-import { containerStyle, titleStyle } from "../styles/common";
-import Button from "../components/button";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Counter from "./counter/Counter";
+import { Link} from 'expo-router';
 
-const App = () => {
+export default function App() {
   return (
-    <View style={containerStyle}>
-      <Text style={titleStyle}>Medica App</Text>
-      <Button title={"Click me"} />
+    <View style={styles.container}>
+      <Text>Medica App</Text>
+      <Text>Open up App.tsx to start working on your app!</Text>
+      <Pressable>
+        <Link href="counter/Counter"><Text>Click me to test redux</Text></Link>
+      </Pressable>
+      <StatusBar style="auto" />
     </View>
   );
-};
+}
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

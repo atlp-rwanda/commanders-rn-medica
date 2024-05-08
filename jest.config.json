@@ -1,5 +1,12 @@
 {
   "preset": "jest-expo",
   "collectCoverage": true,
-  "coverageReporters": ["text"]
+  "coverageReporters": ["text"],
+  "collectCoverageFrom": [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/**",
+    "!**/vendor/**",
+    "!**/__tests__/**"],
+    "transformIgnorePatterns": ["./node_modules/(?!expo-status-bar|(?!react-native).+)\\.js$"]
+  
 }
