@@ -10,7 +10,7 @@ import RememberMe from "../components/RememberMe";
 import SignUpWith from "../components/SignUpWith";
 import Or from "../components/Or";
 
-const SingUp = () => {
+const SingIn = () => {
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
   const [isPasswordActive, setIsPasswordActive] = useState<boolean>(false);
 
@@ -25,7 +25,7 @@ const SingUp = () => {
   return (
     <View style={{ ...containerStyle, rowGap: 24 }}>
       <BackIcon imageSource={require("../assets/Account.png")} />
-      <Text style={titleStyle}>Create New Account</Text>
+      <Text style={titleStyle}>Login to Your Account</Text>
       <View style={{ rowGap: 20 }}>
         <EmailPasswordInput
           icon="email"
@@ -41,16 +41,16 @@ const SingUp = () => {
       </View>
       <RememberMe />
       <Button
-        title="Sign up"
+        title="Sign in"
         backgroundColor={
           isEmailActive || isPasswordActive ? "#1E90FF" : "#3062C8"
         }
       />
       <Or text="or continue with" />
       <SignUpWith />
-      <SignUpText text1="Already have an account?" text2="Sign in" />
+      <SignUpText text1="Don’t have an account?" text2="Sign up" />
     </View>
   );
 };
 
-export default SingUp;
+export default SingIn;
