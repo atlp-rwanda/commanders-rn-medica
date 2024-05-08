@@ -6,6 +6,7 @@ import SiginButton from "../components/SignInButton";
 import Button from "../components/button";
 import SignUpText from "../components/SignUpText";
 import BackIcon from "../components/BackIcon";
+import Or from "../components/Or";
 
 const LetsYouIn = () => {
   return (
@@ -24,9 +25,7 @@ const LetsYouIn = () => {
         title="Continue with Apple"
         logo={require("../assets/apple-logo.png")}
       />
-      <View>
-        <Text>Or</Text>
-      </View>
+      <Or text="or" />
       <Button title="Sign in with password" />
       <SignUpText />
     </View>
