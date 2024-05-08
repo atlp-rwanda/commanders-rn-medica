@@ -8,12 +8,14 @@ interface EmailPasswordInputProps {
   secureTextEntry?: boolean;
   icon: IconName;
   placeholder: string;
+  onActiveChange?: (isActive: boolean) => void;
 }
 
 const EmailPasswordInput = ({
   icon,
   placeholder,
   secureTextEntry,
+  onActiveChange,
 }: EmailPasswordInputProps) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -24,10 +26,16 @@ const EmailPasswordInput = ({
 
   const handleFocus = () => {
     setIsActive(true);
+    if (onActiveChange) {
+      onActiveChange(true);
+    }
   };
 
   const handleBlur = () => {
     setIsActive(false);
+    if (onActiveChange) {
+      onActiveChange(false);
+    }
   };
 
   return (
@@ -35,7 +43,7 @@ const EmailPasswordInput = ({
       <MaterialIcons
         name={icon}
         size={24}
-        color={isActive ? "#246BFD" : "gray"} // Icon color changes based on active state
+        color={isActive ? "#246BFD" : "gray"}
         style={styles.icon}
       />
       <TextInput
@@ -53,7 +61,7 @@ const EmailPasswordInput = ({
           <MaterialIcons
             name={isPasswordVisible ? "visibility" : "visibility-off"}
             size={24}
-            color={isActive ? "#246BFD" : "gray"} // Icon color changes based on active state
+            color={isActive ? "#246BFD" : "gray"}
           />
         </TouchableOpacity>
       )}
@@ -74,7 +82,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   activeContainer: {
-    borderColor: "#246BFD", 
+    borderColor: "#246BFD",
   },
   icon: {
     marginRight: 10,
