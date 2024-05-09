@@ -1,11 +1,17 @@
-import React from 'react';
-import { View, Text,StyleSheet } from 'react-native'; 
-
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Counter from "./counter/Counter";
+import { Link} from 'expo-router';
 
 export default function App() {
   return (
-    <View className='flex-1 items-center justify-center bg-white'>
-       <Text>Wellcome to medica app</Text>
+    <View style={styles.container}>
+      <Text>Medica App</Text>
+      <Text>Open up App.tsx to start working on your app!</Text>
+      <Pressable>
+        <Link href="counter/Counter"><Text>Click me to test redux</Text></Link>
+      </Pressable>
+      <StatusBar style="auto" />
     </View>
   );
 }
