@@ -1,6 +1,7 @@
+import { Icon } from "@/components/Icon";
+import { Text } from "@/components/ThemedText";
 import { router } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
-import { Icon } from "./Icon";
+import { View } from "react-native";
 
 type NavigationHeaderProps = {
   title: string;
@@ -14,23 +15,9 @@ export function NavigationHeader({ title, onBack }: NavigationHeaderProps) {
     }
   };
   return (
-    <View style={styles.container}>
+    <View className="flex-row items-center py-5">
       <Icon name="back" size="md" onPress={onBack ?? back} />
-      <Text style={styles.title}>{title}</Text>
+      <Text className="font-bold text-xl ml-3">{title}</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 24,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 14,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#212121"
-  },
-});

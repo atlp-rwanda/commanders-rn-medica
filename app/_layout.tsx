@@ -1,15 +1,31 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { store } from "../redux/store/store";
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
-    "UrbanistBold": require("../assets/fonts/Urbanist-Bold.ttf"),
-    "UrbanistMedium": require("../assets/fonts/Urbanist-Medium.ttf"),
-    "UrbanistRegular": require("../assets/fonts/Urbanist-Regular.ttf"),
-    "UrbanistSemiBold": require("../assets/fonts/Urbanist-SemiBold.ttf"),
+  const [loaded, error] = useFonts({
+    UrbanistBold: require("../assets/fonts/Urbanist-Bold.ttf"),
+    UrbanistMedium: require("../assets/fonts/Urbanist-Medium.ttf"),
+    UrbanistRegular: require("../assets/fonts/Urbanist-Regular.ttf"),
+    UrbanistSemiBold: require("../assets/fonts/Urbanist-SemiBold.ttf"),
   });
+
+  useEffect(() => {
+    if (error) throw error;
+  }, [error]);
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <Provider store={store}>
       <Stack screenOptions={{ headerShown: false }}>

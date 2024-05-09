@@ -1,8 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
-import {useFonts} from "expo-font"
-import Counter from "./counter/Counter";
 import { Link } from "expo-router";
+import { StatusBar } from 'expo-status-bar';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   // let [fontsLoaded] = useFonts({

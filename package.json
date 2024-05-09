@@ -4,13 +4,13 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
+    "start:wsl": "REACT_NATIVE_PACKAGER_HOSTNAME=$(netsh.exe interface ip show address 'Ethernet' | grep 'IP Address' | sed -r 's/^.*IP Address:\\W*//') expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest",
     "build": "eas build -p android",
-    "typecheck": "tsc --noEmit",
-    "start:wsl": "REACT_NATIVE_PACKAGER_HOSTNAME=$(netsh.exe interface ip show address 'Ethernet' | grep 'IP Address' | sed -r 's/^.*IP Address:\\W*//') expo start"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "7.7.0",
@@ -41,6 +41,7 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-redux": "^9.1.1",
+    "@react-native-picker/picker": "2.6.1",
     "redux": "^5.0.1"
   },
   "devDependencies": {

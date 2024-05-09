@@ -1,21 +1,21 @@
+import { Link } from "expo-router";
+import { useState } from "react";
 import {
-  View,
+  FlatList,
   Image,
+  ScrollView,
   Text,
   TouchableOpacity,
-  FlatList,
-  useWindowDimensions,
-  ScrollView,
+  View,
 } from "react-native";
-import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
-import { notification } from "../../assets/icons/notification";
-import { heart } from "../../assets/icons/heart";
-import { SearchInput } from "../../components/searchInput";
-import CarouselComponent from "../../components/carousel";
 import { MenuIcons } from "../../assets/icons";
+import { heart } from "../../assets/icons/heart";
+import { notification } from "../../assets/icons/notification";
 import DoctorCard from "../../components/cards/doctorCard";
+import CarouselComponent from "../../components/carousel";
+import { SearchInput } from "../../components/searchInput";
 
 const roleFilters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
 const doctors = [
@@ -69,14 +69,16 @@ const Home = () => {
             <View className="right-0 bottom-0 absolute bg-primary-500 w-[15px] h-[15px] border-white border-[3px] rounded-lg" />
           </View>
           <View className="w-3/5">
-            <Text className="font-['Urbanist-Regular'] text-[16px]">
+            <Text className="font-['UrbanistRegular'] text-[16px]">
               Good Morning 👋🏽
             </Text>
-            <Text className="text-[20px] font-['Urbanist-Bold']">
+            <Text className="text-[20px] font-['UrbanistBold']">
               Andrew Ainsley
             </Text>
           </View>
-          <SvgXml xml={notification} />
+          <Link href="/notifications/">
+            <SvgXml xml={notification} />
+          </Link>
           <SvgXml xml={heart} />
         </View>
         <SearchInput />
@@ -95,11 +97,11 @@ const Home = () => {
           scrollEnabled={false}
           ListHeaderComponent={
             <View className="flex-row items-center w-full justify-between mt-6 mb-3">
-              <Text className="text-[20px] font-['Urbanist-Bold']">
+              <Text className="text-[20px] font-['UrbanistBold']">
                 Doctor Speciality
               </Text>
               <TouchableOpacity activeOpacity={0.8}>
-                <Text className="text-[16px] font-['Urbanist-Bold'] text-primary-500">
+                <Text className="text-[16px] font-['UrbanistBold'] text-primary-500">
                   See All
                 </Text>
               </TouchableOpacity>
@@ -121,7 +123,7 @@ const Home = () => {
               >
                 <SvgXml xml={MenuIcons[item.name.toLowerCase()]} />
               </TouchableOpacity>
-              <Text className="text-[16px] font-['Urbanist-Bold']">
+              <Text className="text-[16px] font-['UrbanistBold']">
                 {item.name.length > 7
                   ? item.name.substring(0, 6) + "..."
                   : item.name}
@@ -132,9 +134,9 @@ const Home = () => {
         />
       </View>
       <View className="flex-row items-center w-full justify-between px-6 mb-3">
-        <Text className="text-[20px] font-['Urbanist-Bold']">Top Doctors</Text>
+        <Text className="text-[20px] font-['UrbanistBold']">Top Doctors</Text>
         <TouchableOpacity activeOpacity={0.8}>
-          <Text className="text-[16px] font-['Urbanist-Bold'] text-primary-500">
+          <Text className="text-[16px] font-['UrbanistBold'] text-primary-500">
             See All
           </Text>
         </TouchableOpacity>
@@ -170,7 +172,7 @@ const Home = () => {
             <Text
               className={`${
                 selectedRole === index ? "text-[#FFFFFF]" : "text-primary-500"
-              } font-[Urbanist-SemiBold]`}
+              } font-[UrbanistSemiBold]`}
             >
               {item}
             </Text>
