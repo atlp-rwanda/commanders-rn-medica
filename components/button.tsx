@@ -9,11 +9,20 @@ import { btnStyle, textStyle as commonTextStyle } from "../styles/common";
 interface Props {
   title: string;
   onPress?: TouchableOpacityProps["onPress"];
+  backgroundColor?: string; 
 }
-const Button: React.FC<Props> = ({ title, onPress }) => {
+
+const Button: React.FC<Props> = ({ title, onPress, backgroundColor }) => {
   return (
-    <TouchableOpacity style={btnStyle} onPress={onPress}>
-      <Text style={commonTextStyle}>{title}</Text>
+    <TouchableOpacity
+      style={[btnStyle, { backgroundColor, borderRadius: 30 }]}
+      onPress={onPress}
+    >
+      <Text
+        style={{ color: "white", fontFamily: "UrbanistBold", fontSize: 16 }}
+      >
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };

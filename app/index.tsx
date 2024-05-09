@@ -24,6 +24,9 @@ export default function App() {
       <Link href="/reset-password/" style={{ marginTop: 20 }}>
         Forgot Password
       </Link>
+      <Link href="/signupSignin/" style={{ marginTop: 20 }}>
+        Sign up and Signin
+      </Link>
     </View>
   );
 }

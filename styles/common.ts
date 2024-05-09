@@ -1,4 +1,11 @@
-import { TextStyle, ViewStyle } from "react-native";
+import {
+  TextStyle,
+  ViewStyle,
+  StyleSheet,
+  Platform,
+  StatusBar,
+} from "react-native";
+
 
 export const containerStyle: ViewStyle = {
   flex: 1,
@@ -19,4 +26,13 @@ export const btnStyle: ViewStyle = {
   alignItems: "center",
   padding: 10,
   backgroundColor: "#246BFD",
+  width: "100%",
+  height: 60,
+  rowGap: 20,
+};
+
+export const areaView: ViewStyle = {
+  flex: 1,
+  backgroundColor: "white",
+  paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
 };
