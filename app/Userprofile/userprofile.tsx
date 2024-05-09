@@ -98,7 +98,7 @@ const UserProfile = ()=> {
                 </View>
              <DateTimePickerModal onCancel={handleHide} onConfirm={handleConfirm} isVisible={open}/>
                 <View style={{ marginBottom: 20 }}>
-                    <TouchableOpacity className="bg-darkblue w-7/8 rounded-3xl py-3 mt-10">
+                    <TouchableOpacity className="bg-darkblue w-7/8 rounded-3xl py-3 mt-10" onPress={()=>navigation.navigate("Userprofile/createpin" as never)}>
                         <Text className="text-def text-base font-UrbanistRegular text-center font-UrbanistBold">Continue</Text>
                     </TouchableOpacity>
                 </View>

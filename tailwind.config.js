@@ -9,11 +9,14 @@ module.exports = {
   theme: {
     extend: {colors: {
       lightblue:"#246BFD",
+      reducedblue:"#246BFD14",
       darkblue:"#3062C8",
       lightgrey:"#FAFAFA",
       grey:"#9E9E9E",
       white:"#FFFFFF",
-      def:"#FFFFFF"
+      popup:"#09101D",
+      def:"#FFFFFF",
+
     },
     fontFamily: {
       UrbanistRegular: ["UrbanistRegular", "sans-serif"],
