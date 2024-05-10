@@ -1,7 +1,7 @@
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
 import { Provider } from "react-redux";
 import { store } from "../redux/store/store";
-import { Stack } from "expo-router";
-import { useFonts } from "expo-font";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
