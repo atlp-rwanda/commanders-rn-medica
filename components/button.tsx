@@ -1,22 +1,15 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import React from "react";
 import { btnStyle, textStyle } from "../styles/common";
 
 interface Props {
   title: string;
-  backgroundColor?: string;
+  onPress?: TouchableOpacityProps["onPress"];
 }
-
-const Button: React.FC<Props> = ({ title, backgroundColor }) => {
+const Button: React.FC<Props> = ({ title, onPress }) => {
   return (
-    <TouchableOpacity
-      style={{
-        ...btnStyle,
-        borderRadius: 30,
-        backgroundColor: backgroundColor || btnStyle.backgroundColor,
-      }}
-    >
-      <Text style={{ ...textStyle, color: "white" }}>{title}</Text>
+    <TouchableOpacity style={btnStyle} onPress={onPress}>
+      <Text style={textStyle}>{title}</Text>
     </TouchableOpacity>
   );
 };

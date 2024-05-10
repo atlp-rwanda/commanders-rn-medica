@@ -2,6 +2,7 @@
   "expo": {
     "name": "medica",
     "slug": "medica",
+    "owner": "8_commanders",
     "version": "1.0.0",
     "scheme": "your-app-scheme",
     "orientation": "portrait",
@@ -29,15 +30,22 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "0f3e69b4-3214-452f-bced-5a39403b1663"
+        "projectId": "53313078-5ee6-4fcd-8284-a14826f4f14a"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/53313078-5ee6-4fcd-8284-a14826f4f14a"
     }
   }
 }

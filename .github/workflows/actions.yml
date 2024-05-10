@@ -1,11 +1,11 @@
-name: Medica CI/CD
+name: Medica App Testing
 
 on:
   pull_request:
   workflow_dispatch:
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,24 +22,4 @@ jobs:
     - name: run tests
       run: npm run test
     
-  deploy:
-        name: deploy 
-        runs-on: ubuntu-latest
-      
-        steps:
-        - uses: actions/checkout@v3
-      
-        - name: Set up Node.js
-          uses: actions/setup-node@v2
-          with:
-            node-version: '20'
-      
-        - name: Install dependencies
-          run: npm install
-        
-        - name: Deploy to Expo
-          run: npm run build 
-          env:
-             EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          
-          
+  
