@@ -21,3 +21,4 @@ yarn-error.log*
 # macOS
 .DS_Store
 
+expo-env.d.ts
