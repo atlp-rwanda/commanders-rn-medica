@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import CalendarScreen from './Medica/component/calendal';
+import CalendarScreen from './doctorcard/calendal';
 import { router } from 'expo-router';
+const arrow = require("../../assets/Arrow.png")
 
 function SelectDate(){
 
@@ -26,7 +27,9 @@ function SelectDate(){
    return (
     <View className={`flex-1 pl-5 pr-5 pb-10 pt-10 justify-center ${successfuly ? 'bg-gray-600' : 'bg-white'}`}>
         <View className='flex flex-row gap-3 items-center pb-10'>
-            
+        <TouchableOpacity onPress={()=>router.back()}>        
+                    <Image source={arrow}/>
+                </TouchableOpacity>
             <Text className='text-2xl font-bold '>Reschedule Appointment</Text>
         </View>
         <Text className='text-xl font-bold '>Select Date</Text>
@@ -48,7 +51,7 @@ function SelectDate(){
          </TouchableOpacity>
          {successfuly && (
             <View className='bg-white absolute w-9/12 ml-20 rounded-xl flex justify-center items-center p-5 '>
-                <Image source={require("./Medica/Group.png")}/>
+                <Image source={require("../../assets/Group.png")}/>
                 <Text className='text-blue-700 text-xl pt-10 pb-10'>Reschedule Successfuly</Text>
                 <Text>Appointment successfuly changed. you will recieve notification and the doctor you selected will contact you</Text>
                 <TouchableOpacity>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity,Image } from "react-native";
 import { router } from 'expo-router';
-const arrow = require("./Medica/Arrow.png")
-import CustomCheckBox from './Medica/component/checkbox';
+const arrow = require("../../assets/Arrow.png")
+import CustomCheckBox from './doctorcard/checkbox';
 
 
 
@@ -12,6 +12,9 @@ function ReschedulApointment(){
         <View className='flex-1 justify-between pb-12 pt-12 pl-2 pr-2'>
             <View className='flex gap-6'>
                 <View className='flex flex-row gap-3'>
+                <TouchableOpacity onPress={()=>router.back()}>
+                    <Image source={arrow}/>
+                </TouchableOpacity>
                 <Text className='text-2xl font-bold'>Reschedul Appointment</Text>
                 </View>
                 <View className='flex gap-5  pl-0'>

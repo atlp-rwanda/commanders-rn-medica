@@ -6,7 +6,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 function Cards(props:any){
 
     return (
-        <View className='bg-white rounded-xl p-3 w-400'>
+        <View style={props.bacColor} className={`bg-white rounded-xl p-3 w-400`}>
             <View className='flex flex-row gap-6 justify-center items-center'>
             <Image source={props.imager} className='w-3/12 h-24 rounded-xl'/>
             <View>

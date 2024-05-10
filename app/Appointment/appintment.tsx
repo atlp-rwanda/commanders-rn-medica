@@ -36,14 +36,14 @@ function Appoin() {
             <View>
             <View style={styles.heading}>
                 <View style={styles.subheading}>
-                    <Image source={require("./Medica/logo.png")} />
+                    <Image source={require("../../assets/logo.png")} />
                     <Text style={styles.headingtext}>My Appointment</Text>
                 </View>
                  <View>
                    <View style={styles.subheading}>
-                    <Image source={require("./Medica/Search.png")} />
+                    <Image source={require("../../assets/Search.png")} />
                     <TouchableOpacity onPress={Moress}>
-                    <Image source={require("./Medica/More.png")} />
+                    <Image source={require("../../assets/More.png")} />
                     </TouchableOpacity>
                     
                   </View>
@@ -69,16 +69,16 @@ function Appoin() {
             </View>
             </View>
                <View style={styles.centerbar}>
-               <Image source={require("./Medica/Frame.png")}/>
+               <Image source={require("../../assets/Frame.png")}/>
                <Text style={styles.centerbartitle}>You don't have an appointment yet</Text>
                <Text style={styles.centerbartpragra}>You don't have a doctor's appointment scheduled at the moment.</Text>
            </View>
             <View style={styles.botton}>
-               <Image source={require("./Medica/home.png")}/>
-               <Image source={require("./Medica/Appoint.png")}/>
-               <Image source={require("./Medica/history.png")}/>
-               <Image source={require("./Medica/Article.png")}/>
-               <Image source={require("./Medica/profile.png")}/>
+               <Image source={require("../../assets/home.png")}/>
+               <Image source={require("../../assets/Appoint.png")}/>
+               <Image source={require("../../assets/history.png")}/>
+               <Image source={require("../../assets/Article.png")}/>
+               <Image source={require("../../assets/profile.png")}/>
             </View>
 
         </View>

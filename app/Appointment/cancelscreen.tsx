@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity,ScrollView, Image, StyleSheet } from "react-native";
-import Card from './Medica/component/cards';
-import Cards from './Medica/component/cardss';
+import Card from './doctorcard/cards';
+import Cards from './doctorcard/cardss';
 import { router } from 'expo-router';
 
 function Appointiment() {
@@ -35,14 +35,14 @@ function Appointiment() {
             <View className='p-5'>
             <View className='flex flex-row items-center justify-between w-400 pt-10'>
                 <View className='flex flex-row items-center justify-center gap-4'>
-                    <Image source={require("./Medica/logo.png")} />
+                    <Image source={require("../../assets/logo.png")} />
                     <Text className='font-bold text-xl'>My Appointment</Text>
                 </View>
                  <View>
                    <View className='flex flex-row items-center justify-center gap-4'>
-                    <Image source={require("./Medica/Search.png")} />
+                    <Image source={require("../../assets/Search.png")} />
                     <TouchableOpacity onPress={Moress}>
-                    <Image source={require("./Medica/More.png")} />
+                    <Image source={require("../../assets/More.png")} />
                     </TouchableOpacity>
                     
                   </View>
@@ -72,65 +72,38 @@ function Appointiment() {
                 <View style={styles.content}>
                 <Card
                    name="Dr.Mutoni Dach"
-                   imager={require("./Medica/Mutoni.jpeg")}
+                   imager={require("../../assets/Mutoni.jpeg")}
                    typecall="Voice call"
                    action="Cancelled"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
+                   imagerr={require("../../assets/voice.png")}
                    stile={styles.canelstyle}
+                   bacColor={styles.car}
                    backcad='bg-gray-700'
                  />
                  <Card
                    name="Dr.Keegan Dach"
-                   imager={require("./Medica/Mutoni.jpeg")}
+                   imager={require("../../assets/Mutoni.jpeg")}
                    typecall="Messaging"
                    action="Cancelled"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/message.png")}
+                   imagerr={require("../../assets/message.png")}
                    stile={styles.canelstyle}
+                   bacColor={styles.car}
                    backcad='bg-gray-700'
                  />
                  <Card
                     name="Dr.Drake Beison"
-                    imager={require("./Medica/Muhire.jpeg")}
+                    imager={require("../../assets/Muhire.jpeg")}
                    typecall="Video call"
                    action="Cancelled"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/video.png")}
+                   imagerr={require("../../assets/video.png")}
                    stile={styles.canelstyle}
-                 />
-                 <Card
-                  name="Dr.Tomas Slatter"
-                  imager={require("./Medica/Tomasi.jpeg")}
-                   typecall="Voice call"
-                   action="Cancelled"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.canelstyle}
-                 />
-                 <Card
-                   name="Dr.Quinn Slatter"
-                   imager={require("./Medica/Anitha.jpeg")}
-                   typecall="Voice call"
-                   action="Cancelled"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.canelstyle}
-                 />
-                 <Card
-                   name="Dr.Quinn Muhawe"
-                   imager={require("./Medica/Muhawe.jpeg")}
-                   typecall="Voice call"
-                   action="Cancelled"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.canelstyle}
+                   bacColor={styles.car}
                  />
                 </View>
                 </ScrollView>
@@ -140,78 +113,42 @@ function Appointiment() {
                 <View style={styles.content}>
                 <Cards
                    name="Dr.Raul Kamanzi"
-                   imager={require("./Medica/Kamanzi.jpeg")}
+                   imager={require("../../assets/Kamanzi.jpeg")}
                    typecall="Voice call"
                    action="Upcoming"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
+                   imagerr={require("../../assets/voice.png")}
                    stile={styles.upgrstyle}
+                   bacColor={styles.car}
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
                    fact={()=> router.push("/Appointment/reschedul")}
                  />
                  <Cards
                    name="Dr.Mutoni Dach"
-                   imager={require("./Medica/Mutoni.jpeg")}
+                   imager={require("../../assets/Mutoni.jpeg")}
                    typecall="Messaging"
                    action="Upcoming"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/message.png")}
+                   imagerr={require("../../assets/message.png")}
                    stile={styles.upgrstyle}
+                   bacColor={styles.car}
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
                    fact={()=> router.push("/Appointment/reschedul")}
                  />
                  <Cards
                    name="Dr.Muhire Beison"
-                   imager={require("./Medica/Muhire.jpeg")}
+                   imager={require("../../assets/Muhire.jpeg")}
                    typecall="Video call"
                    action="Upcoming"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/video.png")}
+                   imagerr={require("../../assets/video.png")}
                    stile={styles.upgrstyle}
-                   chance="Cancel Appointment"
-                   cantchance="Reschedule"
-                   fact={()=> router.push("/Appointment/reschedul")}
-                 />
-                 <Cards
-                   name="Dr.Quinn Slatter"
-                   imager={require("./Medica/Anitha.jpeg")}
-                   typecall="Voice call"
-                   action="Complete"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.upgrstyle}
-                   chance="Cancel Appointment"
-                   cantchance="Reschedule"
-                   fact={()=> router.push("/Appointment/reschedul")}
-                 />
-                 <Cards
-                   name="Dr.Tomas Slatter"
-                   imager={require("./Medica/Tomasi.jpeg")}
-                   typecall="Voice call"
-                   action="Upcoming"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.upgrstyle}
-                   chance="Cancel Appointment"
-                   cantchance="Reschedule"
-                   fact={()=> router.push("/Appointment/reschedul")}
-                 />
-                 <Cards
-                   name="Dr.Quinn Muhawe"
-                   imager={require("./Medica/Muhawe.jpeg")}
-                   typecall="Voice call"
-                   action="Upcoming"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.completstyle}
+                   bacColor={styles.car}
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
                    fact={()=> router.push("/Appointment/reschedul")}
@@ -225,73 +162,40 @@ function Appointiment() {
                 <View style={styles.content}>
                 <Cards
                    name="Dr.Raul Kamanzi"
-                   imager={require("./Medica/Kamanzi.jpeg")}
+                   imager={require("../../assets/Kamanzi.jpeg")}
                    typecall="Voice call"
                    action="Complete"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
+                   imagerr={require("../../assets/voice.png")}
                    stile={styles.completstyle}
+                   bacColor={styles.car}
                    chance="Book Again"
                    cantchance="Leave a Review"
                  />
                  <Cards
                     name="Dr.Mutoni Dach"
-                    imager={require("./Medica/Mutoni.jpeg")}
+                    imager={require("../../assets/Mutoni.jpeg")}
                    typecall="Messaging"
                    action="Complete"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/message.png")}
+                   imagerr={require("../../assets/message.png")}
                    stile={styles.completstyle}
+                   bacColor={styles.car}
                    chance="Book Again"
                    cantchance="Leave a Review"
                  />
                  <Cards
                     name="Dr.Drake Beison"
-                    imager={require("./Medica/Muhire.jpeg")}
+                    imager={require("../../assets/Muhire.jpeg")}
                    typecall="Video call"
                    action="Complete"
                    date="Dec 12,2022"
                    time="16:00 PM"
-                   imagerr={require("./Medica/video.png")}
+                   imagerr={require("../../assets/video.png")}
                    stile={styles.completstyle}
-                   chance="Book Again"
-                   cantchance="Leave a Review"
-                 />
-                 <Cards
-                  name="Dr.Quinn Slatter"
-                  imager={require("./Medica/Anitha.jpeg")}
-                   typecall="Voice call"
-                   action="Complete"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.completstyle}
-                   chance="Book Again"
-                   cantchance="Leave a Review"
-                 />
-                 <Cards
-                  name="Dr.Tomas Slatter"
-                  imager={require("./Medica/Tomasi.jpeg")}
-                   typecall="Voice call"
-                   action="Complete"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.completstyle}
-                   chance="Book Again"
-                   cantchance="Leave a Review"
-                 />
-                 <Cards
-                   name="Dr.Quinn Muhawe"
-                   imager={require("./Medica/Muhawe.jpeg")}
-                   typecall="Voice call"
-                   action="Complete"
-                   date="Dec 12,2022"
-                   time="16:00 PM"
-                   imagerr={require("./Medica/voice.png")}
-                   stile={styles.completstyle}
+                   bacColor={styles.car}
                    chance="Book Again"
                    cantchance="Leave a Review"
                  />
@@ -362,6 +266,9 @@ const styles = StyleSheet.create({
       padding:3
         
     },
+    car:{
+      backgroundColor:'#bbbdc130'
+    },
     completstyle:{
         color:'green',
         borderColor:'green',
@@ -371,7 +278,7 @@ const styles = StyleSheet.create({
         padding:3
     },
     otherscre:{
-        backgroundColor:'#246BFD',
+        backgroundColor:'#bbbdc130',
         height:80,
         padding:8,
         borderRadius:10,
