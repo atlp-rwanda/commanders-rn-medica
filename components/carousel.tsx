@@ -19,12 +19,6 @@ const CarouselComponent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const ref = React.useRef<ICarouselInstance>(null);
 
-  const baseOptions = {
-    vertical: false,
-    width: width,
-    height: width / 2,
-  } as const;
-
   const renderPaginationDots = () => (
     <View
       style={{
@@ -65,6 +59,7 @@ const CarouselComponent = () => {
         colors={["#246BFD", "#5089FF"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
+        className="rounded-[30px] mt-6"
         style={{
           borderRadius: 30,
           marginTop: 24,
@@ -72,9 +67,9 @@ const CarouselComponent = () => {
         }}
       >
         <Carousel
-          {...baseOptions}
-          loop
-          enabled // Default is true, just for demo
+          vertical={false}
+          width={width}
+          height={width / 2}
           ref={ref}
           defaultScrollOffsetValue={scrollOffsetValue}
           testID={"banner"}
@@ -83,62 +78,27 @@ const CarouselComponent = () => {
           pagingEnabled={true}
           onSnapToItem={(index) => setCurrentIndex(index)}
           renderItem={({ index }) => (
-            <View key={index} style={{ height: "100%", padding: 24 }}>
-              <View
-                style={{
-                  justifyContent: "space-evenly",
-                  width: "55%",
-                  height: "100%",
-                }}
-              >
-                <Text
-                  style={{ color: "#FFFFFF", fontSize: 24, letterSpacing: 0.2 }}
-                >
+            <View key={index} className="h-full p-6">
+              <View className="justify-evenly w-[55%] h-full">
+                <Text className="text-[24px] font-['Urbanist-Bold'] text-white">
                   Medical Checks!
                 </Text>
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: 12,
-                    flexWrap: "wrap",
-                    letterSpacing: 0.2,
-                  }}
-                >
+                <Text className="text-xs font-['Urbanist-Regular'] text-white flex-wrap">
                   Check your health condition regularly to minimize the
                   incidence of disease in the future.
                 </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  style={{
-                    width: 105,
-                    height: 32,
-                    backgroundColor: "#fff",
-                    borderRadius: 50,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                  className="w-[105px] h-8 bg-white rounded-3xl items-center justify-center"
                 >
-                  <Text
-                    style={{
-                      color: "#246BFD",
-                      fontSize: 14,
-                      letterSpacing: 0.2,
-                    }}
-                  >
+                  <Text className="text-sm font-['Urbanist-SemiBold'] text-primary-500">
                     Check Now
                   </Text>
                 </TouchableOpacity>
               </View>
               <ImageBackground
                 source={require("../assets/images/bannerImg.png")}
-                style={{
-                  width: 200,
-                  height: 320,
-                  position: "absolute",
-                  right: "10%",
-                  top: 24,
-                  borderRadius: 30,
-                }}
+                className="w-48 h-80 absolute rounded-[30px] right-[10%] top-6"
               />
             </View>
           )}

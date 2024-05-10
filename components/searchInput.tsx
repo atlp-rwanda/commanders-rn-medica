@@ -10,20 +10,9 @@ interface Props {
 }
 
 export const SearchInput: React.FC<Props> = ({ value, onChangeText }) => (
-  <View style={{ marginTop: 24 }}>
-    <View
-      style={{
-        backgroundColor: "#F5F5F5",
-        // height: 50,
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 12,
-        borderRadius: 16,
-      }}
-    >
-      <TouchableOpacity activeOpacity={0.8} style={{ marginEnd: 12 }}>
+  <View className="mt-6">
+    <View className="bg-Greyscale/100 w-full flex-row justify-between items-center p-3 rounded-2xl">
+      <TouchableOpacity activeOpacity={0.8} className="mr-3">
         <SvgXml xml={search} />
       </TouchableOpacity>
       <TextInput
@@ -33,16 +22,9 @@ export const SearchInput: React.FC<Props> = ({ value, onChangeText }) => (
         onChangeText={onChangeText}
         defaultValue={""}
         returnKeyType="search"
-        style={{
-          color: "#130F26",
-          alignItems: "center",
-          backgroundColor: "transparent",
-          flex: 1,
-          paddingRight: 10,
-          borderRadius: 12,
-        }}
+        className="font-['Urbanist-Regular'] font-[14px] items-center bg-transparent flex-1 rounded-xl pr-2.5"
       />
-      <TouchableOpacity activeOpacity={0.8} style={{ marginStart: 12 }}>
+      <TouchableOpacity activeOpacity={0.8} className="ms-3">
         <SvgXml xml={filter} />
       </TouchableOpacity>
     </View>

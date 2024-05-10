@@ -9,7 +9,7 @@ export default function App() {
       <Text>Medica App</Text>
       <Text>Open up App.tsx to start working on your app!</Text>
       <Pressable>
-        <Link href="counter/Counter">
+        <Link href="(tabs)">
           <Text>Click me to test redux</Text>
         </Link>
       </Pressable>

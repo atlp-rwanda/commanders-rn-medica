@@ -17,50 +17,62 @@ import CarouselComponent from "../../components/carousel";
 import { MenuIcons } from "../../assets/icons";
 import DoctorCard from "../../components/cards/doctorCard";
 
-const filters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
+const roleFilters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
+const doctors = [
+  {
+    name: "Eloi Chrysanthe",
+    role: "Opthamologist",
+    stars: "4.3",
+    hospital: "Muhima",
+    reviews: "231",
+    image: "",
+    images: "",
+  },
+  {
+    name: "Uwamahoro",
+    role: "Pediatric",
+    stars: "4.3",
+    hospital: "Masaka",
+    reviews: "2,542",
+    image: "",
+    images: "",
+  },
+  {
+    name: "Hakizimana",
+    role: "Nutritionist",
+    stars: "4.3",
+    hospital: "KHI",
+    reviews: "1,242",
+    image: "",
+    images: "",
+  },
+];
+
 const Home = () => {
   const insets = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
-  const [selectedType, selectType] = useState(0);
+  const [selectedRole, selectRole] = useState(0);
+  const [filteredDoctors, filterDoctors] = useState(doctors);
   return (
     <ScrollView
-      style={{ flex: 1, marginTop: insets.top }}
+      style={{ marginTop: insets.top }}
+      className={`flex-1`}
       keyboardShouldPersistTaps="always"
     >
-      <View style={{ padding: 24 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            // paddingTop: 6,
-          }}
-        >
-          <View style={{ height: 48, width: 48 }}>
+      <View className="p-6">
+        <View className="flex-row items-center justify-between">
+          <View className="h-12 w-12">
             <TouchableOpacity activeOpacity={0.8}>
               <Image
                 source={require("../../assets/images/profilePicture.png")}
               />
             </TouchableOpacity>
-            <View
-              style={{
-                backgroundColor: "#246BFD",
-                width: 15,
-                height: 15,
-                borderColor: "#FFFFFF",
-                borderWidth: 3,
-                position: "absolute",
-                bottom: 0,
-                right: 0,
-                borderRadius: 8,
-              }}
-            />
+            <View className="right-0 bottom-0 absolute bg-primary-500 w-[15px] h-[15px] border-white border-[3px] rounded-lg" />
           </View>
-          <View style={{ width: "65%" }}>
-            <Text style={{ color: "#757575", fontSize: 16 }}>
+          <View className="w-3/5">
+            <Text className="font-['Urbanist-Regular'] text-[16px]">
               Good Morning 👋🏽
             </Text>
-            <Text style={{ color: "#212121", fontSize: 20 }}>
+            <Text className="text-[20px] font-['Urbanist-Bold']">
               Andrew Ainsley
             </Text>
           </View>
@@ -82,25 +94,18 @@ const Home = () => {
           ]}
           scrollEnabled={false}
           ListHeaderComponent={
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                width: "100%",
-                justifyContent: "space-between",
-                marginTop: 24,
-                marginBottom: 12,
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "700" }}>
+            <View className="flex-row items-center w-full justify-between mt-6 mb-3">
+              <Text className="text-[20px] font-['Urbanist-Bold']">
                 Doctor Speciality
               </Text>
               <TouchableOpacity activeOpacity={0.8}>
-                <Text style={{ color: "#246BFD", fontSize: 16 }}>See All</Text>
+                <Text className="text-[16px] font-['Urbanist-Bold'] text-primary-500">
+                  See All
+                </Text>
               </TouchableOpacity>
             </View>
           }
-          style={{ width: "100%" }}
+          className="w-full"
           contentContainerStyle={{
             alignItems: "center",
             width: "100%",
@@ -108,28 +113,15 @@ const Home = () => {
           renderItem={({ item, index }) => (
             <View
               key={index}
-              style={{
-                width: 80,
-                alignItems: "center",
-                justifyContent: "center",
-                marginEnd: 12,
-                marginBottom: 12,
-              }}
+              className="w-20 items-center justify-center me-3 mb-3"
             >
               <TouchableOpacity
                 activeOpacity={0.8}
-                style={{
-                  backgroundColor: "rgba(36, 107, 253, 0.08)",
-                  padding: 10,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 50,
-                  marginBottom: 6,
-                }}
+                className="bg-[#246BFD14] p-2.5 items-center justify-center rounded-3xl mb-2"
               >
                 <SvgXml xml={MenuIcons[item.name.toLowerCase()]} />
               </TouchableOpacity>
-              <Text>
+              <Text className="text-[16px] font-['Urbanist-Bold']">
                 {item.name.length > 7
                   ? item.name.substring(0, 6) + "..."
                   : item.name}
@@ -139,75 +131,54 @@ const Home = () => {
           numColumns={4}
         />
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          width: "100%",
-          justifyContent: "space-between",
-          paddingHorizontal: 24,
-          marginBottom: 12,
-        }}
-      >
-        <Text style={{ fontSize: 20, fontWeight: "700" }}>Top Doctors</Text>
+      <View className="flex-row items-center w-full justify-between px-6 mb-3">
+        <Text className="text-[20px] font-['Urbanist-Bold']">Top Doctors</Text>
         <TouchableOpacity activeOpacity={0.8}>
-          <Text style={{ color: "#246BFD", fontSize: 16 }}>See All</Text>
+          <Text className="text-[16px] font-['Urbanist-Bold'] text-primary-500">
+            See All
+          </Text>
         </TouchableOpacity>
       </View>
       <FlatList
-        data={filters}
+        data={roleFilters}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{ width }}
+        className="w-full"
         contentContainerStyle={{ alignItems: "center", marginBottom: 12 }}
         renderItem={({ item, index }) => (
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
-            style={{
-              paddingHorizontal: 15,
-              paddingVertical: 5,
-              borderWidth: 1,
-              borderColor: "#246BFD",
-              marginStart: index === 0 ? 24 : 0,
-              backgroundColor:
-                selectedType === index ? "#246BFD" : "transparent",
-              borderRadius: 20,
-              marginEnd: index === filters.length - 1 ? 24 : 12,
-              alignItems: "center",
-              justifyContent: "center",
+            className={`px-4 py-1 border-primary-500 border ${
+              index === 0 ? "ml-6" : "ml-0"
+            } ${
+              selectedRole === index ? "bg-primary-500" : "bg-transparent"
+            } rounded-2xl items-center justify-center ${
+              index === roleFilters.length - 1 ? "mr-6" : "mr-3"
+            }`}
+            onPress={() => {
+              selectRole(index);
+              filterDoctors(
+                index === 0
+                  ? doctors
+                  : doctors.filter(
+                      (doctor) => doctor.role === roleFilters[index]
+                    )
+              );
             }}
-            onPress={() => selectType(index)}
           >
             <Text
-              style={{ color: selectedType === index ? "#FFFFFF" : "#246BFD" }}
+              className={`${
+                selectedRole === index ? "text-[#FFFFFF]" : "text-primary-500"
+              } font-[Urbanist-SemiBold]`}
             >
               {item}
             </Text>
           </TouchableOpacity>
         )}
       />
-      <View style={{ paddingHorizontal: 24, marginBottom: 0, width }}>
-        {[
-          {
-            name: "Eloi Chrysanthe",
-            role: "Opthamologist",
-            stars: "4.3",
-            hospital: "N/A",
-            reviews: "200",
-            image: 0,
-            images: 0,
-          },
-          {
-            name: "Eloi Chrysanthe",
-            role: "Opthamologist",
-            stars: "4.3",
-            hospital: "N/A",
-            reviews: "200",
-            image: 0,
-            images: 0,
-          },
-        ].map((item, index) => (
+      <View className="px-6 mb-0 w-full">
+        {filteredDoctors.map((item, index) => (
           <DoctorCard
             key={index}
             name={item.name}
@@ -215,7 +186,7 @@ const Home = () => {
             stars={item.stars}
             hospital={item.hospital}
             reviews={item.reviews}
-            image={item.image}
+            image={require("../../assets/doctors/heart.png")}
             images={require("../../assets/doctors/doctor.png")}
           />
         ))}
