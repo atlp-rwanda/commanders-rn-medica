@@ -5,10 +5,11 @@ import { btnStyle, textStyle } from "../styles/common";
 interface Props {
   title: string;
   onPress?: TouchableOpacityProps["onPress"];
+  backgroundColor?: string;
 }
-const Button: React.FC<Props> = ({ title, onPress }) => {
+const Button: React.FC<Props> = ({ title, backgroundColor, onPress }) => {
   return (
-    <TouchableOpacity style={btnStyle} onPress={onPress}>
+    <TouchableOpacity style={[btnStyle, { backgroundColor }]} onPress={onPress}>
       <Text style={textStyle}>{title}</Text>
     </TouchableOpacity>
   );

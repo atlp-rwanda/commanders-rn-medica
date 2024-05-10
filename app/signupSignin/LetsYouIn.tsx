@@ -10,7 +10,7 @@ import BackIcon from "../../components/BackIcon";
 const LetsYouIn = () => {
   return (
     <View style={{ ...containerStyle, rowGap: 24 }}>
-      <BackIcon imageSource={require("../assets/Frame.png")} />
+      <BackIcon imageSource={require("../../assets/Frame.png")} />
       <Text style={titleStyle}>Let’s you in</Text>
       <SiginButton title="Continue with Facebook" iconName="facebook-square" />
       <SiginButton title="Continue with Google" iconName="google" />
