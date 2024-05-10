@@ -1,7 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import Counter from "./counter/Counter";
-import { Link} from 'expo-router';
+import { Link } from "expo-router";
 
 
 export default function App() {
@@ -10,7 +10,9 @@ export default function App() {
       <Text>Medica App</Text>
       <Link href="/Appointment/screen"><Text>Open up App.tsx to start working on your app!</Text></Link>
       <Pressable>
-        <Link href="counter/Counter"><Text>Click me to test redux</Text></Link>
+        <Link href="(tabs)">
+          <Text>Click me to test redux</Text>
+        </Link>
       </Pressable>
       <StatusBar style="auto" />
     </View>
@@ -20,8 +22,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
