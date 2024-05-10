@@ -4,7 +4,7 @@
     "slug": "medica",
     "owner": "8_commanders",
     "version": "1.0.0",
-    "scheme": "your-app-scheme",
+    "scheme": "light",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
