@@ -1,11 +1,11 @@
 import React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 
-import { containerStyle, titleStyle } from "../styles/common";
-import SiginButton from "../components/SignInButton";
-import Button from "../components/button";
-import SignUpText from "../components/SignUpText";
-import BackIcon from "../components/BackIcon";
+import { containerStyle, titleStyle } from "../../styles/common";
+import SiginButton from "../../components/SignInButton";
+import Button from "../../components/button";
+import SignUpText from "../../components/SignUpText";
+import BackIcon from "../../components/BackIcon";
 
 const LetsYouIn = () => {
   return (
