@@ -24,8 +24,10 @@ const SingIn = () => {
 
   return (
     <View style={{ ...containerStyle, rowGap: 24 }}>
-      <BackIcon imageSource={require("../assets/Account.png")} />
-      <Text style={titleStyle}>Login to Your Account</Text>
+      <BackIcon imageSource={require("../../assets/Account.png")} />
+      <Text style={[{ fontWeight: "bold" }, titleStyle]}>
+        Login to Your Account
+      </Text>
       <View style={{ rowGap: 20 }}>
         <EmailPasswordInput
           icon="email"

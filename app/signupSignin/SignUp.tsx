@@ -25,7 +25,9 @@ const SingUp = () => {
   return (
     <View style={{ ...containerStyle, rowGap: 24 }}>
       <BackIcon imageSource={require("../../assets/Account.png")} />
-      <Text style={titleStyle}>Create New Account</Text>
+      <Text style={[{ fontWeight: "bold" }, titleStyle]}>
+        Create New Account
+      </Text>
       <View style={{ rowGap: 20 }}>
         <EmailPasswordInput
           icon="email"
