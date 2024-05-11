@@ -1,12 +1,21 @@
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import {useFonts} from "expo-font"
+import Counter from "./counter/Counter";
 import { Link } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function App() {
+  // let [fontsLoaded] = useFonts({
+  //   Urbanist:require("../assets/fonts/Urbanist.ttf")});
+  //   if(!fontsLoaded){
+  //     return null;
+  //   }
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text>Medica App</Text>
+      <Link href={"/Userprofile/userprofile"}>
+      <Text className='text-3xl text-darkblue'>Medica App</Text>
+      </Link>
       <Text>Open up App.tsx to start working on your app!</Text>
       <Pressable>
         <Link href="/(tabs)">Tabs</Link>
