@@ -7,9 +7,12 @@ import CustomCheckBox from './doctorcard/checkbox';
 
 
 function Reasonscreen(){
-    const [successfuly, setSuccessfuly] = useState(true);
+    const [successfuly, setSuccessfuly] = useState(false);
     const showsuccess = () =>{
         setSuccessfuly(true);
+    };
+    const hidesuccess = () =>{
+        setSuccessfuly(false);
     };
     return (
         <View className={`flex-1 pl-5 pr-5 pb-10 pt-10 justify-center bg-white ${successfuly ? 'bg-gray-600' : 'bg-white'}`}>
@@ -45,7 +48,7 @@ function Reasonscreen(){
                 <Image source={require("../../assets/Group1.png")}/>
                 <Text className='text-blue-700 text-xl pt-10 font-bold pb-10 text-center'>Cancel Appointment Successfuly</Text>
                 <Text className='text-center'>We are very sad that you have cancel your appointment. we will always improve our service to satisfy you in the next appointment</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={hidesuccess}>
                     <Text className='text-white bg-blue-700 rounded-xl pb-3 pt-3 pl-10 pr-10 my-3.5'>Ok</Text>
                 </TouchableOpacity>
              </View>

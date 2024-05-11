@@ -13,13 +13,12 @@ export default function App() {
   //   }
   return (
     <View style={styles.container}>
-      <Text>Medica App</Text>
-      <Link href="/Appointment/screen"><Text>Open up App.tsx to start working on your app!</Text></Link>
+      
       <StatusBar style="auto" />
       <Link href={"/Userprofile/userprofile"}>
       <Text className='text-3xl text-darkblue'>Medica App</Text>
       </Link>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Link href="/Appointment/screen"><Text>Open up App.tsx to start working on your app!</Text></Link>
       <Pressable>
         <Link href="/(tabs)">Tabs</Link>
         <Link href="/counter/Counter">
