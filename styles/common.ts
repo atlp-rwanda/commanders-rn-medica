@@ -19,7 +19,4 @@ export const btnStyle: ViewStyle = {
   alignItems: "center",
   padding: 10,
   backgroundColor: "#246BFD",
-  width: "80%",
-  height: 60,
-  rowGap: 20,
 };
