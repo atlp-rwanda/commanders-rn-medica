@@ -149,6 +149,7 @@ function Appointiment() {
                    backcad='bg-white rounded-xl flex-row p-4 w-400 items-center gap-7'
                    cantchance="Reschedule"
                    fact={()=> router.push("/Appointment/reschedul")}
+
                    
                  />
                  <Cards
@@ -164,6 +165,7 @@ function Appointiment() {
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
                    fact={()=> router.push("/Appointment/reschedul")}
+                   chooice={()=>router.push("/Appointment/messageappointment")}
                    
                  />
                  <Cards

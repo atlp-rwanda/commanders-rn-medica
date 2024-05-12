@@ -6,11 +6,7 @@ import { Link } from "expo-router";
 
 
 export default function App() {
-  // let [fontsLoaded] = useFonts({
-  //   Urbanist:require("../assets/fonts/Urbanist.ttf")});
-  //   if(!fontsLoaded){
-  //     return null;
-  //   }
+
   return (
     <View style={styles.container}>
       

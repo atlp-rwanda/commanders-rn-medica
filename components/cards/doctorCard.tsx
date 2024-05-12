@@ -23,13 +23,13 @@ export default function DoctorCard(props: docCardProps) {
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
         <View className="flex-row justify-between w-full">
-          <Image source={props.images} />
+          <Image source={props.images} className="h-28 w-28" />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
               <Text className="font-[18px] font-[Urbanist-Bold]">
                 {props.name}
               </Text>
-              <Image source={props.image} className="w-4 h-4" />
+              <Image source={props.image} className="w-4 h-4 " />
             </View>
             <Text className="border-[1px] w-full h-0 bg-[#EEEEEE] opacity-50"></Text>
             <View className="flex-row items-center">

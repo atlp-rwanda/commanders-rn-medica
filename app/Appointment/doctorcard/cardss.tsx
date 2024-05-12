@@ -17,7 +17,9 @@ function Cards(props:any){
                   </View>
                 <Text>{props.date} | <Text>{props.time}</Text></Text>
             </View>
-            <Image source={props.imagerr}/>
+            <TouchableOpacity onPress={props.chooice}>
+              <Image source={props.imagerr}/>
+            </TouchableOpacity>
          </View>
          <View style={styles.botfles}>
             <Text className='text-blue-500 rounded-xl pl-5 pr-5 pb-1 pt-1 border border-blue-500'>{props.chance}</Text>
