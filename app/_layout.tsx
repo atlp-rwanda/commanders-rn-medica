@@ -17,6 +17,8 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="counter/Counter" />
         <Stack.Screen name="Userprofile/userprofile"  options={{ headerShown: false }} />
+        <Stack.Screen name="Userprofile/createpin"  options={{ headerShown: false }} />
+        <Stack.Screen name="Userprofile/setfingerprint" options={{headerShown:false}}/>
       </Stack>
     </Provider>
   );
