@@ -14,7 +14,7 @@ export default function App() {
       <Link href={"/Userprofile/userprofile"}>
       <Text className='text-3xl text-darkblue'>Medica App</Text>
       </Link>
-      <Link href="/Appointment/screen"><Text>Open up App.tsx to start working on your app!</Text></Link>
+      <Text>Open up App.tsx to start working on your app!</Text>
       <Pressable>
         <Link href="/(tabs)">Tabs</Link>
         <Link href="/counter/Counter">
