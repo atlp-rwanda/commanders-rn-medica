@@ -165,7 +165,7 @@ function Appointiment() {
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
                    fact={()=> router.push("/Appointment/reschedul")}
-                   chooice={()=>router.push("/Appointment/messageappointment")}
+                   
                    
                  />
                  <Cards
@@ -245,6 +245,7 @@ function Appointiment() {
                    chance="Book Again"
                    cantchance="Leave a Review"
                    backcad='bg-white rounded-xl flex-row p-4 w-400 items-center gap-7'
+                   chooice={()=>router.push("/Appointment/audio/audioappointment")}
                  />
                  <Cards
                     name="Dr.Mutoni Dach"
@@ -258,6 +259,7 @@ function Appointiment() {
                    chance="Book Again"
                    cantchance="Leave a Review"
                    backcad='bg-white rounded-xl flex-row p-4 w-400 items-center gap-7'
+                   chooice={()=>router.push("/Appointment/message/messageappointment")}
                  />
                  <Cards
                     name="Dr.Drake Beison"
@@ -271,6 +273,7 @@ function Appointiment() {
                    chance="Book Again"
                    cantchance="Leave a Review"
                    backcad='bg-white rounded-xl flex-row p-4 w-400 items-center gap-7'
+                   chooice={()=>router.push("/Appointment/video/videoappointment")}
                  />
                  <Cards
                   name="Dr.Quinn Slatter"
