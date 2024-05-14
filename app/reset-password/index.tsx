@@ -51,7 +51,7 @@ export default function ForgotPasswordScreen() {
             />
           </View>
           <TouchableOpacity
-            className="bg-primary-500 p-4 my-5 rounded-full shadow-sm shadow-primary-500"
+            className="bg-lightblue p-4 my-5 rounded-full shadow-sm shadow-lightblue"
             onPress={() => {
               router.push("/reset-password/verify-code");
             }}

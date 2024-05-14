@@ -1,8 +1,10 @@
 import {
-    Image,
-    ImageSourcePropType,
-    Pressable,
-    StyleSheet, Text, View
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 type docCardProps = {
   name: string;
@@ -20,7 +22,7 @@ export default function DoctorCard(props: docCardProps) {
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
         <View className="flex-row justify-between w-full">
-          <Image source={props.images} />
+          <Image source={props.images} className="w-28 h-28" />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
               <Text className="font-[18px] font-[UrbanistBold]">
@@ -28,13 +30,11 @@ export default function DoctorCard(props: docCardProps) {
               </Text>
               <Image source={props.image} className="w-4 h-4" />
             </View>
-            <Text className="border-[1px] w-full h-0 bg-[#EEEEEE] opacity-50"></Text>
+            <View className="border-t border-t-[#EEEEEE] w-full" />
             <View className="flex-row items-center">
               <Text className="font-[UrbanistMedium] text-xs">
                 {props.role}
-              </Text>
-              <Text className="w-[1px] h-4 mx-2.5 bg-[#424242]"></Text>
-              <Text className="font-[UrbanistMedium] text-xs">
+                {"   |   "}
                 {props.hospital}
               </Text>
             </View>
@@ -54,7 +54,7 @@ export default function DoctorCard(props: docCardProps) {
   );
 }
 const styles = StyleSheet.create({
-  card1: { elevation: 5 },
+  card1: { elevation: 10, shadowColor: "rgba(4, 6, 15, 0.5)" },
   container: {
     shadowColor: "rgba(4, 6, 15, 0.5)",
     shadowRadius: 10,
