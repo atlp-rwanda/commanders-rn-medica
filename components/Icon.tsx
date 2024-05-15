@@ -6,6 +6,8 @@ const icons = {
   message: require("@/assets/icons/message.png"),
   lock: require("@/assets/icons/lock.png"),
   hide: require("@/assets/icons/hide.png"),
+  'arrow-left': require("@/assets/icons/arrow-left.png"),
+  'more-circle': require("@/assets/icons/more-circle.png"),
 };
 
 const sizes = {

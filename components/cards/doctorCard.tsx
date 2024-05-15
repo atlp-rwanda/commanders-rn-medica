@@ -1,11 +1,8 @@
-import { Text } from "react-native";
-import React from "react";
 import {
-  Image,
-  ImageSourcePropType,
-  Pressable,
-  StyleSheet,
-  View,
+    Image,
+    ImageSourcePropType,
+    Pressable,
+    StyleSheet, Text, View
 } from "react-native";
 type docCardProps = {
   name: string;
@@ -26,27 +23,27 @@ export default function DoctorCard(props: docCardProps) {
           <Image source={props.images} />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
-              <Text className="font-[18px] font-[Urbanist-Bold]">
+              <Text className="font-[18px] font-[UrbanistBold]">
                 {props.name}
               </Text>
               <Image source={props.image} className="w-4 h-4" />
             </View>
             <Text className="border-[1px] w-full h-0 bg-[#EEEEEE] opacity-50"></Text>
             <View className="flex-row items-center">
-              <Text className="font-[Urbanist-Medium] text-xs">
+              <Text className="font-[UrbanistMedium] text-xs">
                 {props.role}
               </Text>
               <Text className="w-[1px] h-4 mx-2.5 bg-[#424242]"></Text>
-              <Text className="font-[Urbanist-Medium] text-xs">
+              <Text className="font-[UrbanistMedium] text-xs">
                 {props.hospital}
               </Text>
             </View>
             <View className="flex-row gap-1">
               <Image source={require("../../assets/doctors/star.png")} />
-              <Text className="font-[Urbanist-Medium] text-xs">
+              <Text className="font-[UrbanistMedium] text-xs">
                 {props.stars}
               </Text>
-              <Text className="font-[Urbanist-Medium] text-xs">
+              <Text className="font-[UrbanistMedium] text-xs">
                 ({props.reviews} reviews)
               </Text>
             </View>

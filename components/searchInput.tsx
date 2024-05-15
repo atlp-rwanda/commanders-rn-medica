@@ -1,8 +1,8 @@
 import React from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { search } from "../assets/icons/search";
 import { filter } from "../assets/icons/filter";
+import { search } from "../assets/icons/search";
 
 interface Props {
   value?: string;
@@ -22,7 +22,7 @@ export const SearchInput: React.FC<Props> = ({ value, onChangeText }) => (
         onChangeText={onChangeText}
         defaultValue={""}
         returnKeyType="search"
-        className="font-['Urbanist-Regular'] font-[14px] items-center bg-transparent flex-1 rounded-xl pr-2.5"
+        className="font-['UrbanistRegular'] font-[14px] items-center bg-transparent flex-1 rounded-xl pr-2.5"
       />
       <TouchableOpacity activeOpacity={0.8} className="ms-3">
         <SvgXml xml={filter} />

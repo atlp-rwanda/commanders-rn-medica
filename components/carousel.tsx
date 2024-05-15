@@ -1,16 +1,15 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  useWindowDimensions,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
+    ImageBackground,
+    Text,
+    TouchableOpacity,
+    View,
+    useWindowDimensions
 } from "react-native";
-import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSharedValue } from "react-native-reanimated";
+import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import Carousel from "react-native-reanimated-carousel";
-import { LinearGradient } from "expo-linear-gradient";
 
 const CarouselComponent = () => {
   const { width } = useWindowDimensions();
@@ -80,10 +79,10 @@ const CarouselComponent = () => {
           renderItem={({ index }) => (
             <View key={index} className="h-full p-6">
               <View className="justify-evenly w-[55%] h-full">
-                <Text className="text-[24px] font-['Urbanist-Bold'] text-white">
+                <Text className="text-[24px] font-['UrbanistBold'] text-white">
                   Medical Checks!
                 </Text>
-                <Text className="text-xs font-['Urbanist-Regular'] text-white flex-wrap">
+                <Text className="text-xs font-['UrbanistRegular'] text-white flex-wrap">
                   Check your health condition regularly to minimize the
                   incidence of disease in the future.
                 </Text>
@@ -91,7 +90,7 @@ const CarouselComponent = () => {
                   activeOpacity={0.8}
                   className="w-[105px] h-8 bg-white rounded-3xl items-center justify-center"
                 >
-                  <Text className="text-sm font-['Urbanist-SemiBold'] text-primary-500">
+                  <Text className="text-sm font-['UrbanistSemiBold'] text-primary-500">
                     Check Now
                   </Text>
                 </TouchableOpacity>
