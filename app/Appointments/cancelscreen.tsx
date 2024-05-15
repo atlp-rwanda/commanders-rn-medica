@@ -46,12 +46,6 @@ function Appointiment() {
                     </TouchableOpacity>
                     
                   </View>
-                  {mores &&(
-                     <View style={styles.otherscre}>
-                     <Text style={styles.texscre} onPress={()=>router.push("/Appointment/appintment")}>Appointment</Text>
-                   </View>
-                  )}
-                   
                  </View>
             </View>
             <View>
@@ -123,7 +117,7 @@ function Appointiment() {
                    bacColor={styles.car}
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
-                   fact={()=> router.push("/Appointment/reschedul")}
+                   fact={()=> router.push("/Appointments/reschedul")}
                  />
                  <Cards
                    name="Dr.Mutoni Dach"
@@ -137,7 +131,7 @@ function Appointiment() {
                    bacColor={styles.car}
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
-                   fact={()=> router.push("/Appointment/reschedul")}
+                   fact={()=> router.push("/Appointments/reschedul")}
                  />
                  <Cards
                    name="Dr.Muhire Beison"
@@ -151,7 +145,7 @@ function Appointiment() {
                    bacColor={styles.car}
                    chance="Cancel Appointment"
                    cantchance="Reschedule"
-                   fact={()=> router.push("/Appointment/reschedul")}
+                   fact={()=> router.push("/Appointments/reschedul")}
                  />
                 </View>
                 </ScrollView>
@@ -214,7 +208,7 @@ function Appointiment() {
                     <TouchableOpacity onPress={()=>router.back()}>
                         <Text className='rounded-2xl pb-3 pt-3 pl-14 pr-14 text-blue-600 bg-slate-100'>Back</Text>
                     </TouchableOpacity>
-                     <TouchableOpacity onPress={()=>router.push("/Appointment/resonforcancel")}>
+                     <TouchableOpacity onPress={()=>router.push("/Appointments/resonforcancel")}>
                        <Text className='rounded-2xl pb-3 pt-3 pl-14 pr-14 bg-blue-600 text-white '>Yes,cancle</Text>
                      </TouchableOpacity>
                   </View>

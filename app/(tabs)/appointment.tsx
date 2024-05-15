@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
-import Appoin from "../Appointment/appintment"
+import Screen from "../Appointments/index";
 
 const Appointment = () => {
   return (
     <View>
-      <Appoin/>
+      <Screen/>
     </View>
   );
 };
