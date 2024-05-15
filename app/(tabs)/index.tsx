@@ -26,7 +26,7 @@ const doctors = [
     hospital: "Muhima",
     reviews: "231",
     image: "",
-    images: "",
+    images: "../../assets/doctors/doctor1.png",
   },
   {
     name: "Uwamahoro",
@@ -35,7 +35,7 @@ const doctors = [
     hospital: "Masaka",
     reviews: "2,542",
     image: "",
-    images: "",
+    images: "../../assets/doctors/doctor2.png",
   },
   {
     name: "Hakizimana",
@@ -44,7 +44,25 @@ const doctors = [
     hospital: "KHI",
     reviews: "1,242",
     image: "",
-    images: "",
+    images: "../../assets/doctors/doctor3.png",
+  },
+  {
+    name: "Emmanuel",
+    role: "Dentist",
+    stars: "4.3",
+    hospital: "Masaka",
+    reviews: "2,542",
+    image: "",
+    images: "../../assets/doctors/doctor2.png",
+  },
+  {
+    name: "Hakizimana",
+    role: "General",
+    stars: "4.3",
+    hospital: "KHI",
+    reviews: "1,242",
+    image: "",
+    images: "../../assets/doctors/doctor3.png",
   },
 ];
 
@@ -64,9 +82,10 @@ const Home = () => {
             <TouchableOpacity activeOpacity={0.8}>
               <Image
                 source={require("../../assets/images/profilePicture.png")}
+                className="h-12 w-12"
               />
             </TouchableOpacity>
-            <View className="right-0 bottom-0 absolute bg-primary-500 w-[15px] h-[15px] border-white border-[3px] rounded-lg" />
+            <View className="right-0 bottom-0 absolute bg-lightblue w-[15px] h-[15px] border-white border-[3px] rounded-lg" />
           </View>
           <View className="w-3/5">
             <Text className="font-['UrbanistRegular'] text-[16px]">
@@ -101,7 +120,7 @@ const Home = () => {
                 Doctor Speciality
               </Text>
               <TouchableOpacity activeOpacity={0.8}>
-                <Text className="text-[16px] font-['UrbanistBold'] text-primary-500">
+                <Text className="text-[16px] font-['UrbanistBold'] text-lightblue">
                   See All
                 </Text>
               </TouchableOpacity>
@@ -115,18 +134,20 @@ const Home = () => {
           renderItem={({ item, index }) => (
             <View
               key={index}
-              className="w-20 items-center justify-center me-3 mb-3"
+              className="w-[86px] items-center justify-between me-3 mb-6 h-24"
             >
               <TouchableOpacity
                 activeOpacity={0.8}
-                className="bg-[#246BFD14] p-2.5 items-center justify-center rounded-3xl mb-2"
+                className="bg-[#246BFD14] p-2.5 items-center justify-center rounded-full mb-3 w-[60px] h-[60px]"
               >
                 <SvgXml xml={MenuIcons[item.name.toLowerCase()]} />
               </TouchableOpacity>
-              <Text className="text-[16px] font-['UrbanistBold']">
-                {item.name.length > 7
-                  ? item.name.substring(0, 6) + "..."
-                  : item.name}
+              <Text
+                className="text-[16px] font-['UrbanistBold'] text-[#616161]"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item.name}
               </Text>
             </View>
           )}
@@ -136,7 +157,7 @@ const Home = () => {
       <View className="flex-row items-center w-full justify-between px-6 mb-3">
         <Text className="text-[20px] font-['UrbanistBold']">Top Doctors</Text>
         <TouchableOpacity activeOpacity={0.8}>
-          <Text className="text-[16px] font-['UrbanistBold'] text-primary-500">
+          <Text className="text-[16px] font-['UrbanistBold'] text-lightblue">
             See All
           </Text>
         </TouchableOpacity>
@@ -151,10 +172,10 @@ const Home = () => {
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
-            className={`px-4 py-1 border-primary-500 border ${
+            className={`px-4 py-1 border-lightblue border ${
               index === 0 ? "ml-6" : "ml-0"
             } ${
-              selectedRole === index ? "bg-primary-500" : "bg-transparent"
+              selectedRole === index ? "bg-lightblue" : "bg-transparent"
             } rounded-2xl items-center justify-center ${
               index === roleFilters.length - 1 ? "mr-6" : "mr-3"
             }`}
@@ -171,7 +192,7 @@ const Home = () => {
           >
             <Text
               className={`${
-                selectedRole === index ? "text-[#FFFFFF]" : "text-primary-500"
+                selectedRole === index ? "text-[#FFFFFF]" : "text-lightblue"
               } font-[UrbanistSemiBold]`}
             >
               {item}
@@ -189,7 +210,7 @@ const Home = () => {
             hospital={item.hospital}
             reviews={item.reviews}
             image={require("../../assets/doctors/heart.png")}
-            images={require("../../assets/doctors/doctor.png")}
+            images={require("../../assets/doctors/doctor2.png")}
           />
         ))}
       </View>

@@ -1,11 +1,11 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-    ImageBackground,
-    Text,
-    TouchableOpacity,
-    View,
-    useWindowDimensions
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
 } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import type { ICarouselInstance } from "react-native-reanimated-carousel";
@@ -58,7 +58,7 @@ const CarouselComponent = () => {
         colors={["#246BFD", "#5089FF"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        className="rounded-[30px] mt-6"
+        className="rounded-[30px] mt-6 overflow-hidden"
         style={{
           borderRadius: 30,
           marginTop: 24,
@@ -90,14 +90,14 @@ const CarouselComponent = () => {
                   activeOpacity={0.8}
                   className="w-[105px] h-8 bg-white rounded-3xl items-center justify-center"
                 >
-                  <Text className="text-sm font-['UrbanistSemiBold'] text-primary-500">
+                  <Text className="text-sm font-['UrbanistSemiBold'] text-lightblue">
                     Check Now
                   </Text>
                 </TouchableOpacity>
               </View>
               <ImageBackground
                 source={require("../assets/images/bannerImg.png")}
-                className="w-48 h-80 absolute rounded-[30px] right-[10%] top-6"
+                className="w-80 h-60 absolute rounded-[30px] right-[5%] top-6"
               />
             </View>
           )}
