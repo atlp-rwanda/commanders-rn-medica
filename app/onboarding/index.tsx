@@ -43,7 +43,7 @@ const OnBoarding = () => {
 
 	const onNext = () => {
 		if (scrollViewRef.current) {
-			scrollViewRef.current.scrollTo({ x: width * step, animated: true });
+			(scrollViewRef.current as any).scrollTo({ x: width * step, animated: true });
 		}
 		setStep(step + 1);
 	};
