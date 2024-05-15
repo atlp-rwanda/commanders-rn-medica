@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text,TextInput,StyleSheet } from "react-native";
 import React from "react";
 import Article from "@/articles/Articles";
 import ArticlesDetails from "@/articles/ArticlesDetails";
@@ -33,3 +33,4 @@ const Articles = () => {
 };
 
 export default Articles;
+
