@@ -1,4 +1,5 @@
-import { Link } from "expo-router";
+import { RootState } from "@/redux/store/store";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import {
   FlatList,
@@ -10,64 +11,18 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
+import { useSelector } from "react-redux";
 import { MenuIcons } from "../../assets/icons";
 import { heart } from "../../assets/icons/heart";
 import { notification } from "../../assets/icons/notification";
 import DoctorCard from "../../components/cards/doctorCard";
 import CarouselComponent from "../../components/carousel";
 import { SearchInput } from "../../components/searchInput";
-import { router } from "expo-router";
 
 const roleFilters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
-const doctors = [
-  {
-    name: "Eloi Chrysanthe",
-    role: "Opthamologist",
-    stars: "4.3",
-    hospital: "Muhima",
-    reviews: "231",
-    image: "",
-    images: "../../assets/doctors/doctor1.png",
-  },
-  {
-    name: "Uwamahoro",
-    role: "Pediatric",
-    stars: "4.3",
-    hospital: "Masaka",
-    reviews: "2,542",
-    image: "",
-    images: "../../assets/doctors/doctor2.png",
-  },
-  {
-    name: "Hakizimana",
-    role: "Nutritionist",
-    stars: "4.3",
-    hospital: "KHI",
-    reviews: "1,242",
-    image: "",
-    images: "../../assets/doctors/doctor3.png",
-  },
-  {
-    name: "Emmanuel",
-    role: "Dentist",
-    stars: "4.3",
-    hospital: "Masaka",
-    reviews: "2,542",
-    image: "",
-    images: "../../assets/doctors/doctor2.png",
-  },
-  {
-    name: "Hakizimana",
-    role: "General",
-    stars: "4.3",
-    hospital: "KHI",
-    reviews: "1,242",
-    image: "",
-    images: "../../assets/doctors/doctor3.png",
-  },
-];
 
 const Home = () => {
+  const doctors = useSelector((state: RootState) => state.doctors.doctors);
   const insets = useSafeAreaInsets();
   const [selectedRole, selectRole] = useState(0);
   const [filteredDoctors, filterDoctors] = useState(doctors);
@@ -97,13 +52,11 @@ const Home = () => {
             </Text>
           </View>
           <Link href="/notifications/">
-
-            <SvgXml xml={notification} />
+            <SvgXml xml={notification} width={26} height={26} className="text-gray-900" />
           </Link>
-
-          <SvgXml xml={heart} onPress={() => {
-            router.push("Doctors/favoriteDoctors")
-          }} />
+          <Link href="/Doctors/favoriteDoctors">
+            <SvgXml xml={heart} width={26} height={26} className="text-gray-900" />
+          </Link>
         </View>
         <SearchInput />
         <CarouselComponent />
@@ -208,13 +161,15 @@ const Home = () => {
         {filteredDoctors.map((item, index) => (
           <DoctorCard
             key={index}
-            name={item.name}
-            role={item.role}
-            stars={item.stars}
-            hospital={item.hospital}
-            reviews={item.reviews}
-            image={require("../../assets/doctors/heart.png")}
-            images={require("../../assets/doctors/doctor2.png")}
+            {...item}
+            onPress={() => {
+              router.push({
+                pathname: "/doctor-appointments/",
+                params: {
+                  doctorId: item.id,
+                },
+              });
+            }}
           />
         ))}
       </View>
