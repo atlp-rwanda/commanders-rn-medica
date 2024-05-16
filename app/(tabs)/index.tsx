@@ -46,6 +46,24 @@ const doctors = [
     image: "",
     images: "../../assets/doctors/doctor3.png",
   },
+  {
+    name: "Emmanuel",
+    role: "Dentist",
+    stars: "4.3",
+    hospital: "Masaka",
+    reviews: "2,542",
+    image: "",
+    images: "../../assets/doctors/doctor2.png",
+  },
+  {
+    name: "Hakizimana",
+    role: "General",
+    stars: "4.3",
+    hospital: "KHI",
+    reviews: "1,242",
+    image: "",
+    images: "../../assets/doctors/doctor3.png",
+  },
 ];
 
 const Home = () => {
