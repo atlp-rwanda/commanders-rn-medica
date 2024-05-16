@@ -24,13 +24,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary,
         lightblue: "#246BFD",
+        reducedblue: "#246BFD14",
         darkblue: "#3062C8",
         lightgrey: "#FAFAFA",
         grey: "#9E9E9E",
         white: "#FFFFFF",
         popup: "#09101D",
+        whiteSmoke: "#F5F5F5",
         def: "#FFFFFF",
       },
       fontFamily: {

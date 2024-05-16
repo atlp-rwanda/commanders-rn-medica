@@ -18,6 +18,9 @@ export default function TabLayout() {
           paddingBottom: Platform.select({ android: 20, ios: 30 }),
           minHeight: 68,
         },
+        tabBarLabelStyle: {
+          fontFamily: "UrbanistMedium",
+        },
         tabBarHideOnKeyboard: true,
       }}
       sceneContainerStyle={{ backgroundColor: "#FFFFFF" }}
