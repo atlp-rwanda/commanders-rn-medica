@@ -36,3 +36,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+// import React from "react";
+// import DoctorDetails from "./Doctors/favoriteDoctors";
+// export default function App(){
+//   return (<DoctorDetails/>)
+// }
