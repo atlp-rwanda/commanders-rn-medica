@@ -44,21 +44,3 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install Prettier
-        run: npm install --save-dev prettier
-
-      - name: Format code with Prettier
-        run: npx prettier --write .
-
-      - name: Add changes made by Prettier
-        run: git add .
-
-      - name: Commit changes made by Prettier
-        run: git commit -m "Apply Prettier formatting"
-
-      - name: Push changes made by Prettier
-        uses: ad-m/github-push-action@v0.5.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
