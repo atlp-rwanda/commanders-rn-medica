@@ -16,6 +16,7 @@ import { notification } from "../../assets/icons/notification";
 import DoctorCard from "../../components/cards/doctorCard";
 import CarouselComponent from "../../components/carousel";
 import { SearchInput } from "../../components/searchInput";
+import { router } from "expo-router";
 
 const roleFilters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
 const doctors = [
@@ -96,9 +97,13 @@ const Home = () => {
             </Text>
           </View>
           <Link href="/notifications/">
+
             <SvgXml xml={notification} />
           </Link>
-          <SvgXml xml={heart} />
+
+          <SvgXml xml={heart} onPress={() => {
+            router.push("Doctors/favoriteDoctors")
+          }} />
         </View>
         <SearchInput />
         <CarouselComponent />
@@ -157,7 +162,10 @@ const Home = () => {
       <View className="flex-row items-center w-full justify-between px-6 mb-3">
         <Text className="text-[20px] font-['UrbanistBold']">Top Doctors</Text>
         <TouchableOpacity activeOpacity={0.8}>
-          <Text className="text-[16px] font-['UrbanistBold'] text-lightblue">
+
+          <Text className="text-[16px] font-['Urbanist-Bold'] text-primary-500" onPress={() => {
+            router.push("/Doctors/topDoctors");
+          }}>
             See All
           </Text>
         </TouchableOpacity>
@@ -185,8 +193,8 @@ const Home = () => {
                 index === 0
                   ? doctors
                   : doctors.filter(
-                      (doctor) => doctor.role === roleFilters[index]
-                    )
+                    (doctor) => doctor.role === roleFilters[index]
+                  )
               );
             }}
           >
