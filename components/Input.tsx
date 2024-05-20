@@ -1,5 +1,19 @@
-import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
+import {
+  TextInput as DefaultTextInput,
+  StyleSheet,
+  TextInputProps,
+  View,
+} from "react-native";
 import { Icon } from "./Icon";
+
+export const TextInput = ({ ...rest }: TextInputProps) => {
+  return (
+    <DefaultTextInput
+      className="px-5 py-4 bg-[#FAFAFA]  rounded-lg w-full text-base font-UrbanistRegular"
+      {...rest}
+    />
+  );
+};
 
 type PasswordInputProps = {
   placeholder?: string;
@@ -7,11 +21,15 @@ type PasswordInputProps = {
   setRef?: any;
 } & TextInputProps;
 
-export const PasswordInput = ({ style, setRef, ...rest }: PasswordInputProps) => {
+export const PasswordInput = ({
+  style,
+  setRef,
+  ...rest
+}: PasswordInputProps) => {
   return (
     <View style={[styles.passwordContainer, style]}>
       <Icon name="lock" />
-      <TextInput
+      <DefaultTextInput
         style={styles.passwordInput}
         placeholder="Password"
         secureTextEntry

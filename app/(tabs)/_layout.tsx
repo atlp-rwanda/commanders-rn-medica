@@ -1,9 +1,8 @@
-import React from "react";
 import { Tabs } from "expo-router";
+import { Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { TabsIcons } from "../../assets/icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Platform } from "react-native";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();

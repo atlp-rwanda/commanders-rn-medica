@@ -1,5 +1,9 @@
 import React from "react";
-import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps
+} from "react-native";
 import { btnStyle, textStyle as commonTextStyle } from "../styles/common";
 
 interface Props {

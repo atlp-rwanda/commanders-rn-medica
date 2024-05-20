@@ -1,3 +1,4 @@
+import { heart, heartFilledIcon } from "@/assets/icons/heart";
 import {
   Image,
   ImageSourcePropType,
@@ -6,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 type docCardProps = {
   name: string;
   role: string;
@@ -13,7 +15,7 @@ type docCardProps = {
   hospital: string;
   reviews: string;
   image: ImageSourcePropType;
-  images: ImageSourcePropType;
+  liked?: boolean;
   onPress?: () => void;
 };
 
@@ -22,13 +24,18 @@ export default function DoctorCard(props: docCardProps) {
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
         <View className="flex-row justify-between w-full">
-          <Image source={props.images} className="w-28 h-28" />
+          <Image source={props.image} className="w-28 h-28" />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
               <Text className="font-[18px] font-[UrbanistBold]">
                 {props.name}
               </Text>
-              <Image source={props.image} className="w-4 h-4" />
+              <SvgXml
+                xml={props.liked ? heartFilledIcon : heart}
+                width={20}
+                height={20}
+                className={props.liked ? "text-primary-500" : "text-gray-900"}
+              />
             </View>
             <View className="border-t border-t-[#EEEEEE] w-full" />
             <View className="flex-row items-center">

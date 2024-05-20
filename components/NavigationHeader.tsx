@@ -6,9 +6,14 @@ import { View } from "react-native";
 type NavigationHeaderProps = {
   title: string;
   onBack?: () => void;
+  children?: React.ReactNode;
 };
 
-export function NavigationHeader({ title, onBack }: NavigationHeaderProps) {
+export function NavigationHeader({
+  title,
+  onBack,
+  children,
+}: NavigationHeaderProps) {
   const back = () => {
     if (router.canGoBack()) {
       router.back();
@@ -17,7 +22,8 @@ export function NavigationHeader({ title, onBack }: NavigationHeaderProps) {
   return (
     <View className="flex-row items-center py-5">
       <Icon name="back" size="md" onPress={onBack ?? back} />
-      <Text className="font-bold text-xl ml-3">{title}</Text>
+      <Text className="font-UrbanistBold text-2xl ml-4 flex-1">{title}</Text>
+      {children}
     </View>
   );
 }

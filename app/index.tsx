@@ -16,7 +16,7 @@ export default function App() {
       </Link>
       <Text>Open up App.tsx to start working on your app!</Text>
       <Pressable>
-        <Link href="/(tabs)">Tabs</Link>
+        <Link href="/(tabs)/">Tabs</Link>
         <Link href="/counter/Counter">
           <Text>Click me to test redux</Text>
         </Link>
