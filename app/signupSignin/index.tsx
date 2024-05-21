@@ -36,7 +36,6 @@ const LetsYouIn = () => {
           <Or text="Or" />
           <Button
             title="Sign in with password"
-            backgroundColor="#246BFD"
             onPress={() => {
               router.push("/signupSignin/SignIn");
             }}

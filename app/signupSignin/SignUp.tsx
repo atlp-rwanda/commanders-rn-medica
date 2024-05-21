@@ -76,13 +76,11 @@ const SingUp = () => {
             <RememberMe />
             <Button
               title="Sign up"
-              backgroundColor={
+              disabled={
                 isEmailActive ||
                 isEmailFilled ||
                 isPasswordActive ||
                 isPasswordFilled
-                  ? "#246BFD"
-                  : "#3062C8"
               }
               onPress={() => {
                 router.push("/Userprofile/userprofile");

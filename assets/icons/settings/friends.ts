@@ -1,0 +1,8 @@
+export const friends = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13.9679 23.7634C10.1891 23.7634 6.96094 23.1918 6.96094 20.9028C6.96094 18.6138 10.1681 16.6211 13.9679 16.6211C17.7468 16.6211 20.9749 18.5951 20.9749 20.8829C20.9749 23.1708 17.7678 23.7634 13.9679 23.7634Z" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13.9673 13.3572C16.4476 13.3572 18.4589 11.347 18.4589 8.86667C18.4589 6.38633 16.4476 4.375 13.9673 4.375C11.4869 4.375 9.4756 6.38633 9.4756 8.86667C9.4686 11.3377 11.4636 13.349 13.9358 13.3572H13.9673Z" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21.4222 12.1245C22.8653 11.7383 23.9294 10.4223 23.9294 8.85552C23.9294 7.22102 22.7708 5.85602 21.2285 5.54102" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22.0996 15.8027C24.1459 15.8027 25.8936 17.1899 25.8936 18.4289C25.8936 19.1581 25.2904 19.9526 24.3758 20.1672" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.51419 12.1245C5.06986 11.7383 4.00586 10.4223 4.00586 8.85552C4.00586 7.22102 5.16553 5.85602 6.70669 5.54102" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.83502 15.8027C3.78868 15.8027 2.04102 17.1899 2.04102 18.4289C2.04102 19.1581 2.64418 19.9526 3.56002 20.1672" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;

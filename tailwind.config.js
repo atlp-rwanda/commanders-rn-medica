@@ -13,6 +13,18 @@ const primary = {
   900: "#1a328e",
   950: "#152156",
 };
+const greyscale = {
+  50: "#fafafa",
+  100: "#f5f5f5",
+  200: "#eeeeee",
+  300: "#e0e0e0",
+  400: "#bdbdbd",
+  500: "#9e9e9e",
+  600: "#757575",
+  700: "#616161",
+  800: "#424242",
+  900: "#212121",
+};
 
 module.exports = {
   content: [
@@ -25,6 +37,7 @@ module.exports = {
     extend: {
       colors: {
         primary,
+        greyscale,
         lightblue: "#246BFD",
         reducedblue: "#246BFD14",
         darkblue: "#3062C8",
@@ -33,6 +46,7 @@ module.exports = {
         white: "#FFFFFF",
         popup: "#09101D",
         whiteSmoke: "#F5F5F5",
+        error: "#F75555",
         def: "#FFFFFF",
       },
       fontFamily: {
