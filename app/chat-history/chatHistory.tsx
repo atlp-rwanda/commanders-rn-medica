@@ -22,6 +22,8 @@ import { deleteBtn, deleteRed } from "@/assets/icons/delete";
 import Chat from "@/components/chats/chat";
 import Index from "./VideoCall";
 import { MessagesType, messages } from "./data";
+import VoiceCalls from "./voiceCalls";
+
 
 export default function Chathistory() {
   const y = Dimensions.get("screen").height;
