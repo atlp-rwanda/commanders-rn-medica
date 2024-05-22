@@ -1,24 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  ScrollView,
-  SafeAreaView,
   Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
 
-import { areaView, containerStyle, titleStyle } from "../../styles/common";
-import Button from "../../components/button";
-import SignUpText from "../../components/SignUpText";
+import { screenbgcolor } from "@/styles/usecolor";
+import { router } from "expo-router";
 import BackIcon from "../../components/BackIcon";
 import EmailPasswordInput from "../../components/EmailPasswordInput";
-import RememberMe from "../../components/RememberMe";
-import SignUpWith from "../../components/SignUpWith";
 import Or from "../../components/Or";
-import { router } from "expo-router";
-import { screenbgcolor } from "@/styles/usecolor";
+import RememberMe from "../../components/RememberMe";
+import SignUpText from "../../components/SignUpText";
+import SignUpWith from "../../components/SignUpWith";
+import Button from "../../components/button";
+import { areaView, containerStyle } from "../../styles/common";
 
 const SignIn = () => {
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
@@ -77,6 +76,7 @@ const SignIn = () => {
             <RememberMe />
             <Button
               title="Sign in"
+              rounded
               disabled={
                 isEmailActive ||
                 isEmailFilled ||

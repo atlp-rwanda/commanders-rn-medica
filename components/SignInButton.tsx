@@ -1,7 +1,6 @@
-import { Text, TouchableOpacity, View, Image } from "react-native";
 import React from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { btnStyle, textStyle } from "../styles/common";
-import { AntDesign } from "@expo/vector-icons"; 
 
 interface Props {
   title: string;
@@ -29,7 +28,7 @@ const SignInButton: React.FC<Props> = ({ title, logo, color }) => {
           justifyContent: "space-between",
         }}
       >
-        {logo && <Image source={logo} />}
+        {logo && <Image source={logo} className="w-6 h-6" />}
         <Text style={[textStyle, { marginLeft: logo ? 5 : 0, fontFamily: "UrbanistSemiBold", fontSize: 16 }]}>{title}</Text>
       </View>
     </TouchableOpacity>

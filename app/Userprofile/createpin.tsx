@@ -1,8 +1,8 @@
-import { KeyboardAvoidingView, SafeAreaView, View, Pressable, Text, StyleSheet, Dimensions, Platform, TouchableOpacity } from "react-native";
-import OTPInputView from "@twotalltotems/react-native-otp-input"
-import { useNavigation } from "expo-router";
-import { SvgXml } from "react-native-svg"
 import { back } from "@/assets/icons/userprofile/icons";
+import OTPInputView from "@twotalltotems/react-native-otp-input";
+import { useNavigation } from "expo-router";
+import { KeyboardAvoidingView, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 export default function CreatePin() {
     const navigation = useNavigation();
     return (
@@ -17,13 +17,13 @@ export default function CreatePin() {
                         Add a PIN number to make your account more secure
                     </Text>
                 </View>
-                <View className="flex-row">
+                <View className="flex-row justify-center">
                     <OTPInputView
-                        style={{ width: '70%', height: 200, marginLeft: 20 }}
+                        style={{ width: '70%', height: 200 }}
                         pinCount={4}
                         autoFocusOnLoad={false}
                         secureTextEntry={true}
-                        
+
                         codeInputFieldStyle={{
                             width: 60,
                             height: 50,
@@ -32,7 +32,7 @@ export default function CreatePin() {
                             color: 'black',
                             fontSize: 40,
                             borderRadius: 10,
-                            borderColor:'#00000020',
+                            borderColor: '#00000020',
                             fontFamily: 'UrbanistBold',
                             textAlign: 'center',
                             backgroundColor: "#FAFAFA",
@@ -41,7 +41,7 @@ export default function CreatePin() {
                             {
                                 borderColor: '#246BFD',
                                 borderWidth: 1,
-                                backgroundColor:"#246BFD14",
+                                backgroundColor: "#246BFD14",
 
                             }
                         }
@@ -50,7 +50,7 @@ export default function CreatePin() {
                 </View>
                 <View>
                     <TouchableOpacity className="bg-lightblue w-7/8 rounded-3xl py-3 mt-2 mx-5" onPress={() => navigation.navigate("Userprofile/setfingerprint" as never)}>
-                        <Text className="text-def text-base font-UrbanistRegular text-center font-UrbanistBold">Continue</Text>
+                        <Text className="text-def text-base text-center font-UrbanistBold">Continue</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>

@@ -1,16 +1,13 @@
-import { Text, View, ScrollView, Image, Pressable, FlatList, TouchableOpacity, Modal, Dimensions } from "react-native";
-import { useState } from "react";
-import { NavigationHeader } from "@/components/NavigationHeader";
-import { Icon } from "@/components/Icon";
-import { SvgXml } from "react-native-svg";
-import { searchDark } from "@/assets/icons/search";
-import { moreTransparent } from "@/assets/icons/more";
-import { messages, MessagesType } from "./data";
-import { back } from "@/assets/icons/userprofile/icons";
-import {doubleTick } from "@/assets/icons/doubletick";
+import { deleteBtn, deleteRed } from "@/assets/icons/delete";
 import { download } from "@/assets/icons/download";
-import { deleteBtn,deleteRed } from "@/assets/icons/delete";
+import { moreTransparent } from "@/assets/icons/more";
+import { searchDark } from "@/assets/icons/search";
+import { back } from "@/assets/icons/userprofile/icons";
 import Chat from "@/components/chats/chat";
+import { useState } from "react";
+import { Dimensions, FlatList, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SvgXml } from "react-native-svg";
+import { MessagesType, messages } from "./data";
 
 
 export default function Chathistory() {

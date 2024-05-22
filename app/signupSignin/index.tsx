@@ -1,13 +1,12 @@
-import React from "react";
-import { View, StyleSheet, Text, SafeAreaView, ScrollView } from "react-native";
-import { areaView, containerStyle, titleStyle } from "../../styles/common";
-import { screenbgcolor } from "../../styles/usecolor";
-import SignInButton from "../../components/SignInButton";
-import Button from "../../components/button";
-import SignUpText from "../../components/SignUpText";
-import BackIcon from "../../components/BackIcon";
 import { router } from "expo-router";
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import BackIcon from "../../components/BackIcon";
 import Or from "../../components/Or";
+import SignInButton from "../../components/SignInButton";
+import SignUpText from "../../components/SignUpText";
+import Button from "../../components/button";
+import { areaView, containerStyle } from "../../styles/common";
+import { screenbgcolor } from "../../styles/usecolor";
 
 const LetsYouIn = () => {
   return (
@@ -34,12 +33,15 @@ const LetsYouIn = () => {
             />
           </View>
           <Or text="Or" />
-          <Button
-            title="Sign in with password"
-            onPress={() => {
-              router.push("/signupSignin/SignIn");
-            }}
-          />
+          <View className="w-full">
+            <Button
+              rounded
+              title="Sign in with password"
+              onPress={() => {
+                router.push("/signupSignin/SignIn");
+              }}
+            />
+          </View>
           <SignUpText
             text1="Don’t have an account?"
             text2="Sign up"

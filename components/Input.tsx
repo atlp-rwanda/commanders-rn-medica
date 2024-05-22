@@ -1,9 +1,14 @@
+import { calendar } from "@/assets/icons/userprofile/icons";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useState } from "react";
 import {
   TextInput as DefaultTextInput,
+  Pressable,
   StyleSheet,
   TextInputProps,
-  View,
+  View
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Icon } from "./Icon";
 
 export const TextInput = ({ ...rest }: TextInputProps) => {
@@ -37,6 +42,45 @@ export const PasswordInput = ({
         {...rest}
       />
       <Icon name="hide" />
+    </View>
+  );
+};
+
+export const DateInput = ({ value, onChangeText, ...rest }: TextInputProps) => {
+  const [show, setShow] = useState(false)
+  const [date, setDate] = useState(new Date())
+  const [mode, setMode] = useState<'date'>('date')
+
+  const showPicker = () => {
+    setShow(true)
+  }
+
+  const onChange = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate || date;
+    setShow(false);
+    setDate(currentDate);
+    onChangeText?.(currentDate)
+  };
+
+  return (
+    <View>
+      <Pressable className="bg-[#FAFAFA] flex-row items-center rounded-lg w-full px-5" onPress={showPicker}>
+        <DefaultTextInput
+          editable={false}
+          className="py-4 flex-1 text-base text-gray-600 font-UrbanistRegular"
+          value={value}
+          {...rest}
+        />
+        <SvgXml xml={calendar} />
+      </Pressable>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          onChange={onChange}
+        />
+      )}
     </View>
   );
 };

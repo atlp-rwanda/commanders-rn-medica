@@ -75,7 +75,7 @@ export default function SelectPackageScreen() {
         <View className="mb-6">
           <Text className="text-xl font-UrbanistBold mb-3">Select Package</Text>
 
-          <View>
+          <View className="mx-1">
             {packages.map((pkg) => (
               <Package
                 {...pkg}
