@@ -14,6 +14,7 @@ interface Props {
   logout?: boolean;
   mode?: boolean;
   nextTo?: string;
+  logoutAction?: any;
 }
 
 const SettingCard: React.FC<Props> = ({
@@ -24,13 +25,14 @@ const SettingCard: React.FC<Props> = ({
   logout = false,
   mode = false,
   nextTo,
+  logoutAction,
 }) => {
   const [phoneMode, setPhoneMode] = useState<"light" | "dark">("light");
   return (
     <Touchable
       className="flex-row items-center mb-5 justify-between"
       disabled={mode}
-      onPress={() => router.push(`settings/${nextTo}`)}
+      onPress={logout ? logoutAction : () => router.push(`settings/${nextTo}`)}
     >
       <View className="flex-row items-center">
         {leftIcon}

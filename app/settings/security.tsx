@@ -54,7 +54,7 @@ const Security = () => {
           )}
         />
         <Button title={"Change PIN"} rounded secondary />
-        <Button title={"Change PIN"} rounded secondary />
+        <Button title={"Change Password"} rounded secondary />
       </ScrollView>
     </View>
   );

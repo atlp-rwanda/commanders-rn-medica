@@ -6,7 +6,7 @@ import {
   FlatList,
   useWindowDimensions,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { medicaLogo } from "@/assets/icons/medica-logo";
@@ -15,6 +15,8 @@ import Touchable from "@/components/common/touchable";
 import { edit } from "@/assets/icons/edit";
 import SettingCard from "@/components/settings/settingCard";
 import * as icons from "@/assets/icons/settings";
+import { Modalize } from "react-native-modalize";
+import LogoutModal from "@/components/settings/logoutModal";
 
 const settings: {
   text: string;
@@ -65,7 +67,6 @@ const settings: {
   },
   {
     text: "Logout",
-    nextTo: "security",
     leftIcon: icons.logout,
     rightIcon: null,
     logout: true,
@@ -75,6 +76,10 @@ const settings: {
 const Profile = () => {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
+  const modalizeRef = useRef<Modalize>(null);
+  const onOpen = () => {
+    modalizeRef.current?.open();
+  };
   return (
     <View className={`flex-1 w-full mt-[${insets.top}px]`}>
       <View className="flex-row px-6 pt-6 items-center justify-between mt-6">
@@ -116,6 +121,7 @@ const Profile = () => {
           className="mb-5"
           renderItem={({ item, index }) => (
             <SettingCard
+              key={index}
               text={item.text}
               leftIcon={<SvgXml xml={item.leftIcon} className="mr-2.5" />}
               nextTo={item.nextTo}
@@ -123,10 +129,15 @@ const Profile = () => {
               logout={item.logout}
               text2={item.text2}
               mode={item.mode}
+              logoutAction={() => modalizeRef.current?.open()}
             />
           )}
         />
       </ScrollView>
+      <LogoutModal
+        modalizeRef={modalizeRef}
+        onClose={() => modalizeRef.current?.close()}
+      />
     </View>
   );
 };

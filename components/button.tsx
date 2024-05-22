@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacityProps } from "react-native";
+import { Text, TouchableOpacityProps, ViewStyle } from "react-native";
 import Touchable from "./common/touchable";
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
   rounded?: boolean;
   disabled?: boolean;
   classes?: string;
+  width?: ViewStyle["width"];
 }
 const Button: React.FC<Props> = ({
   title,
@@ -17,9 +18,11 @@ const Button: React.FC<Props> = ({
   rounded = false,
   disabled = false,
   classes,
+  width,
 }) => {
   return (
     <Touchable
+      style={{ width }}
       className={`${
         disabled
           ? "bg-darkblue"
