@@ -4,8 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import DocButton from "../../components/cards/DocButtons";
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet, View, Image, TouchableOpacity, Text, Animated,
+import { View, Image,  Animated,
   Easing
 } from "react-native";
 import { SearchInput } from "../../components/searchinput2";
@@ -42,13 +41,13 @@ export default function searchDoctor() {
 
     <View className="flex-1 bg-white px-4 py-5">
       <View className="pt-10 ">
-        <View className="flex-row py-2">
+        <View className="flex-row justify-around">
           <NavigationHeader title="" />
           <SearchInput />
         </View>
         <DocButton selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
       </View>
-      <View style={styles.loading}>
+      <View className="flex-1 justify-center items-center">
         <View>
 
           <Animated.View style={{ transform: [{ rotate }] }}><Image source={require("../../assets/doctors/loading.png")} /></Animated.View>
@@ -56,16 +55,3 @@ export default function searchDoctor() {
       </View>
     </View>)
 }
-const styles = StyleSheet.create({
-  images: {
-    width: 28,
-    height: 28,
-    marginHorizontal: 10,
-    marginTop: 15,
-  },
-  loading: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  }
-})

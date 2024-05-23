@@ -3,82 +3,40 @@ import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import DocButton from "../../components/cards/DocButtons";
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
+import { View, Image, Text } from "react-native";
 import { SearchInput } from "../../components/searchinput2";
 import { NavigationHeader } from "@/components/NavigationHeader";
-import { useFonts } from "expo-font";
+
 export default function searchNotFound() {
     const [selectedCategory, setSelectedCategory] = useState("all");
-    let [fontsLoaded] = useFonts({
-        UrbanistBold: require("../../assets/fonts/Urbanist-Bold.ttf"),
-        UrbanistMedium: require("../../assets/fonts/Urbanist-Regular.ttf"),
-        UrbanistSemiBold: require("../../assets/fonts/Urbanist-SemiBold.ttf"),
-        UrbanistRegular: require("../../assets/fonts/Urbanist-Regular.ttf"),
-    });
-    if (!fontsLoaded) {
-        return null;
-    }
+   
     return (
         <View className="flex-1 bg-white px-4 py-5">
             <View className="pt-10">
-                <View className="flex-row py-2" >
+                <View className="flex-row justify-around" >
                     <NavigationHeader title="" />
                     <SearchInput />
                 </View>
                 <DocButton selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
             </View>
-            <View style={styles.found}>
-                <Text className="text-[#212121] text-[20px] font-[UrbanistRegular]">0 found</Text>
+            <View className="flex-row justify-between mx-[15px]">
+     
+                <Text className="text-[#212121] text-[20px] font-UrbanistRegular">0 found</Text>
                 <View className="flex-row">
-                    <Text style={styles.default} onPress={() => {
+                    <Text className="text-[#246BFD] text-[16px] font-UrbanistRegular" onPress={() => {
                         router.push("Doctors/doctorsFound")
                     }}>Default  </Text>
                     <Image source={require("../../assets/doctors/arrows.png")} />
                 </View>
             </View>
 
-            <View style={styles.results}>
+            <View className="flex-1 justify-center items-center content-center">
                 <Image source={require("../../assets/doctors/notfound.png")} />
-                <Text style={styles.titleResult}>Not Found</Text>
-                <Text style={styles.paragraph}>Sorry, the keyword you entered cannot be found, please check again or search with another keyword.</Text>
+                <Text className="text-[24px] font-UrbanistBold text-center py-[15px]">Not Found</Text>
+    
+                <Text className="text-[#212121] font-UrbanistRegular text-center text-[18px] mx-[15px]">Sorry, the keyword you entered cannot be found, please check again or search with another keyword.</Text>
+   
             </View>
         </View>
     )
 }
-const styles = StyleSheet.create({
-    results: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        alignContent: "center",
-    },
-    found: {
-        marginHorizontal: 15,
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    default: {
-        color: "#246BFD",
-        fontSize: 16,
-        fontFamily: "UrbanistRegular"
-    },
-    images: {
-        width: 28,
-        height: 28,
-        marginHorizontal: 10,
-        marginTop: 15,
-    },
-    titleResult: {
-        fontSize: 24,
-        paddingVertical: 15,
-        fontFamily: "UrbanistBold",
-        textAlign: "center",
-    },
-    paragraph: {
-        fontSize: 18,
-        marginHorizontal: 15,
-        color: "#212121",
-        fontFamily: "UrbanistRegular",
-        textAlign: "center",
-    }
-})

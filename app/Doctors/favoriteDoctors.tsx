@@ -5,7 +5,7 @@ import DocButton from "@/components/cards/DocButtons";
 import { Icon } from "@/components/Icon";
 import React, { useState } from "react";
 
-import { StyleSheet, View, Image, ScrollView, TouchableOpacity, Text, ImageSourcePropType, Modal } from "react-native";
+import { StyleSheet, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback,Text, ImageSourcePropType, Modal } from "react-native";
 type cardSpot = {
   name: string;
   role: string;
@@ -24,15 +24,6 @@ export default function DoctorDetails() {
     setIsVisible(!isVisible);
     setSelectedSpot(spot);
   };
-  let [fontsLoaded] = useFonts({
-    UrbanistBold: require("../../assets/fonts/Urbanist-Bold.ttf"),
-    UrbanistMedium: require("../../assets/fonts/Urbanist-Regular.ttf"),
-    UrbanistSemiBold: require("../../assets/fonts/Urbanist-SemiBold.ttf"),
-    UrbanistRegular: require("../../assets/fonts/Urbanist-Regular.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
   const docCards = [
     {
       name: "Dr. Travis Westaby",
@@ -126,7 +117,9 @@ export default function DoctorDetails() {
             transparent={true}
             onRequestClose={toggleModal}
           >
-            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' }} >
+            <TouchableWithoutFeedback>
               <View style={{ backgroundColor: 'white', borderTopRightRadius: 48, borderTopLeftRadius: 48 }}>
                 <Text style={styles.title}>Remove from favorite?</Text>
                 <Text style={styles.line}></Text>
@@ -134,7 +127,7 @@ export default function DoctorDetails() {
                   <>
                     <View className="bg-white rounded-3xl p-4 m-4" style={styles.card1}>
                       <View className="flex-row justify-between w-full">
-                        <Image source={selectedSpot.images} />
+                        <Image source={selectedSpot.images} className="w-28 h-28"/>
                         <View style={styles.details}>
                           <Text style={styles.title1}>{selectedSpot.name}</Text>
                           <Text style={styles.line}></Text>
@@ -167,8 +160,11 @@ export default function DoctorDetails() {
                   </>
                 )}
               </View>
+              </TouchableWithoutFeedback>
             </View>
+            </TouchableWithoutFeedback>
           </Modal>
+          
         </View>
       </ScrollView>
     </View>

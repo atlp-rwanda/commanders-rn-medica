@@ -116,12 +116,12 @@ const Home = () => {
         <Text className="text-[20px] font-['UrbanistBold']">Top Doctors</Text>
         <TouchableOpacity activeOpacity={0.8}>
 
-          <Text className="text-[16px] font-['Urbanist-Bold'] text-primary-500" onPress={() => {
-            router.push("/Doctors/topDoctors");
-          }}>
-            See All
-          </Text>
-        </TouchableOpacity>
+<Text className="text-[16px] font-['UrbanistBold'] text-lightblue" onPress={() => {
+  router.push("/Doctors/topDoctors");
+}}>
+  See All
+</Text>
+</TouchableOpacity>
       </View>
       <FlatList
         data={roleFilters}
