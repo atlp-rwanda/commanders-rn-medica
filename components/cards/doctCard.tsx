@@ -20,11 +20,10 @@ type docCardProps = {
 
 export default function DoctorCard(props: docCardProps) {
   return (
-
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
         <View className="flex-row justify-between w-full">
-          <Image source={props.images} />
+          <Image source={props.images} className="w-28 h-28" />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
               <Text className="font-[18px] font-[UrbanistBold]">
@@ -55,7 +54,6 @@ export default function DoctorCard(props: docCardProps) {
         </View>
       </View>
     </Pressable>
-
   );
 }
 const styles = StyleSheet.create({

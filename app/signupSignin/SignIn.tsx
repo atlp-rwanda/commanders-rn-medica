@@ -77,13 +77,11 @@ const SignIn = () => {
             <RememberMe />
             <Button
               title="Sign in"
-              backgroundColor={
+              disabled={
                 isEmailActive ||
                 isEmailFilled ||
                 isPasswordActive ||
                 isPasswordFilled
-                  ? "#246BFD"
-                  : "#3062C8"
               }
               onPress={() => {
                 router.push("/(tabs)/");
