@@ -20,6 +20,53 @@ import CarouselComponent from "../../components/carousel";
 import { SearchInput } from "../../components/searchInput";
 
 const roleFilters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
+const doctors = [
+  {
+    name: "Eloi Chrysanthe",
+    role: "Opthamologist",
+    stars: "4.3",
+    hospital: "Muhima",
+    reviews: "231",
+    image: "",
+    images: "../../assets/doctors/doctor1.png",
+  },
+  {
+    name: "Uwamahoro",
+    role: "Pediatric",
+    stars: "4.3",
+    hospital: "Masaka",
+    reviews: "2,542",
+    image: "",
+    images: "../../assets/doctors/doctor2.png",
+  },
+  {
+    name: "Hakizimana",
+    role: "Nutritionist",
+    stars: "4.3",
+    hospital: "KHI",
+    reviews: "1,242",
+    image: "",
+    images: "../../assets/doctors/doctor3.png",
+  },
+  {
+    name: "Emmanuel",
+    role: "Dentist",
+    stars: "4.3",
+    hospital: "Masaka",
+    reviews: "2,542",
+    image: "",
+    images: "../../assets/doctors/doctor2.png",
+  },
+  {
+    name: "Hakizimana",
+    role: "General",
+    stars: "4.3",
+    hospital: "KHI",
+    reviews: "1,242",
+    image: "",
+    images: "../../assets/doctors/doctor3.png",
+  },
+];
 
 const Home = () => {
   const doctors = useSelector((state: RootState) => state.doctors.doctors);
