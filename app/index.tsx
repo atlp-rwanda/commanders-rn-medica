@@ -154,6 +154,7 @@ const OnBoarding = () => {
         <Text>Medica App</Text>
       </View>
     </View>
+   
   );
 };
 
