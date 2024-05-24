@@ -18,7 +18,28 @@ export default function DoctorAppointments() {
             paddingRight: insets.right,
           },
         }}
-      ></Stack>
+      >
+        <Stack.Screen name="payments" options={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: "#ffffff99",
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+          },
+        }} />
+        <Stack.Screen name="review-summary" options={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: "#ffffff99",
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+          },
+        }} />
+      </Stack>
     </GestureHandlerRootView>
   );
 }

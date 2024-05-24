@@ -2,6 +2,7 @@ import { TextInput } from "@/components/Input";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import { Text } from "@/components/ThemedText";
 import { Select } from "@/components/select";
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -69,7 +70,9 @@ export default function PatientDetailsScreen() {
       <View className="py-3">
         <TouchableOpacity
           className="bg-primary-500 p-4 rounded-full items-center"
-          onPress={() => { }}
+          onPress={() => {
+            router.push("/doctor-appointments/payments")
+          }}
         >
           <Text className="text-white font-UrbanistBold">Next</Text>
         </TouchableOpacity>

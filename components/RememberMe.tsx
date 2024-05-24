@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, Pressable, Image } from "react-native";
+import { useState } from "react";
+import { Image, Pressable, StyleSheet, Text } from "react-native";
 
 const RememberMe = () => {
   const [rememberMe, setRememberMe] = useState(false);
@@ -18,7 +18,7 @@ const RememberMe = () => {
         }
         style={{ width: 24, height: 24 }}
       />
-      <Text style={{ fontFamily: "UrbanistSemiBold", fontSize: 14 }}>
+      <Text style={{ fontFamily: "UrbanistSemiBold", fontSize: 15 }}>
         Remember me
       </Text>
     </Pressable>

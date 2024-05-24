@@ -23,20 +23,18 @@ const Button: React.FC<Props> = ({
   return (
     <Touchable
       style={{ width }}
-      className={`${
-        disabled
-          ? "bg-darkblue"
-          : secondary
+      className={`${disabled
+        ? "bg-darkblue"
+        : secondary
           ? "bg-primary-100"
           : "bg-primary-500"
-      } p-4 my-5 ${rounded ? "rounded-full" : "rounded-2xl"} ${classes}`}
+        } p-4 my-5 ${rounded ? "rounded-full" : "rounded-2xl"} ${classes}`}
       onPress={onPress}
       disabled={disabled}
     >
       <Text
-        className={`${
-          secondary ? "text-primary-500" : "text-white"
-        } text-center font-UrbanistBold`}
+        className={`${secondary ? "text-primary-500" : "text-white"
+          } text-center font-UrbanistBold text-base`}
       >
         {title}
       </Text>

@@ -1,6 +1,5 @@
-import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { Image, TouchableOpacity, View } from "react-native";
 
 interface BackIconProps {
   imageSource: any;
@@ -16,7 +15,7 @@ const BackIcon = ({ imageSource, onPress }: BackIconProps) => {
         </TouchableOpacity>
       </View>
       <View style={{ alignItems: "center"}}>
-        <Image source={imageSource} />
+        <Image source={imageSource} className="w-40 h-40" />
       </View>
     </View>
   );

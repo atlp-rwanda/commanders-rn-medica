@@ -1,5 +1,4 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 type iconName = "apple" | "google" | "facebook" | undefined
 
@@ -18,14 +17,14 @@ const SignUpWith = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleFacebookSignUp}>
-        <Image source={require("../assets/facebook.png")} />
+      <TouchableOpacity onPress={handleFacebookSignUp} className="border border-gray-100 rounded-xl px-7 py-4">
+        <Image source={require("../assets/facebook-logo.png")} className="w-6 h-6 object-contain" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleGoogleSignUp}>
-        <Image source={require("../assets/google.png")} />
+      <TouchableOpacity onPress={handleGoogleSignUp} className="border border-gray-100 rounded-xl px-7 py-4">
+        <Image source={require("../assets/google-logo.png")} className="w-6 h-6 object-contain" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleAppleSignUp}>
-        <Image source={require("../assets/apple.png")} />
+      <TouchableOpacity onPress={handleAppleSignUp} className="border border-gray-100 rounded-xl px-7 py-4">
+        <Image source={require("../assets/apple-logo.png")} className="w-6 h-6 object-contain" />
       </TouchableOpacity>
     </View>
   );

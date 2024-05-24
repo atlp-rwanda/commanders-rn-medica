@@ -1,16 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
+import { Link } from "expo-router";
+import { useEffect, useRef, useState } from "react";
 import {
+  Animated,
+  Dimensions,
+  Image,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
-  Image,
-  Dimensions,
-  Animated,
+  View,
 } from "react-native";
 import Swiper from "react-native-swiper";
 import RotatingImage from "./RotatingImage";
-import { Link } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
@@ -109,7 +109,7 @@ const OnBoarding = () => {
           </TouchableOpacity>
         )}
         {index >= 2 && (
-          <TouchableOpacity style={[styles.button, {padding: 0, paddingVertical: 0}]}>
+          <TouchableOpacity style={[styles.button, {padding: 0, paddingVertical: 1}]}>
             <Link href="/signupSignin/" style={[styles.button]} className="font-UrbanistSemiBold">
               Get Started
             </Link>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 20,
     position: "absolute",
-    bottom: 0,
+    bottom: 10,
   },
   main: {
     flex: 1,
