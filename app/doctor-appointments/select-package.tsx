@@ -79,6 +79,7 @@ export default function SelectPackageScreen() {
             {packages.map((pkg) => (
               <Package
                 {...pkg}
+                selectable={true}
                 selected={selectedPackage == pkg.key}
                 onPress={() => setSelectedPackage(pkg.key)}
               />
