@@ -2,14 +2,11 @@ import { router } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 function Cardscomponent(props: any) {
   const handlePush = () => {
-    switch (props.typecall) {
-      case "Voice call":
-        if (props.action === "Upcoming") {
-          router.push("/Appointments/voice-call/");
-        }
-        break;
-      default:
-        break;
+    if (props.action === "Upcoming") {
+      router.push({
+        pathname: "/Appointments/details/",
+        params: { typecall: props.typecall },
+      });
     }
   };
 

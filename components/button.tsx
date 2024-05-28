@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Text, TouchableOpacityProps, ViewStyle } from "react-native";
 import Touchable from "./common/touchable";
 
@@ -10,6 +10,7 @@ interface Props {
   disabled?: boolean;
   classes?: string;
   width?: ViewStyle["width"];
+  startIcon?: ReactNode;
 }
 const Button: React.FC<Props> = ({
   title,
@@ -19,22 +20,34 @@ const Button: React.FC<Props> = ({
   disabled = false,
   classes,
   width,
+  startIcon,
 }) => {
   return (
     <Touchable
-      style={{ width }}
-      className={`${disabled
-        ? "bg-darkblue"
-        : secondary
+      style={{
+        width,
+        shadowColor: "rgba(36, 107, 253, 0.25)",
+        shadowRadius: 10,
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 4 },
+      }}
+      className={`${
+        disabled
+          ? "bg-darkblue"
+          : secondary
           ? "bg-primary-100"
           : "bg-primary-500"
-        } p-4 my-5 ${rounded ? "rounded-full" : "rounded-2xl"} ${classes}`}
+      } p-4 my-5 ${
+        rounded ? "rounded-full" : "rounded-2xl"
+      } ${classes} shadow-[#246BFD40] flex-row justify-center items-center`}
       onPress={onPress}
       disabled={disabled}
     >
+      {startIcon && startIcon}
       <Text
-        className={`${secondary ? "text-primary-500" : "text-white"
-          } text-center font-UrbanistBold text-base`}
+        className={`${
+          secondary ? "text-primary-500" : "text-white"
+        } text-center font-UrbanistBold text-base`}
       >
         {title}
       </Text>
