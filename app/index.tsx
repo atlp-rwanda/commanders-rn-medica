@@ -110,7 +110,7 @@ const OnBoarding = () => {
         )}
         {index >= 2 && (
           <TouchableOpacity style={[styles.button, {padding: 0, paddingVertical: 1}]}>
-            <Link href="/signupSignin/" style={[styles.button]} className="font-UrbanistSemiBold">
+            <Link href="/leave-review/Review" style={[styles.button]} className="font-UrbanistSemiBold">
               Get Started
             </Link>
           </TouchableOpacity>
