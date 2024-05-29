@@ -32,7 +32,7 @@ const initialState: DoctorsState = {
   doctors: [
     {
       id: 1,
-      name: "Eloi Chrysanthe",
+      name: "Eloi Mwokolo",
       role: "Opthamologist",
       stars: "4.3",
       hospital: "Muhima",

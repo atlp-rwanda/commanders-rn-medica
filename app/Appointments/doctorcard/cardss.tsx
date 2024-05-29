@@ -1,56 +1,55 @@
-
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { useFonts } from "expo-font";
+import { router } from "expo-router";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 function Cardscomponent(props: any) {
-  const [fontLoaded] = useFonts({
-    UrbanistBold: require("../../../assets/fonts/Urbanist-Bold.ttf"),
-    UrbanistRegular: require("../../../assets/fonts/Urbanist-Regular.ttf"),
-    "Urbanist-SemiBold": require("../../../assets/fonts/Urbanist-SemiBold.ttf"),
-    UrbanistMedium: require("../../../assets/fonts/Urbanist-Medium.ttf"),
-  });
-  if (!fontLoaded) {
-    return null;
-  }
+  const handlePush = () => {
+    switch (props.typecall) {
+      case "Voice call":
+        if (props.action === "Upcoming") {
+          router.push("/Appointments/voice-call/");
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <View
       style={props.bacColor}
-      className='bg-white rounded-3xl flex items-center pt-3  pb-3 w-full shadow-md mb-4'
+      className="bg-white rounded-3xl px-4 py-4 w-full shadow-md mb-4"
     >
-      <View className="flex flex-row gap-4 justify-center items-center border-b-2 border-slate-100 pb-3">
-        <Image source={props.imager} className="w-3/12 h-24 rounded-xl" />
-        <View>
-          <Text className="text-[18px] font-UrbanistBold pb-2">
-            {props.name}
-          </Text>
-          <View className="flex items-center justify-center flex-row">
-            <Text className="text-[12px] pb-3 pt-3 font-UrbanistRegular">
-              {props.typecall} -{" "}
-            </Text>
-            <Text style={props.stile}>{props.action}</Text>
+      <View className="flex-row justify-center items-center border-b-2 border-slate-100 pb-3">
+        <Image source={props.imager} className="w-24 h-24 rounded-xl mr-3" />
+        <View className="flex-1">
+          <Text className="text-xl font-UrbanistBold mb-3">{props.name}</Text>
+          <View className="flex items-center flex-row mb-3">
+            <Text className=" font-UrbanistRegular">{props.typecall} - </Text>
+            <Text style={props.styles}>{props.action}</Text>
           </View>
-          <Text className="font-UrbanistRegular pt-3 text-[12px]">
+          <Text className="font-UrbanistRegular">
             {props.date} | <Text>{props.time}</Text>
           </Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlePush}>
           <Image source={props.imagerr} className="w-12 h-12" />
         </TouchableOpacity>
       </View>
-      <View style={styles.botfles}>
-        <TouchableOpacity onPress={props.cancle}>
-          <View style={styles.botnlef}>
-            <Text className="text-center" style={styles.textsi}>
-              {props.chance}
-            </Text>
-          </View>
+      <View className="flex-row gap-3 pt-3">
+        <TouchableOpacity
+          onPress={props.cancle}
+          className="flex-1 rounded-full border border-primary-500 p-2.5"
+        >
+          <Text className="text-center" style={styles.textsi}>
+            {props.chance}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={props.fact}>
-          <View style={styles.botn}>
-            <Text className="text-center text-white " style={styles.tex}>
-              {props.cantchance}
-            </Text>
-          </View>
+        <TouchableOpacity
+          onPress={props.fact}
+          className="flex-1 bg-primary-500 rounded-full p-2.5"
+        >
+          <Text className="text-center text-white " style={styles.tex}>
+            {props.cantchance}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -87,8 +86,6 @@ const styles = StyleSheet.create({
   },
   botn: {
     backgroundColor: "#246BFD",
-    width: 168,
-    height: 32,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 16,
@@ -103,8 +100,7 @@ const styles = StyleSheet.create({
     fontFamily: "UrbanistBold",
   },
   botnlef: {
-    width: 168,
-    height: 32,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 16,
