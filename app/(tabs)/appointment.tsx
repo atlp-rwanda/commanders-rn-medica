@@ -1,12 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
+import Screen from "../Appointments";
 
 const Appointment = () => {
   return (
-    <View>
-      <Text>Appointment</Text>
-    </View>
+    <Screen/>
   );
 };
-
 export default Appointment;
