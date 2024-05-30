@@ -30,6 +30,7 @@
     "plugins": [
       "expo-router",
       "expo-font",
+      "expo-video",
       [
         "expo-camera",
         {
