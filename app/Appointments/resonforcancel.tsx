@@ -86,7 +86,7 @@ function ReschedulApointment() {
           <View className='mb-5'>
             <TextInput
               multiline
-              numberOfLines={2}
+              numberOfLines={6}
               value={text}
               onChangeText={handleChangeText}
               style={styles.textarea}
@@ -133,13 +133,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   textarea: {
-    borderRadius: 10,
     backgroundColor: "#F8FAFF",
-    padding: 10,
-    minHeight: 100,
-    width: "100%",
+    borderRadius: 16,
     fontFamily: 'UrbanistMedium',
-    fontSize: 14,
+    fontSize: 16,
+    padding: 16,
+    textAlignVertical: 'top', 
+    width: '100%',
+    minHeight: 100,
   },
   modalOverlay: {
     flex: 1,
