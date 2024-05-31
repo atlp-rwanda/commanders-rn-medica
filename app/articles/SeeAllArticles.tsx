@@ -1,10 +1,10 @@
 
 import React,{useState} from 'react';
 import { View, Text, Image, SafeAreaView, ScrollView,TouchableOpacity } from 'react-native';
-import { Link,useNavigation } from 'expo-router';
+import { router,Link,useNavigation } from 'expo-router';
 import FieldComponent from '@/components/FieldComponent';
 import ArticleCard from '@/components/cards/ArticleCard';
-import { articles as allArticles  } from '@/constants/articles';
+import { articles as allArticles  } from '@/app/constants/articlesDummy';
 
 
 export default function SeeAllArticles() {
@@ -27,12 +27,12 @@ export default function SeeAllArticles() {
         {/* <FieldComponent/> */}
         <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
           <View style={{ display: "flex", flexDirection: "row", gap: 15, padding: 15 }}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Articles" as never)}><Image style={{ marginTop: 10 }} source={require("../assets/articlesImages/vuuu.png")} /></TouchableOpacity>
+            <TouchableOpacity onPress={()=>router.back()}><Image style={{ marginTop: 10 }} source={require("../../assets/articlesImages/vuuu.png")} /></TouchableOpacity>
             <Text style={{ fontSize: 24, color: "#212121", fontFamily:"UrbanistBold" }}>Articles</Text>
           </View>
           <View style={{ display: "flex", flexDirection: "row", gap: 15, padding: 15 }}>
-            <TouchableOpacity><Image style={{ position: "relative", marginTop: 10 }} source={require("../assets/articlesImages/Search.png")} /></TouchableOpacity>
-            <TouchableOpacity><Image style={{ position: "relative", marginTop: 12 }} source={require("../assets/articlesImages/Group.png")} /></TouchableOpacity>
+            <TouchableOpacity><Image style={{ position: "relative", marginTop: 10 }} source={require("../../assets/articlesImages/Search.png")} /></TouchableOpacity>
+            <TouchableOpacity><Image style={{ position: "relative", marginTop: 12 }} source={require("../../assets/articlesImages/Group.png")} /></TouchableOpacity>
           </View>
         </View>
         <View style={{ padding: 5 }}>

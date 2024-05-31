@@ -1,4 +1,4 @@
-import { useNavigation, useLocalSearchParams } from "expo-router";
+import { useNavigation, useLocalSearchParams, router } from "expo-router";
 import React from "react";
 import {
   View,
@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { articles } from "@/constants/articles";
+import { articles } from "@/app/constants/articlesDummy";
 
 export default function ArticlesDetails() {
   const navigation = useNavigation();
@@ -18,12 +18,13 @@ export default function ArticlesDetails() {
   const article = articles.find((article) => article.id === Number(id));
 
   return (
-    <SafeAreaView style={{ paddingTop: 50, backgroundColor: "white" }}>
+    <SafeAreaView style={{ paddingTop: 50, backgroundColor: "white",flex:1 }}>
       <View
         style={{
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          
         }}
       >
         <View
@@ -35,11 +36,11 @@ export default function ArticlesDetails() {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("SeeAllArticles" as never)}
+            onPress={() => router.back()}
           >
             <Image
               style={{ marginTop: 10 }}
-              source={require("../assets/articlesImages/vuuu.png")}
+              source={require("../../assets/articlesImages/vuuu.png")}
             />
           </TouchableOpacity>
         </View>
@@ -54,19 +55,19 @@ export default function ArticlesDetails() {
           <TouchableOpacity>
             <Image
               style={{ height: 22.57, width: 18.13, padding: 10 }}
-              source={require("../assets/articlesImages/rwanda.png")}
+              source={require("../../assets/articlesImages/rwanda.png")}
             />
           </TouchableOpacity>
           <TouchableOpacity>
             <Image
               style={{ height: 11.07, width: 11.07, padding: 10 }}
-              source={require("../assets/articlesImages/rwiza.png")}
+              source={require("../../assets/articlesImages/rwiza.png")}
             />
           </TouchableOpacity>
           <TouchableOpacity>
             <Image
               style={{ height: 1.17, width: 1.17, padding: 10 }}
-              source={require("../assets/articlesImages/Group.png")}
+              source={require("../../assets/articlesImages/Group.png")}
             />
           </TouchableOpacity>
         </View>

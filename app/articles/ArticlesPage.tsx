@@ -8,10 +8,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import FieldComponent from "@/components/FieldComponent";
 import ArticleCard from "@/components/cards/ArticleCard";
-import { articles as allArticles } from "@/constants/articles";
+import { articles as allArticles } from "../constants/articlesDummy";
 
 export default function Article() {
    const [filteredArticles, setFilteredArticles] = useState(allArticles);
@@ -32,7 +32,7 @@ export default function Article() {
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <Image
-              source={require("../assets/articlesImages/Vector (2).png")}
+              source={require("../../assets/articlesImages/Vector (2).png")}
             />
             <Text style={styles.headerTitle}>Article</Text>
           </View>
@@ -40,15 +40,15 @@ export default function Article() {
             <TouchableOpacity>
               <Image
                 style={styles.headerIcon}
-                source={require("../assets/articlesImages/Search.png")}
+                source={require("../../assets/articlesImages/Search.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("BookMarkedArticle" as never)}
+              onPress={() => router.push({pathname:"/articles/BookMarkedArticle"} as never)}
             >
               <Image
                 style={styles.headerIcon}
-                source={require("../assets/articlesImages/Bookmark.png")}
+                source={require("../../assets/articlesImages/Bookmark.png")}
               />
             </TouchableOpacity>
           </View>
@@ -57,7 +57,7 @@ export default function Article() {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Trending</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("SeeAllArticles" as never)}
+            onPress={() => router.push({pathname:"/articles/SeeAllArticles"} as never)}
           >
             <Text style={styles.seeAll}>See All</Text>
           </TouchableOpacity>
@@ -68,8 +68,8 @@ export default function Article() {
             <View key={article.id} style={styles.articleContainer}>
               <View style={styles.articleContent}>
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("ArticlesDetails", { id: article.id })
+                  onPress={() => router.push({pathname:"/articles/ArticlesDetails",params: { id: article.id }})
+                    // navigation.navigate("ArticlesDetails", { id: article.id })
                   }
                 >
                   <Image style={styles.articleImage} source={article.image} />
@@ -83,7 +83,7 @@ export default function Article() {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Articles</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("SeeAllArticles" as never)}
+            onPress={() => router.push({pathname:"/articles/SeeAllArticles"} as never)}
           >
             <Text style={styles.seeAll}>See All</Text>
           </TouchableOpacity>
