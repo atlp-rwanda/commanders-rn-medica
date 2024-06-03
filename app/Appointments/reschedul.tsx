@@ -108,13 +108,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   textarea: {
-    borderRadius: 10,
     backgroundColor: "#F8FAFF",
-    padding: 10,
-    fontSize: 14,
-    width: "100%",
-    fontFamily: 'UrbanistSemiBold',
-    color:'#454242'
+    borderRadius: 16,
+    fontFamily: 'UrbanistMedium',
+    fontSize: 16,
+    padding: 16,
+    textAlignVertical: 'top', 
+    width: '100%',
+    minHeight: 100,
   },
   butshadow:{
     shadowColor: '#246bfd',

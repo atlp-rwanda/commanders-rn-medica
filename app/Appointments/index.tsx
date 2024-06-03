@@ -298,6 +298,7 @@ function Screen() {
                 chance="Book Again"
                 cantchance="Leave a Review"
                 backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
+                fact={() => router.push("/Appointments/voice-call/writeReview")}
               />
               <Cardscomponent
                 name="Dr.Mutoni Dach"
@@ -311,6 +312,8 @@ function Screen() {
                 chance="Book Again"
                 cantchance="Leave a Review"
                 backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
+                fact={() => router.push("/Appointments/voice-call/writeReview")}
+
               />
               <Cardscomponent
                 name="Dr.Drake Beison"
@@ -324,6 +327,7 @@ function Screen() {
                 chance="Book Again"
                 cantchance="Leave a Review"
                 backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
+                fact={() => router.push("/Appointments/voice-call/writeReview")}
               />
               <Cardscomponent
                 name="Dr.Quinn Slatter"
@@ -337,6 +341,7 @@ function Screen() {
                 chance="Book Again"
                 cantchance="Leave a Review"
                 backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
+                fact={() => router.push("/Appointments/voice-call/writeReview")}
               />
             </View>
           )}

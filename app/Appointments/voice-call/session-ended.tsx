@@ -49,7 +49,7 @@ export default function VoiceCallSessionEnded() {
           </TouchableOpacity>
           <TouchableOpacity
             className="flex-1 bg-primary-500 p-4 rounded-full items-center"
-            onPress={() => {}}
+            onPress={() => router.push("/Appointments/voice-call/writeReview")}
           >
             <Text className="text-white font-UrbanistBold">Leave a Review</Text>
           </TouchableOpacity>
