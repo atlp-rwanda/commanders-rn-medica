@@ -32,7 +32,7 @@ export const Camera = () => {
         <Text className="text-[18px] font-UrbanistBold text-white my-2 text-center">
           Camera permissions
         </Text>
-        <Button title="Grant" rounded />
+        <Button title="Grant" rounded onPress={()=> requestPermission()} />
       </View>
     );
   }
