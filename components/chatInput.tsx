@@ -75,9 +75,26 @@ export const ChatInput: React.FC<Props> = ({
     });
 
   }
-  const openCamera = () => {
-    setModalCamera(!modalCamera);
-  }
+  const openCamera = async () => {
+    // Request camera permissions
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera is required!');
+      return;
+    }
+
+    // Launch the camera
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   const handleAudioPicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({
       type: "audio/*",
@@ -189,7 +206,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    fontFamily: "Urbanist-Regular",
     backgroundColor: "transparent",
     borderRadius: 28,
     paddingRight: 10,

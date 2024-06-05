@@ -26,7 +26,7 @@ const pkgs = {
     button: {
       title: "Message (Start at 16:00 PM)",
       icon: chatIconWhite,
-      nextTo: "/Appointments/voice-call/call",
+      nextTo: "/messagingAppointment/messaging",
     },
   },
   "Voice call": {
