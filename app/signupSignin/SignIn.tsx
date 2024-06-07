@@ -1,11 +1,12 @@
 import { useState } from "react";
 import {
+  Alert,
   Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 
 import { screenbgcolor } from "@/styles/usecolor";
@@ -18,6 +19,7 @@ import SignUpText from "../../components/SignUpText";
 import SignUpWith from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
+import { supabase } from "../supabase";
 
 const SignIn = () => {
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
@@ -26,6 +28,8 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [isEmailFilled, setIsEmailFilled] = useState<boolean>(false);
   const [isPasswordFilled, setIsPasswordFilled] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleEmailActiveChange = (isActive: boolean) => {
     setIsEmailActive(isActive);
@@ -44,6 +48,21 @@ const SignIn = () => {
     setPassword(text);
     setIsPasswordFilled(!!text);
   };
+
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      Alert.alert(error.message);
+      setLoading(false);
+    } else {
+      router.push("/(tabs)/");
+    }
+  }
 
   return (
     <SafeAreaView style={areaView}>
@@ -78,14 +97,9 @@ const SignIn = () => {
               title="Sign in"
               rounded
               disabled={
-                isEmailActive ||
-                isEmailFilled ||
-                isPasswordActive ||
-                isPasswordFilled
+                loading
               }
-              onPress={() => {
-                router.push("/(tabs)/");
-              }}
+              onPress={signInWithEmail}
             />
             <Pressable
               style={{ alignItems: "center" }}
@@ -130,9 +144,10 @@ const styles = StyleSheet.create({
     gap: 24,
     padding: 24,
   },
-  title: {
-    fontSize: 48,
-    fontFamily: "UrbanistBold",
+  errorText: {
+    color: "red",
+    fontFamily: "UrbanistSemiBold",
+    fontSize: 16,
   },
 });
 
