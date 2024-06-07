@@ -1,6 +1,7 @@
-import { NavigationHeader } from "@/components/NavigationHeader";
-import { router } from "expo-router";
-import { useState } from "react";
+import { NavigationHeader } from "@/components/Header";
+import { router, useGlobalSearchParams } from "expo-router";
+import { useState, useEffect } from "react";
+import { supabase } from "../supabase";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -9,15 +10,37 @@ import {
   TextInput,
   TextInputKeyPressEventData,
   View,
+  ActivityIndicator,
+  BackHandler
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
 type input = TextInput | null;
 
 export default function VerifyCodeScreen() {
   const inputs: input[] = [];
   const [code, setCode] = useState([]);
+  const { email } = useGlobalSearchParams();
+  const [focusedInputIndex, setFocusedInputIndex] = useState<number | null>(null);
+  const [message, setMessage] = useState<{ type: string; text: string } | null>(null);
+  const [countdown, setCountdown] = useState<number>(3600);
+  const [canResend, setCanResend] = useState<boolean>(false);
+  const[loading, setLoading]=useState(false);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    } else {
+      setCanResend(true);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [countdown]);
   const textChanged = (index: number, text: string) => {
     setCode((prev) => {
       const newCode = [...prev];
@@ -27,6 +50,18 @@ export default function VerifyCodeScreen() {
     });
   };
 
+  useEffect(() => {
+    const backAction = () => {
+      return true; 
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
   const jumpToInput = (event: TextInputKeyPressEventData, index: number) => {
     if (event.key === "Backspace") {
       if (index > 0) inputs[index - 1]?.focus();
@@ -34,10 +69,38 @@ export default function VerifyCodeScreen() {
       if (index < inputs.length - 1) inputs[index + 1]?.focus();
     }
   };
+  const verifyCode = async () => {
+    setLoading(true)
+    const otpCode = code.join("");
+  
+    const { data, error } = await supabase.auth.verifyOtp({ email, token: otpCode, type: "recovery" });
 
+    if (error) {
+      setMessage({ type: "error", text: "Invalid otp" });
+    } else {
+      setMessage({ type: "success", text: "✅ Valid otp provided!" });
+      setTimeout(() => {
+        router.push("reset-password/new-password");
+      }, 3000);
+    }
+    setLoading(false)
+  };
+  const resendCode = () => {
+    if (canResend) {
+      setCountdown(3600);
+      setCanResend(false);
+    } 
+  };
+  const formatTime = (seconds: number): string => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return ` ${minutes}m ${remainingSeconds}s`;
+  };
   return (
     <View style={styles.container}>
-      <NavigationHeader title="OTP Code Verification" />
+     <NavigationHeader title="OTP Code Verification" />
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
@@ -48,7 +111,7 @@ export default function VerifyCodeScreen() {
           <View style={{ flex: 1 }} />
           <View>
             <Text style={styles.subtitle}>
-              Code has been sent to +1 111 ******99
+              Code has been sent to {email}
             </Text>
           </View>
           <View
@@ -58,44 +121,49 @@ export default function VerifyCodeScreen() {
               marginVertical: 32,
             }}
           >
-            <OTPCodeInput
-              value={code[0]}
-              controller={(ref) => (inputs[0] = ref)}
-              onChangeText={textChanged.bind(null, 0)}
-              onKeyPress={(e) => jumpToInput(e, 0)}
-            />
-            <OTPCodeInput
-              value={code[1]}
-              controller={(ref) => (inputs[1] = ref)}
-              onChangeText={textChanged.bind(null, 1)}
-              onKeyPress={(e) => jumpToInput(e, 1)}
-            />
-            <OTPCodeInput
-              value={code[2]}
-              controller={(ref) => (inputs[2] = ref)}
-              onChangeText={textChanged.bind(null, 2)}
-              onKeyPress={(e) => jumpToInput(e, 2)}
-            />
-            <OTPCodeInput
-              value={code[3]}
-              controller={(ref) => (inputs[3] = ref)}
-              onChangeText={textChanged.bind(null, 3)}
-              onKeyPress={(e) => jumpToInput(e, 3)}
-            />
+            {[0, 1, 2, 3, 4, 5].map((index) => (
+              <OTPCodeInput
+                key={index}
+                value={code[index] || ""}
+                controller={(ref) => (inputs[index] = ref)}
+                onChangeText={textChanged.bind(null, index)}
+                onKeyPress={(e) => jumpToInput(e, index)}
+                onFocus={() => setFocusedInputIndex(index)}
+                onBlur={() => setFocusedInputIndex(null)}
+                isFocused={focusedInputIndex === index}
+              />
+            ))}
           </View>
           <View>
-            <Text style={styles.subtitle}>
-              Resend code in <Text style={styles.primaryText}>55</Text> s
+          {message?.type === "error" && (
+              <Text className="text-[#913831] text-center font-[UrbanistRegular] text-[18px]">
+                {message.text}
+              </Text>
+            )}
+            {message?.type === "success" && (
+              <Text className="text-[#4BB543] text-center font-[UrbanistRegular] text-[18px]">
+                {message.text}
+              </Text>
+            )}
+
+            <Text style={styles.subtitle} onPress={resendCode}
+              disabled={!canResend}>
+               code will expire in <Text style={styles.primaryText}>{formatTime(countdown)}</Text> 
             </Text>
+
+          
           </View>
           <View style={{ flex: 1 }} />
           <TouchableOpacity
             className="bg-lightblue p-4 my-5 rounded-full shadow-sm shadow-lightblue"
-            onPress={() => {
-              router.push("/reset-password/new-password");
-            }}
+            onPress={verifyCode}
+            disabled={loading}
           >
-            <Text className="text-white text-center font-bold">Continue</Text>
+             {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <Text className="text-white text-center font-bold">Continue</Text>
+            )}
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -108,11 +176,17 @@ const OTPCodeInput = ({
   controller,
   onChangeText,
   onKeyPress,
+  onFocus,
+  onBlur,
+  isFocused,
 }: {
   value: string;
   controller: (input: input) => void;
   onChangeText: (text: string) => void;
   onKeyPress: (event: TextInputKeyPressEventData) => void;
+  onFocus: () => void;
+  onBlur: () => void;
+  isFocused: boolean;
 }) => {
   return (
     <TextInput
@@ -122,10 +196,12 @@ const OTPCodeInput = ({
         controller(input);
       }}
       blurOnSubmit={false}
-      style={styles.input}
+      style={[styles.input, isFocused && styles.focusedInput]}
       keyboardType="number-pad"
       onChangeText={onChangeText}
       onKeyPress={(e) => onKeyPress(e.nativeEvent)}
+      onFocus={onFocus}
+      onBlur={onBlur}
     />
   );
 };
@@ -152,6 +228,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "700",
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#F4F4F4",
     backgroundColor: "#F4F4F4",
+  },
+  focusedInput: {
+    borderColor: "#246BFD",
+    backgroundColor: "rgba(36, 107, 253, 0.08)"
   },
 });

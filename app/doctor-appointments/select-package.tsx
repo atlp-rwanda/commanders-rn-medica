@@ -6,15 +6,16 @@ import { NavigationHeader } from "@/components/NavigationHeader";
 import { Text } from "@/components/ThemedText";
 import { Package } from "@/components/cards/packages/package";
 import { Select } from "@/components/select";
-import { router } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { SvgXml } from "react-native-svg";
-
+import { supabase } from "../supabase"; 
 export default function SelectPackageScreen() {
   const [selectedPackage, setSelectedPackage] = useState("1");
   const [selectedDuration, setSelectedDuration] = useState("1");
-
+  const { date, time } = useGlobalSearchParams<{ date: any; time: any }>();
+  ;
   const packages = [
     {
       key: "1",
@@ -43,12 +44,25 @@ export default function SelectPackageScreen() {
   ];
 
   const durations = [
-    { key: "1", value: "30 minutes" },
-    { key: "2", value: "1 hour" },
-    { key: "3", value: "2 hours" },
-    { key: "4", value: "3 hours" },
+    { key: "1", value: "30 minutes", intervals: 1  },
+    { key: "2", value: "1 hour" , intervals: 2 },
+    { key: "3", value: "2 hours" , intervals: 4},
+    { key: "4", value: "3 hours", intervals:6 },
   ];
 
+
+const submitPackage=()=>{
+  const SelectedCommunication=packages.find((pkg) => pkg.key === selectedPackage);
+  const SelectedTimeDuration=durations.find((dur) => dur.key === selectedDuration);
+  const packageTitle=SelectedCommunication?.title
+  const packagePrice= SelectedCommunication?.price;
+  const packageDuration=SelectedTimeDuration?.value;
+  const packageIntervals=SelectedTimeDuration?.intervals;
+  router.push({
+    pathname:"/doctor-appointments/review-summary",
+    params:{date, time, packageTitle, packageDuration, packagePrice, packageIntervals}
+  })
+}
   return (
     <View className="px-5 flex-1">
       <NavigationHeader title="Select Package" />
@@ -60,8 +74,8 @@ export default function SelectPackageScreen() {
           <Select
             data={durations}
             placeholder=""
-            defaultOption={durations[0]}
-            setSelected={(val: string) => setSelectedDuration(val)}
+            defaultOption={durations[1]}
+            setSelected={(value: string) => setSelectedDuration(value)}
             icon={
               <SvgXml
                 xml={timeCircleIcon}
@@ -74,7 +88,7 @@ export default function SelectPackageScreen() {
         </View>
         <View className="mb-6">
           <Text className="text-xl font-UrbanistBold mb-3">Select Package</Text>
-
+<Text>{}</Text>
           <View className="mx-1">
             {packages.map((pkg) => (
               <Package
@@ -90,9 +104,9 @@ export default function SelectPackageScreen() {
       <View className="py-3">
         <TouchableOpacity
           className="bg-primary-500 p-4 rounded-full items-center"
-          onPress={() => {
-            router.push("/doctor-appointments/patient-details");
-          }}
+          onPress={
+            submitPackage
+          }
         >
           <Text className="text-white font-UrbanistBold">Next</Text>
         </TouchableOpacity>

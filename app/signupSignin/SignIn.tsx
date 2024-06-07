@@ -1,11 +1,12 @@
 import { useState } from "react";
 import {
+  Dimensions,
   Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 
 import { screenbgcolor } from "@/styles/usecolor";
@@ -18,6 +19,9 @@ import SignUpText from "../../components/SignUpText";
 import SignUpWith from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
+import { supabase } from "../supabase";
+
+const { width: screenWidth } = Dimensions.get("window");
 
 const SignIn = () => {
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
@@ -26,6 +30,8 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [isEmailFilled, setIsEmailFilled] = useState<boolean>(false);
   const [isPasswordFilled, setIsPasswordFilled] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleEmailActiveChange = (isActive: boolean) => {
     setIsEmailActive(isActive);
@@ -45,6 +51,26 @@ const SignIn = () => {
     setIsPasswordFilled(!!text);
   };
 
+  async function signInWithEmail() {
+    setLoading(true);
+    setError(""); 
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (!password && !email) {
+      setError("All fields are required");
+      setLoading(false);
+    } else if (error) {
+      setError(error.message);
+      setLoading(false);
+    } else {
+      router.push("/(tabs)/");
+      setLoading(false);
+    }
+  }
+
   return (
     <SafeAreaView style={areaView}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -57,41 +83,41 @@ const SignIn = () => {
             Login to Your Account
           </Text>
           <View style={{ rowGap: 20, width: "100%" }}>
-            <EmailPasswordInput
-              icon="email"
-              placeholder="Email"
-              onActiveChange={handleEmailActiveChange}
-              value={email}
-              onChangeText={handleEmailChange}
-            />
-            <EmailPasswordInput
-              icon="lock"
-              placeholder="Password"
-              secureTextEntry
-              onActiveChange={handlePasswordActiveChange}
-              value={password}
-              onChangeText={handlePasswordChange}
-              isFilled={isPasswordFilled}
-            />
+              <EmailPasswordInput
+                icon="email"
+                placeholder="Email"
+                onActiveChange={handleEmailActiveChange}
+                value={email}
+                onChangeText={handleEmailChange}
+              />
+              <EmailPasswordInput
+                icon="lock"
+                placeholder="Password"
+                secureTextEntry
+                onActiveChange={handlePasswordActiveChange}
+                value={password}
+                onChangeText={handlePasswordChange}
+                isFilled={isPasswordFilled}
+              />
             <RememberMe />
+            <View style={styles.inputContainer}>
+
             <Button
-              title="Sign in"
+              title={loading == true ? "Loading" : "Sign in"}
               rounded
-              disabled={
-                isEmailActive ||
-                isEmailFilled ||
-                isPasswordActive ||
-                isPasswordFilled
-              }
-              onPress={() => {
-                router.push("/(tabs)/");
-              }}
+              onPress={signInWithEmail}
             />
+            {error &&
+              error !== "Email is required" &&
+              error !== "Password is required" && (
+                <Text style={styles.errorText}>{error}</Text>
+                )}
+              </View>
             <Pressable
               style={{ alignItems: "center" }}
-              onPress={() => {
-                router.push("/reset-password/");
-              }}
+              onPress={()=>
+                router.push("/reset-password/")
+              }
             >
               <Text
                 style={{
@@ -130,10 +156,19 @@ const styles = StyleSheet.create({
     gap: 24,
     padding: 24,
   },
-  title: {
-    fontSize: 48,
-    fontFamily: "UrbanistBold",
+  inputContainer: {
+    position: "relative",
   },
+  errorText: {
+    position: "absolute",
+    left: screenWidth / 2 -120 ,
+    top: "15%",
+    transform: [{ translateY: -20 }],
+    color: "red",
+    fontFamily: "UrbanistSemiBold",
+    fontSize: 14,
+  },
+  
 });
 
 export default SignIn;

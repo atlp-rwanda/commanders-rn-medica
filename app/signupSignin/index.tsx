@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, View, BackHandler } from "react-native";
 import BackIcon from "../../components/BackIcon";
 import Or from "../../components/Or";
 import SignInButton from "../../components/SignInButton";
@@ -15,9 +15,11 @@ const LetsYouIn = () => {
         <View style={[containerStyle, screenbgcolor, styles.container]}>
           <BackIcon
             imageSource={require("../../assets/Frame.png")}
-            onPress={router.back}
+            onPress={() => {
+              BackHandler.exitApp();
+            }}
           />
-          <Text style={styles.title}>Let’s you in</Text>
+          <Text style={styles.title}>Let’s get you in</Text>
           <View style={{ width: "100%", gap: 16 }}>
             <SignInButton
               title="Continue with Facebook"

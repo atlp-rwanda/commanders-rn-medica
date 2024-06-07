@@ -6,21 +6,54 @@ import { RootState } from "@/redux/store/store";
 import { createSelector } from "@reduxjs/toolkit";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { Image, Modal, ScrollView, TouchableOpacity, View } from "react-native";
+import { Image, Modal, ScrollView, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
-
+import { supabase } from "../supabase";
 export default function ReviewSummaryScreen() {
     const doctor = createSelector(
         (doctors: RootState["doctors"]["doctors"]) => doctors,
         (doctors) => doctors.find((doc) => doc.id == 1)
     )(useSelector((state: RootState) => state.doctors.doctors));
-
-    const { success, failed } = useLocalSearchParams<{ success: string, failed: string }>();
-
+   
+    const { date, time, packageTitle, packageDuration, packagePrice, packageIntervals, success, failed } = useLocalSearchParams<{ date: any, time: any, packageDuration: any, packageTitle: any, packagePrice: any, packageIntervals: any, success: string, failed: string }>();
     const [successModal, setSuccessModal] = useState(success == "1")
     const [failedModal, setFailedModal] = useState(failed == "1")
-
+    const [loading, setLoading] = useState(false);
+    const[appointmentStatus, setStatus]=useState("Booked");
+    const numericPrice = parseFloat(packagePrice.replace("$", ""));
+    const total = packageIntervals * numericPrice;
+    const fullAmount = `$${total}`
+    const bookAppointment = async () => {
+        setLoading(true)
+        try {
+            const { data: userData, error: userError } = await supabase.auth.getUser();
+            if (userError) throw userError;
+            const userId = userData?.user?.id;
+            const {data, error } = await supabase
+                .from("appointment")
+                .insert([
+                    {
+                        patient_id: userId,
+                        appointment_date: date,
+                        appointment_time: time,
+                        package: packageTitle,
+                        duration: packageDuration,
+                        amount: fullAmount,
+                        status:appointmentStatus,
+                    },
+                ]);
+                if (error) {
+                    setLoading(false);
+                    console.log(error);
+                }
+                    
+            setLoading(false)
+            setSuccessModal(true);
+        } catch (error) {
+            console.error("Error inserting data:", error);
+        }
+    }
     return (
         <>
             <Modal
@@ -42,15 +75,15 @@ export default function ReviewSummaryScreen() {
                             Appointment successfully booked. You will receive a notification and the doctor you selected will contact you.
                         </Text>
 
-                        <TouchableOpacity className="bg-primary-500 self-stretch mb-3 p-4 rounded-full items-center" >
+                        <TouchableOpacity className="bg-primary-500 self-stretch mb-3 p-4 rounded-full items-center" onPress={()=>router.push("/Appointments")}>
                             <Text className="text-white font-UrbanistBold">View Appointment</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity className="bg-primary-100 self-stretch p-4 rounded-full items-center" onPress={() => {
+                        {/* <TouchableOpacity className="bg-primary-100 self-stretch p-4 rounded-full items-center" onPress={() => {
                             setSuccessModal(false);
                         }}>
                             <Text className="text-primary-500 font-UrbanistBold">Cancel</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </View>
                 </View>
@@ -94,34 +127,34 @@ export default function ReviewSummaryScreen() {
                     <View className="mt-8 mb-5 bg-white rounded-xl px-5 py-2">
                         <View className="flex-row justify-between py-3">
                             <Text className="text-gray-700">Date & Hour</Text>
-                            <Text className="text-base font-UrbanistSemiBold text-gray-800">Dec 23, 2024 | 10:00 AM</Text>
+                            <Text className="text-base font-UrbanistSemiBold text-gray-800">{date}| {time}</Text>
                         </View>
 
                         <View className="flex-row justify-between py-3">
                             <Text className="text-gray-700">Package</Text>
-                            <Text className="text-base font-UrbanistSemiBold text-gray-800">Messaging</Text>
+                            <Text className="text-base font-UrbanistSemiBold text-gray-800">{packageTitle}</Text>
                         </View>
 
                         <View className="flex-row justify-between py-3">
                             <Text className="text-gray-700">Duration</Text>
-                            <Text className="text-base font-UrbanistSemiBold text-gray-800">30 minutes</Text>
+                            <Text className="text-base font-UrbanistSemiBold text-gray-800">{packageDuration}</Text>
                         </View>
                     </View>
 
                     <View className="mb-5 bg-white rounded-xl px-5 py-2">
                         <View className="flex-row justify-between py-3">
                             <Text className="text-gray-700">Amount</Text>
-                            <Text className="text-base font-UrbanistSemiBold text-gray-800">$20</Text>
+                            <Text className="text-base font-UrbanistSemiBold text-gray-800">{packagePrice}</Text>
                         </View>
 
                         <View className="flex-row justify-between py-3">
-                            <Text className="text-gray-700">Duration (30 mins)</Text>
-                            <Text className="text-base font-UrbanistSemiBold text-gray-800">1 X $20</Text>
+                            <Text className="text-gray-700">Duration ({packageDuration})</Text>
+                            <Text className="text-base font-UrbanistSemiBold text-gray-800">{packageIntervals} X {packagePrice}</Text>
                         </View>
 
                         <View className="flex-row justify-between py-3">
                             <Text className="text-gray-700">Total</Text>
-                            <Text className="text-base font-UrbanistSemiBold text-gray-800">$20</Text>
+                            <Text className="text-base font-UrbanistSemiBold text-gray-800">{fullAmount}</Text>
                         </View>
                     </View>
                     <View className="mb-5 bg-white rounded-xl px-5">
@@ -140,16 +173,19 @@ export default function ReviewSummaryScreen() {
                 <View className="py-3">
                     <TouchableOpacity
                         className="bg-primary-500 p-4 rounded-full items-center"
-                        onPress={() => {
-                            router.push({
-                                pathname: "/pin/",
-                                params: {
-                                    redirect: `/doctor-appointments/review-summary?${success ? "failed=1" : "success=1"}`
-                                }
-                            })
-                        }}
-                    >
-                        <Text className="text-white font-UrbanistBold">Next</Text>
+                        // onPress={() => {
+                        //     router.push({
+                        //         pathname: "/pin/",
+                        //         params: {
+                        //             redirect: `/doctor-appointments/review-summary?${success ? "failed=1" : "success=1"}`
+                        //         }
+                        //     })
+                        // }}
+                        onPress={bookAppointment}
+                        disabled={loading}>
+                        {loading ? (<ActivityIndicator color="#FFFFFF" />) : (
+                            <Text className="text-white font-UrbanistBold">Next</Text>
+                        )}
                     </TouchableOpacity>
                 </View>
             </View ></>

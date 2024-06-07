@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
@@ -8,10 +8,12 @@ import {
   Text,
   TouchableOpacity,
   View,
+  BackHandler,
+  Alert
 } from "react-native";
 import Swiper from "react-native-swiper";
 import RotatingImage from "./RotatingImage";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width, height } = Dimensions.get("window");
 
 const OnBoarding = () => {
@@ -21,15 +23,57 @@ const OnBoarding = () => {
   const fadeAnimSecond = useRef(new Animated.Value(0)).current;
   const [index, setIndex] = useState(0);
   const swiperRef = useRef(null);
+  const [isSignupSigninScreen, setIsSignupSigninScreen] = useState(false);
+  const [viewedOnboarding, setViewedOnboarding] = useState(false);
+
+
+  useEffect(() => {
+    checkOnBoarding();
+
+  }, []);
+
+  const checkOnBoarding = async () => {
+    try {
+      const value = await AsyncStorage.getItem('viewedOnboarding');
+      if (value !== null) {
+        setIsSignupSigninScreen(true);
+        router.push("signupSignin")
+      }
+      else {
+        setViewedOnboarding(false);
+      }
+    } catch (err) {
+      console.error('Error checkOnboarding: ', err);
+    }
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      if (isSignupSigninScreen) {
+        BackHandler.exitApp();
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+  })
+
+
 
   const handleNext = () => {
+    AsyncStorage.setItem('viewedOnboarding', "true");
     if (swiperRef.current) {
       (swiperRef.current as any).scrollBy(1);
     }
   };
 
   useEffect(() => {
-    // Fade out the first splash screen after 3 seconds
+
     const firstTimer = setTimeout(() => {
       Animated.timing(fadeAnimFirst, {
         toValue: 0,
@@ -39,14 +83,14 @@ const OnBoarding = () => {
         setShowFirstSplash(false);
         setShowSecondSplash(true);
 
-        // Fade in the second splash screen
+
         Animated.timing(fadeAnimSecond, {
           toValue: 1,
           duration: 800,
           useNativeDriver: true,
         }).start();
 
-        // Fade out the second splash screen after 3 seconds
+
         const secondTimer = setTimeout(() => {
           Animated.timing(fadeAnimSecond, {
             toValue: 0,
@@ -109,7 +153,7 @@ const OnBoarding = () => {
           </TouchableOpacity>
         )}
         {index >= 2 && (
-          <TouchableOpacity style={[styles.button, {padding: 0, paddingVertical: 1}]}>
+          <TouchableOpacity style={[styles.button, { padding: 0, paddingVertical: 1 }]}  >
             <Link href="/signupSignin/" style={[styles.button]} className="font-UrbanistSemiBold">
               Get Started
             </Link>
@@ -141,10 +185,10 @@ const OnBoarding = () => {
         <Animated.View style={[styles.splash2, { opacity: fadeAnimFirst }]}>
           <Image
             style={styles.Logo}
-            source={require("@/assets/MedicaLogo.png")} // Change this to the appropriate image for the second splash screen
+            source={require("@/assets/MedicaLogo.png")}
           />
           <View style={styles.loader}>
-			<RotatingImage />
+            <RotatingImage />
           </View>
         </Animated.View>
       )}
@@ -154,24 +198,24 @@ const OnBoarding = () => {
         <Text>Medica App</Text>
       </View>
     </View>
-   
+
   );
 };
 
 const styles = StyleSheet.create({
-	loader: {
-		position: 'absolute',
-		bottom: 100,
-		width: width,
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	Logo: {
-		height: 60,
-		aspectRatio: 238 / 60
-	},
-	wrapper: {
+  loader: {
+    position: 'absolute',
+    bottom: 100,
+    width: width,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  Logo: {
+    height: 60,
+    aspectRatio: 238 / 60
+  },
+  wrapper: {
     height: height * 0.8,
     display: 'flex',
     alignItems: 'center',
@@ -200,12 +244,12 @@ const styles = StyleSheet.create({
     height: height,
     width: width,
     paddingHorizontal: 10,
-	},
-	splash2: {
-		flex: 1,
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center'
+  },
+  splash2: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   intro: {
     padding: 10,
