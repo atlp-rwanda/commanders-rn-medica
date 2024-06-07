@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -17,32 +18,53 @@ import SignUpText from "../../components/SignUpText";
 import SignUpWith from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
+import { supabase } from "../supabase";
 
 const SingUp = () => {
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
   const [isPasswordActive, setIsPasswordActive] = useState<boolean>(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isEmailFilled, setIsEmailFilled] = useState<boolean>(false);
-  const [isPasswordFilled, setIsPasswordFilled] = useState<boolean>(false);
+    const [password, setPassword] = useState("");
+    const [isEmailFilled, setIsEmailFilled] = useState<boolean>(false);
+    const [isPasswordFilled, setIsPasswordFilled] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
 
-  const handleEmailActiveChange = (isActive: boolean) => {
-    setIsEmailActive(isActive);
-  };
+    const handleEmailActiveChange = (isActive: boolean) => {
+      setIsEmailActive(isActive);
+    };
 
-  const handlePasswordActiveChange = (isActive: boolean) => {
-    setIsPasswordActive(isActive);
-  };
+    const handlePasswordActiveChange = (isActive: boolean) => {
+      setIsPasswordActive(isActive);
+    };
 
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-    setIsEmailFilled(!!text);
-  };
+    const handleEmailChange = (text: string) => {
+      setEmail(text);
+      setIsEmailFilled(!!text);
+    };
 
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-    setIsPasswordFilled(!!text);
-  };
+    const handlePasswordChange = (text: string) => {
+      setPassword(text);
+      setIsPasswordFilled(!!text);
+    };
+
+    async function signUpWithEmail() {
+      setLoading(true);
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) Alert.alert(error.message);
+      if (error) {
+        Alert.alert(error.message);
+        setLoading(false);
+      } else {
+        router.push("/(tabs)/");
+      }
+    }
 
   return (
     <SafeAreaView style={areaView}>
@@ -76,14 +98,9 @@ const SingUp = () => {
             <Button
               title="Sign up"
               rounded
-              disabled={
-                isEmailActive ||
-                isEmailFilled ||
-                isPasswordActive ||
-                isPasswordFilled
-              }
+              disabled={loading}
               onPress={() => {
-                router.push("/Userprofile/userprofile");
+                signUpWithEmail();
               }}
             />
           </View>
