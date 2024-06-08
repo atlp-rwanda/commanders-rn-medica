@@ -2,7 +2,6 @@ import Spinner from "@/components/spinner";
 import { User } from "@supabase/supabase-js";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as Google from "expo-auth-session/providers/google";
-import { router } from "expo-router";
 import { useRouteInfo } from "expo-router/build/hooks";
 import * as WebBrowser from "expo-web-browser";
 import { useEffect, useState } from "react";
@@ -17,6 +16,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { router, useNavigation } from "expo-router";
 import BackIcon from "../../components/BackIcon";
 import Or from "../../components/Or";
 import SignInButton from "../../components/SignInButton";
@@ -24,14 +24,23 @@ import SignUpText from "../../components/SignUpText";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
 import { screenbgcolor } from "../../styles/usecolor";
+
+import { makeRedirectUri } from "expo-auth-session";
+import * as QueryParams from "expo-auth-session/build/QueryParams";
+import * as Linking from "expo-linking";
 import { supabase } from "../supabase";
-
-WebBrowser.maybeCompleteAuthSession();
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserSessionType, setSession } from "@/redux/reducers/session";
+import { AppDispatch, RootState } from "@/redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { compose } from "redux";
 const LetsYouIn = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const route = useRouteInfo();
+  const sessionData = useSelector((state: RootState) => state?.session)
+  const dispatch = useDispatch<AppDispatch>();
+  const [data, setData] = useState<any>();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
@@ -57,7 +66,6 @@ const LetsYouIn = () => {
           Alert.alert("Error", sbRequest.error.message);
         } else {
           const { data } = await supabase.auth.getUser();
-          console.log(data);
           if (data) {
             setUser(data.user);
           } else {
@@ -129,10 +137,106 @@ const LetsYouIn = () => {
       router.push("/(tabs)/");
       return;
     } catch (e) {
-      console.log(JSON.stringify(e, null, 2));
+      // console.log(JSON.stringify(e, null, 2));
       return;
     }
   };
+  
+  const redirectTo = makeRedirectUri({ scheme: "com.andela.commanders.medica" });
+  const checkUserProfile = async (userId: string) => {
+    const { data: user, error } = await supabase
+      .from('patient')
+      .select('id,phone,gender,nickname,profile_picture')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.log('Error checking user profile:', error.message);
+      return false;
+    }
+
+    return user && user.phone && user.gender && user.nickname;
+  };
+
+  const redirectUserFb = async (userId: string) => {
+    const profileComplete = await checkUserProfile(userId);
+    if (profileComplete) {
+      router.push('/(tabs)/');
+    } else {
+      router.push('/Userprofile/userprofile');
+    }
+  };
+
+  const handleAuthentication = async (session: any) => {
+    await AsyncStorage.setItem('data', JSON.stringify(session));
+
+    dispatch(setSession({
+      accessToken: session?.access_token,
+      fullName: session?.user.user_metadata.full_name,
+      email: session?.user.email,
+      picture: session?.user.user_metadata.picture,
+      userId: session?.user.id,
+      nickname: '',
+    }));
+
+    await redirectUserFb(session?.user.id);
+  };
+
+  const performOAuth = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+          redirectTo: redirectTo + 'signupSignin',
+          skipBrowserRedirect: true,
+        },
+      });
+      if (error) throw error;
+
+      const res = await WebBrowser.openAuthSessionAsync(
+        data?.url ?? "",
+        redirectTo
+      );
+
+      if (res.type === 'success') {
+        const { url } = res;
+        await createSessionFromUrl(url);
+      }
+    } catch (error) {
+      console.error('Facebook auth error:', error);
+      Alert.alert('Authentication Error', 'Failed to sign in with Facebook. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createSessionFromUrl = async (url: string) => {
+    const { params, errorCode } = QueryParams.getQueryParams(url);
+
+    if (errorCode) throw new Error(errorCode);
+    const { access_token, refresh_token } = params;
+
+    if (!access_token) return;
+
+    const { data, error } = await supabase.auth.setSession({
+      access_token,
+      refresh_token,
+    });
+    if (error) throw error;
+
+    await handleAuthentication(data.session);
+  };
+
+  const url = Linking.useURL();
+  useEffect(() => {
+    if (url) {
+      createSessionFromUrl(url);
+    }
+  }, [url]);
+
+  WebBrowser.maybeCompleteAuthSession();
+
 
   return (
     <>
@@ -150,11 +254,12 @@ const LetsYouIn = () => {
                 BackHandler.exitApp();
               }}
             />
-            <Text style={styles.title}>Let’s get you in</Text>
+            <Text style={styles.title}>Let’s you in</Text>
             <View style={{ width: "100%", gap: 16 }}>
               <SignInButton
                 title="Continue with Facebook"
                 logo={require("../../assets/facebook-logo.png")}
+                onPress={performOAuth}
               />
               <SignInButton
                 title="Continue with Google"

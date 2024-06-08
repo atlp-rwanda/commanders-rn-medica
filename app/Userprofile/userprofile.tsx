@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -22,8 +23,15 @@ import {
   selector,
 } from "../../assets/icons/userprofile/icons";
 import { supabase } from "../supabase";
+import { UserSessionType, setSession } from "@/redux/reducers/session";
+import { AppDispatch, RootState } from "@/redux/store/store";
+import {  useSelector } from "react-redux";
+const { width: screenWidth } = Dimensions.get("window");
 
 const UserProfile = () => {
+	const sessionData = useSelector(
+        (state: RootState) => state.session
+    );
   const [image, setImage] = useState("");
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -55,7 +63,6 @@ const UserProfile = () => {
       setPhone(user?.phone || "");
     }
   }, [user]);
-
   const data = [
     { key: "1", value: "Male" },
     { key: "2", value: "Female" },
@@ -115,7 +122,15 @@ const UserProfile = () => {
     }
     return fileName;
   };
-
+	const loadingData=()=>{
+		if(sessionData){
+			setFullName(sessionData.fullName!);
+			setImage (sessionData.picture as string);
+			setUserEmail(sessionData.email!);
+			setUserId(sessionData.userId!);
+			setNickname(sessionData.nickname!);
+		}
+	}
   const handleSubmit = async () => {
     setLoading(true);
     setError("");
@@ -158,7 +173,11 @@ const UserProfile = () => {
       email: userEmail,
       profile_picture: imageName,
     });
-
+		// const {data,error}= await supabase.auth.updateUser({phone: phone})
+		// if(data){
+		// 	router.navigate("/(tabs)")
+		// }
+		
     if (insertError) {
       setError(insertError.message);
       setLoading(false);
@@ -166,8 +185,11 @@ const UserProfile = () => {
       router.push("/Userprofile/createpin");
       setLoading(false);
     }
+		
   };
-
+	useEffect(()=>{
+		loadingData()
+	}, [sessionData]);
   return (
     <SafeAreaView className="flex-1 my-10 mx-5 text-xl">
       <ScrollView showsVerticalScrollIndicator={false}>
