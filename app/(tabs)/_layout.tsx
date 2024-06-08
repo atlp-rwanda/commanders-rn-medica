@@ -1,12 +1,46 @@
+import React, { useEffect, useState } from "react";
+import { BackHandler } from "react-native";
 import { Tabs } from "expo-router";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { TabsIcons } from "../../assets/icons";
+import { supabase } from "../supabase";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  return (
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    async function checkAuthentication() {
+      try {
+        const { data: user } = await supabase.auth.getSession();
+        setAuthenticated(!!user); 
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+      }
+    }
+
+    checkAuthentication();
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (authenticated) {
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove(); 
+  }, [authenticated]);
+
+  return authenticated ? ( 
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "blue",
@@ -78,5 +112,5 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
-  );
+  ) : null;
 }

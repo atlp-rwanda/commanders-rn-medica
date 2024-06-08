@@ -209,6 +209,7 @@ const Home = () => {
       />
       <View className="px-6 mb-0 w-full">
         {filteredDoctors.map((item, index) => (
+          //@ts-ignore
           <DoctorCard
             key={index}
             {...item}
