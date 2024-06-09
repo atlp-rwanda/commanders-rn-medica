@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "medica",
-    "slug": "medica",
-    "owner": "8_commanders",
+    "name": "medica-rn-commanders",
+    "slug": "medica-commanders",
+    "owner": "apiimperfect",
     "version": "1.0.0",
     "scheme": "your-app-scheme",
     "orientation": "portrait",
@@ -15,14 +15,19 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andela.commanders.medica"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.alatifah.medica"
+      "package": "com.andela.commanders.medica",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -45,7 +50,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "53313078-5ee6-4fcd-8284-a14826f4f14a"
+        "projectId": "aaa92720-37aa-4291-bd17-f0efcf64ef8e"
       }
     },
     "runtimeVersion": {
