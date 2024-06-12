@@ -1,6 +1,6 @@
 import { Icon, IconName } from "@/components/Icon";
 import { NavigationHeader } from "@/components/NavigationHeader";
-import { router } from "expo-router";
+import { router} from "expo-router";
 import { useState } from "react";
 import {
   Image,
@@ -8,17 +8,43 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
+  Alert,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
+import { Text } from "@/components/ThemedText";
+import { supabase } from "../supabase";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 type ContactMethod = "sms" | "email";
 
 export default function ForgotPasswordScreen() {
   const [selected, setSelected] = useState<ContactMethod>("sms");
+  const[email, setEmail]=useState("");
+  const [phone, setPhone]= useState("");
+  const [error, setError] = useState("");
+
+  const handlePasswordReset = async () => {
+    if (selected === "email") {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) {
+      setError("oops you forgot to provide a registered email")
+    } else {
+      Alert.alert("Success", "Reset otp has been sent to your email.");
+      router.push({
+        pathname: "reset-password/verify-code",
+        params: { email, method: selected },
+      });
+    }
+  }
+  };
+ 
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
     <View style={styles.container}>
       <NavigationHeader title="Forgot Password" />
       <ScrollView
@@ -26,7 +52,6 @@ export default function ForgotPasswordScreen() {
           flex: 1,
         }}
       >
-        <KeyboardAvoidingView>
           <Image
             source={require("@/assets/images/forgot-password/frame.png")}
             style={styles.image}
@@ -38,29 +63,34 @@ export default function ForgotPasswordScreen() {
             <SelectContactMethod
               icon="chat"
               title="via SMS"
-              subtitle="+1 111 ******99"
+              subtitle={phone}
               selected={selected === "sms"}
               onPress={() => setSelected("sms")}
+              setContact={setPhone} 
             />
             <SelectContactMethod
               icon="message"
               title="via Email"
-              subtitle="and***ley@yourdomain.com"
+              subtitle={email}
               selected={selected === "email"}
               onPress={() => setSelected("email")}
+              setContact={setEmail} 
             />
           </View>
+          <Text className="text-[#913831] font-[UrbanistRegular] text-center text-[14px]">{error}</Text>
           <TouchableOpacity
             className="bg-lightblue p-4 my-5 rounded-full shadow-sm shadow-lightblue"
-            onPress={() => {
-              router.push("/reset-password/verify-code");
-            }}
+            onPress={
+              handlePasswordReset
+            }
           >
             <Text className="text-white text-center font-bold">Continue</Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+      
       </ScrollView>
     </View>
+       </KeyboardAvoidingView>
+       </TouchableWithoutFeedback>
   );
 }
 
@@ -70,12 +100,14 @@ const SelectContactMethod = ({
   subtitle,
   selected,
   onPress,
+  setContact
 }: {
   icon: IconName;
   title: string;
   subtitle: string;
   selected: boolean;
   onPress?: () => void;
+  setContact?: (contact: string) => void;
 }) => {
   return (
     <Pressable
@@ -87,7 +119,16 @@ const SelectContactMethod = ({
       </View>
       <View>
         <Text style={styles.cardTitle}>{[title]}</Text>
-        <Text style={styles.cardSubtitle}>{subtitle}</Text>
+        {selected ? (
+          <TextInput
+            style={styles.cardSubtitle}
+            placeholder="type here"
+            value={subtitle}
+            onChangeText={setContact}
+          />
+        ) : (
+          <Text style={styles.cardSubtitle}>{subtitle}</Text>
+        )}
       </View>
     </Pressable>
   );

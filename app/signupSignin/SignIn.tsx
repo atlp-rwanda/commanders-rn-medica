@@ -103,9 +103,9 @@ const SignIn = () => {
             />
             <Pressable
               style={{ alignItems: "center" }}
-              onPress={() => {
-                router.push("/reset-password/");
-              }}
+              onPress={()=>
+                router.push("/reset-password/")
+              }
             >
               <Text
                 style={{
