@@ -1,7 +1,5 @@
-import { PasswordInput } from "@/components/Input";
-import { NavigationHeader } from "@/components/NavigationHeader";
-import Checkbox from "expo-checkbox";
 import { useEffect, useState } from "react";
+import { supabase } from '../supabase';
 import {
   Animated,
   Easing,
@@ -10,18 +8,23 @@ import {
   Modal,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from "react-native";
+import { Text } from "@/components/ThemedText";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
+import { PasswordInput } from "@/components/Input";
+import { NavigationHeader } from "@/components/NavigationHeader";
+import Checkbox from "expo-checkbox";
+import { useRouter } from "expo-router";
 export default function NewPasswordScreen() {
+  const router = useRouter();
   const [isChecked, setIsChecked] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [confirmPasswordRef, setConfirmPasswordRef] =
-    useState<TextInput | null>(null);
-
+  const [confirmPasswordRef, setConfirmPasswordRef] = useState<TextInput | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState<{ type: string; text: string } | null>(null);
   const rotateValue = new Animated.Value(0);
   const rotate = rotateValue.interpolate({
     inputRange: [0, 1],
@@ -43,9 +46,30 @@ export default function NewPasswordScreen() {
       spin();
       setTimeout(() => {
         setIsModalVisible(false);
-      }, 3000);
+        router.push("/(tabs)"); 
+      }, 4000);
     }
   }, [isModalVisible]);
+  const handlePasswordReset = async () => {
+    if (newPassword !== confirmPassword) {
+      setMessage({ type: "error", text: "Passwords do not match" });
+      return;
+    }
+
+    const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+
+    if (updateError) {
+    
+      setMessage({ type: "error", text: updateError.message });
+    } else {
+      setMessage({ type: "success", text: "Password was reset successfully ✅" });
+      setTimeout(() => {
+        setIsModalVisible(true);
+      }, 4000);
+    }
+  };
+
+
 
   return (
     <>
@@ -102,17 +126,30 @@ export default function NewPasswordScreen() {
             placeholder="Password"
             returnKeyType="next"
             blurOnSubmit={false}
-            onSubmitEditing={() => {
-              console.log("Next");
-              confirmPasswordRef?.focus();
-            }}
+            onSubmitEditing={() => confirmPasswordRef?.focus()}
+            value={newPassword}
+            onChangeText={setNewPassword}
           />
           <PasswordInput
             placeholder="Confirm Password"
             returnKeyType="done"
             blurOnSubmit={true}
             setRef={setConfirmPasswordRef}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
+          <View>
+          {message?.type === "error" && (
+              <Text className="text-[#913831] text-center font-[UrbanistRegular] text-[18px]">
+                {message.text}
+              </Text>
+            )}
+            {message?.type === "success" && (
+              <Text className="text-[#4BB543] text-center font-[UrbanistRegular] text-[18px]">
+                {message.text}
+              </Text>
+            )}
+          </View>
           <View style={styles.checkboxContainer}>
             <Checkbox
               value={isChecked}
@@ -125,9 +162,7 @@ export default function NewPasswordScreen() {
           <View style={{ flex: 1 }} />
           <TouchableOpacity
             className="bg-lightblue p-4 my-5 rounded-full shadow-sm shadow-lightblue"
-            onPress={() => {
-              setIsModalVisible(true);
-            }}
+            onPress={ handlePasswordReset }
           >
             <Text className="text-white text-center font-bold">Continue</Text>
           </TouchableOpacity>
@@ -162,7 +197,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     objectFit: "contain",
   },
-
   modalTitle: {
     fontSize: 24,
     fontWeight: "bold",

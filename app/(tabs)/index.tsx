@@ -1,6 +1,6 @@
 import { RootState } from "@/redux/store/store";
 import { Link, router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -18,61 +18,48 @@ import { notification } from "../../assets/icons/notification";
 import DoctorCard from "../../components/cards/doctorCard";
 import CarouselComponent from "../../components/carousel";
 import { SearchInput } from "../../components/searchInput";
+import { supabase } from "../supabase"; 
+import { Doctor } from "@/redux/reducers/doctors"
 
 const roleFilters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
-const doctors = [
-  {
-    name: "Eloi Chrysanthe",
-    role: "Opthamologist",
-    stars: "4.3",
-    hospital: "Muhima",
-    reviews: "231",
-    image: "",
-    images: "../../assets/doctors/doctor1.png",
-  },
-  {
-    name: "Uwamahoro",
-    role: "Pediatric",
-    stars: "4.3",
-    hospital: "Masaka",
-    reviews: "2,542",
-    image: "",
-    images: "../../assets/doctors/doctor2.png",
-  },
-  {
-    name: "Hakizimana",
-    role: "Nutritionist",
-    stars: "4.3",
-    hospital: "KHI",
-    reviews: "1,242",
-    image: "",
-    images: "../../assets/doctors/doctor3.png",
-  },
-  {
-    name: "Emmanuel",
-    role: "Dentist",
-    stars: "4.3",
-    hospital: "Masaka",
-    reviews: "2,542",
-    image: "",
-    images: "../../assets/doctors/doctor2.png",
-  },
-  {
-    name: "Hakizimana",
-    role: "General",
-    stars: "4.3",
-    hospital: "KHI",
-    reviews: "1,242",
-    image: "",
-    images: "../../assets/doctors/doctor3.png",
-  },
-];
 
 const Home = () => {
-  const doctors = useSelector((state: RootState) => state.doctors.doctors);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
   const insets = useSafeAreaInsets();
-  const [selectedRole, selectRole] = useState(0);
-  const [filteredDoctors, filterDoctors] = useState(doctors);
+  const [selectedRole, setSelectedRole] = useState(0);
+
+  const fetchDoctors = async () => {
+    try {
+      let { data: doctorsData, error } = await supabase
+        .from("doctor")
+        .select("*");
+
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        console.log("Doctors:----->", doctorsData);
+      
+        setDoctors(doctorsData || []);
+        setFilteredDoctors(doctorsData || []);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+  useEffect(() => {
+    setFilteredDoctors(
+      selectedRole === 0
+        ? doctors
+        : doctors.filter((doctor) => doctor.role === roleFilters[selectedRole])
+    );
+  }, [selectedRole, doctors]);
+
   return (
     <ScrollView
       style={{ marginTop: insets.top }}
@@ -99,10 +86,20 @@ const Home = () => {
             </Text>
           </View>
           <Link href="/notifications/">
-            <SvgXml xml={notification} width={26} height={26} className="text-gray-900" />
+            <SvgXml
+              xml={notification}
+              width={26}
+              height={26}
+              className="text-gray-900"
+            />
           </Link>
           <Link href="/Doctors/favoriteDoctors">
-            <SvgXml xml={heart} width={26} height={26} className="text-gray-900" />
+            <SvgXml
+              xml={heart}
+              width={26}
+              height={26}
+              className="text-gray-900"
+            />
           </Link>
         </View>
         <SearchInput />
@@ -162,13 +159,15 @@ const Home = () => {
       <View className="flex-row items-center w-full justify-between px-6 mb-3">
         <Text className="text-[20px] font-['UrbanistBold']">Top Doctors</Text>
         <TouchableOpacity activeOpacity={0.8}>
-
-<Text className="text-[16px] font-['UrbanistBold'] text-lightblue" onPress={() => {
-  router.push("/Doctors/topDoctors");
-}}>
-  See All
-</Text>
-</TouchableOpacity>
+          <Text
+            className="text-[16px] font-['UrbanistBold'] text-lightblue"
+            onPress={() => {
+              router.push("/Doctors/topDoctors");
+            }}
+          >
+            See All
+          </Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         data={roleFilters}
@@ -180,24 +179,28 @@ const Home = () => {
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
-            className={`px-4 py-1 border-lightblue border ${index === 0 ? "ml-6" : "ml-0"
-              } ${selectedRole === index ? "bg-lightblue" : "bg-transparent"
-              } rounded-2xl items-center justify-center ${index === roleFilters.length - 1 ? "mr-6" : "mr-3"
-              }`}
+            className={`px-4 py-1 border-lightblue border ${
+              index === 0 ? "ml-6" : "ml-0"
+            } ${
+              selectedRole === index ? "bg-lightblue" : "bg-transparent"
+            } rounded-2xl items-center justify-center ${
+              index === roleFilters.length - 1 ? "mr-6" : "mr-3"
+            }`}
             onPress={() => {
-              selectRole(index);
-              filterDoctors(
+              setSelectedRole(index);
+              setFilteredDoctors(
                 index === 0
                   ? doctors
                   : doctors.filter(
-                    (doctor) => doctor.role === roleFilters[index]
-                  )
+                      (doctor) => doctor.role === roleFilters[index]
+                    )
               );
             }}
           >
             <Text
-              className={`${selectedRole === index ? "text-[#FFFFFF]" : "text-lightblue"
-                } font-[UrbanistSemiBold]`}
+              className={`${
+                selectedRole === index ? "text-[#FFFFFF]" : "text-lightblue"
+              } font-[UrbanistSemiBold]`}
             >
               {item}
             </Text>

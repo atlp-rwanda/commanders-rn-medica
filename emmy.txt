@@ -1,0 +1,20 @@
+# Doctor Card Feature
+
+## What this PR do?
+The Doctor Card feature is designed to display information about doctors in a visually appealing and user-friendly manner. This component is useful for healthcare-related applications where users need to view details about different doctors, such as their name, specialty, affiliated hospital, and reviews.
+
+## Features
+- [x] **Doctor Name**: Displays the name of the doctor.
+- [x] **Role**: Shows the specialty or role of the doctor (e.g., Cardiologist, Neurologist).
+- [x] **Hospital**: Indicates the hospital or medical institution where the doctor practices.
+- [x] **Image**: Includes a profile picture or avatar of the doctor.
+- [x] **Ratings**: Displays the doctor's rating using a star system.
+- [x] **Reviews**: Shows the number of reviews the doctor has received.
+
+## Integration and Database Interaction
+This feature integrates with a Supabase backend to save and retrieve doctor information from a PostgreSQL database.
+
+
+## Screenshoot
+<img width="328" alt="Screenshot 2024-06-13 at 21 43 28" src="https://github.com/atlp-rwanda/commanders-rn-medica/assets/86968559/2832cb19-012c-4da0-858c-d1b1ea3e8315">
+

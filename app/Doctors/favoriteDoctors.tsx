@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import DocButton from "@/components/cards/DocButtons";
 import { Icon } from "@/components/Icon";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { StyleSheet, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback,Text, ImageSourcePropType, Modal } from "react-native";
 type cardSpot = {
@@ -16,6 +16,8 @@ type cardSpot = {
   images: ImageSourcePropType;
 };
 import { useFonts } from "expo-font";
+import { supabase } from "../supabase";
+import { Doctor } from "@/redux/reducers/doctors";
 export default function DoctorDetails() {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedSpot, setSelectedSpot] = useState<cardSpot | null>(null);
@@ -24,57 +26,39 @@ export default function DoctorDetails() {
     setIsVisible(!isVisible);
     setSelectedSpot(spot);
   };
-  const docCards = [
-    {
-      name: "Dr. Travis Westaby",
-      role: "Dentist",
-      hospital: "Alka Hospital",
-      image: require("../../assets/doctors/heart.png"),
-      stars: "4.3",
-      reviews: "5,376",
-      images: require("../../assets/doctors/doc1.png"),
-    },
-    {
-      name: "Dr. Nathaniel Valle",
-      role: "Nutritionist",
-      hospital: "B&B Hospital",
-      image: require("../../assets/doctors/heart.png"),
-      stars: "4.6",
-      reviews: "3,837",
-      images: require("../../assets/doctors/doc2.png"),
-    },
-    {
-      name: "Dr. Beckett Calge",
-      role: "Dentist",
-      hospital: "Venus Hospital",
-      image: require("../../assets/doctors/heart.png"),
-      stars: "4.4",
-      reviews: "4,942",
-      images: require("../../assets/doctors/doc3.png"),
-    },
-    {
-      name: "Dr. Jada Srnsky",
-      role: "General",
-      hospital: "Bir Hospital",
-      image: require("../../assets/doctors/heart.png"),
-      stars: "4.6",
-      reviews: "5,366",
-      images: require("../../assets/doctors/doc4.png"),
-    },
-    {
-      name: "Dr. Bernard Bliss",
-      role: "Nutritionist",
-      hospital: "The valley Hospital",
-      image: require("../../assets/doctors/heart.png"),
-      stars: "4.8",
-      reviews: "3,279",
-      images: require("../../assets/doctors/doc5.png"),
-    },
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
 
-  ];
+
+  const fetchDoctors = async () => {
+    
+
+    try {
+      let { data: doctorsData, error } = await supabase
+        .from("doctor")
+        .select("*");
+
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        console.log("Doctors:----->", doctorsData);
+      
+        setDoctors(doctorsData || []);
+        setFilteredDoctors(doctorsData || []);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+
   const filteredDocCards = selectedCategory === "all"
-    ? docCards
-    : docCards.filter(doc => doc.role.toLowerCase() === selectedCategory.toLowerCase());
+    ? doctors
+    : doctors.filter(doc => doc.role.toLowerCase() === selectedCategory.toLowerCase());
 
 
   return (
