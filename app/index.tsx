@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
 import { useEffect, useRef, useState } from "react";
+import {router} from "expo-router";
 import {
   Animated,
   Dimensions,
@@ -11,11 +12,15 @@ import {
 } from "react-native";
 import Swiper from "react-native-swiper";
 import RotatingImage from "./RotatingImage";
+import { useSelector, useDispatch } from 'react-redux';
+import { completeOnboarding } from "../redux/reducers/obReducer";
 
 const { width, height } = Dimensions.get("window");
 
 const OnBoarding = () => {
-  const [showFirstSplash, setShowFirstSplash] = useState(true);
+  const dispatch = useDispatch();
+  const onboardingCompleted = useSelector(state => state.onboarding.onboardingCompleted);
+  const [showFirstSplash, setShowFirstSplash] = useState(!onboardingCompleted);
   const [showSecondSplash, setShowSecondSplash] = useState(false);
   const fadeAnimFirst = useRef(new Animated.Value(1)).current;
   const fadeAnimSecond = useRef(new Animated.Value(0)).current;
@@ -29,39 +34,41 @@ const OnBoarding = () => {
   };
 
   useEffect(() => {
-    // Fade out the first splash screen after 3 seconds
-    const firstTimer = setTimeout(() => {
-      Animated.timing(fadeAnimFirst, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: true,
-      }).start(() => {
-        setShowFirstSplash(false);
-        setShowSecondSplash(true);
-
-        // Fade in the second splash screen
-        Animated.timing(fadeAnimSecond, {
-          toValue: 1,
+    if (!onboardingCompleted) { 
+      const firstTimer = setTimeout(() => {
+        Animated.timing(fadeAnimFirst, {
+          toValue: 0,
           duration: 800,
           useNativeDriver: true,
-        }).start();
-
-        // Fade out the second splash screen after 3 seconds
-        const secondTimer = setTimeout(() => {
+        }).start(() => {
+          setShowFirstSplash(false);
+          setShowSecondSplash(true);
           Animated.timing(fadeAnimSecond, {
-            toValue: 0,
+            toValue: 1,
             duration: 800,
             useNativeDriver: true,
-          }).start(() => {
-            setShowSecondSplash(false);
-          });
-        }, 4000);
-        return () => clearTimeout(secondTimer);
-      });
-    }, 3000);
+          }).start();
+          const secondTimer = setTimeout(() => {
+            Animated.timing(fadeAnimSecond, {
+              toValue: 0,
+              duration: 800,
+              useNativeDriver: true,
+            }).start(() => {
+              setShowSecondSplash(false);
+            });
+          }, 4000);
+          return () => clearTimeout(secondTimer);
+        });
+      }, 3000);
 
-    return () => clearTimeout(firstTimer);
-  }, [fadeAnimFirst, fadeAnimSecond]);
+      return () => clearTimeout(firstTimer);
+    }
+  }, [fadeAnimFirst, fadeAnimSecond, onboardingCompleted]);
+
+  const handleCompleteOnboarding = () => {
+    dispatch(completeOnboarding());
+    router.push('/signupSignin/index');
+  };
 
   const renderContent = () => (
     <View style={styles.main}>
@@ -109,7 +116,7 @@ const OnBoarding = () => {
           </TouchableOpacity>
         )}
         {index >= 2 && (
-          <TouchableOpacity style={[styles.button, {padding: 0, paddingVertical: 1}]}>
+          <TouchableOpacity style={[styles.button, {padding: 0, paddingVertical: 1}]} onPress={handleCompleteOnboarding}>
             <Link href="/signupSignin/" style={[styles.button]} className="font-UrbanistSemiBold">
               Get Started
             </Link>
@@ -118,6 +125,10 @@ const OnBoarding = () => {
       </View>
     </View>
   );
+
+  if (onboardingCompleted) {
+    return null; 
+  }
 
   return (
     <View style={styles.container}>
@@ -141,10 +152,10 @@ const OnBoarding = () => {
         <Animated.View style={[styles.splash2, { opacity: fadeAnimFirst }]}>
           <Image
             style={styles.Logo}
-            source={require("@/assets/MedicaLogo.png")} // Change this to the appropriate image for the second splash screen
+            source={require("@/assets/MedicaLogo.png")} 
           />
           <View style={styles.loader}>
-			<RotatingImage />
+            <RotatingImage />
           </View>
         </Animated.View>
       )}
@@ -154,24 +165,23 @@ const OnBoarding = () => {
         <Text>Medica App</Text>
       </View>
     </View>
-   
   );
 };
 
 const styles = StyleSheet.create({
-	loader: {
-		position: 'absolute',
-		bottom: 100,
-		width: width,
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	Logo: {
-		height: 60,
-		aspectRatio: 238 / 60
-	},
-	wrapper: {
+  loader: {
+    position: 'absolute',
+    bottom: 100,
+    width: width,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  Logo: {
+    height: 60,
+    aspectRatio: 238 / 60
+  },
+  wrapper: {
     height: height * 0.8,
     display: 'flex',
     alignItems: 'center',
@@ -200,12 +210,12 @@ const styles = StyleSheet.create({
     height: height,
     width: width,
     paddingHorizontal: 10,
-	},
-	splash2: {
-		flex: 1,
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center'
+  },
+  splash2: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   intro: {
     padding: 10,
@@ -292,6 +302,3 @@ const styles = StyleSheet.create({
     marginBottom: 100
   },
 });
-
-export default OnBoarding;
-
