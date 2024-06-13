@@ -63,11 +63,11 @@ export default function SetFingerPrint() {
                     </Text>
                    </View>
                 <View className="flex-row justify-center gap-x-3">
-                    <TouchableOpacity className="bg-reducedblue w-2/5 rounded-3xl py-3 mt-2"  onPress={() => navigation.navigate("Userprofile/createpin" as never)}>
-                        <Text className="text-lightblue text-base font-UrbanistRegular text-center font-UrbanistBold">Skip</Text>
+                    <TouchableOpacity className="bg-reducedblue w-2/5 rounded-3xl py-3 mt-2"  onPress={() => router.push("/(tabs)/")}>
+                        <Text className="text-lightblue text-base text-center font-UrbanistBold">Skip</Text>
                     </TouchableOpacity>
                     <TouchableOpacity className="bg-lightblue w-2/5 rounded-3xl py-3 mt-2" onPress={()=>setIsModalVisible(true)}>
-                        <Text className="text-def text-base font-UrbanistRegular text-center font-UrbanistBold">Continue</Text>
+                        <Text className="text-def text-base text-center font-UrbanistBold">Continue</Text>
                     </TouchableOpacity>
                 </View>
                 <Modal

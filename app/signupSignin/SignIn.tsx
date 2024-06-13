@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  Alert,
+  Dimensions,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -20,6 +20,8 @@ import SignUpWith from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
 import { supabase } from "../supabase";
+
+const { width: screenWidth } = Dimensions.get("window");
 
 const SignIn = () => {
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
@@ -51,16 +53,21 @@ const SignIn = () => {
 
   async function signInWithEmail() {
     setLoading(true);
+    setError(""); 
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
 
-    if (error) {
-      Alert.alert(error.message);
+    if (!password && !email) {
+      setError("All fields are required");
+      setLoading(false);
+    } else if (error) {
+      setError(error.message);
       setLoading(false);
     } else {
       router.push("/(tabs)/");
+      setLoading(false);
     }
   }
 
@@ -76,31 +83,36 @@ const SignIn = () => {
             Login to Your Account
           </Text>
           <View style={{ rowGap: 20, width: "100%" }}>
-            <EmailPasswordInput
-              icon="email"
-              placeholder="Email"
-              onActiveChange={handleEmailActiveChange}
-              value={email}
-              onChangeText={handleEmailChange}
-            />
-            <EmailPasswordInput
-              icon="lock"
-              placeholder="Password"
-              secureTextEntry
-              onActiveChange={handlePasswordActiveChange}
-              value={password}
-              onChangeText={handlePasswordChange}
-              isFilled={isPasswordFilled}
-            />
+              <EmailPasswordInput
+                icon="email"
+                placeholder="Email"
+                onActiveChange={handleEmailActiveChange}
+                value={email}
+                onChangeText={handleEmailChange}
+              />
+              <EmailPasswordInput
+                icon="lock"
+                placeholder="Password"
+                secureTextEntry
+                onActiveChange={handlePasswordActiveChange}
+                value={password}
+                onChangeText={handlePasswordChange}
+                isFilled={isPasswordFilled}
+              />
             <RememberMe />
+            <View style={styles.inputContainer}>
+
             <Button
-              title="Sign in"
+              title={loading == true ? "Loading" : "Sign in"}
               rounded
-              disabled={
-                loading
-              }
               onPress={signInWithEmail}
             />
+            {error &&
+              error !== "Email is required" &&
+              error !== "Password is required" && (
+                <Text style={styles.errorText}>{error}</Text>
+                )}
+              </View>
             <Pressable
               style={{ alignItems: "center" }}
               onPress={() => {
@@ -144,11 +156,19 @@ const styles = StyleSheet.create({
     gap: 24,
     padding: 24,
   },
+  inputContainer: {
+    position: "relative",
+  },
   errorText: {
+    position: "absolute",
+    left: screenWidth / 2 -120 ,
+    top: "15%",
+    transform: [{ translateY: -20 }],
     color: "red",
     fontFamily: "UrbanistSemiBold",
-    fontSize: 16,
+    fontSize: 14,
   },
+  
 });
 
 export default SignIn;

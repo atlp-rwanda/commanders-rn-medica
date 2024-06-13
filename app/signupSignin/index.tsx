@@ -17,7 +17,7 @@ const LetsYouIn = () => {
             imageSource={require("../../assets/Frame.png")}
             onPress={router.back}
           />
-          <Text style={styles.title}>Let’s you in</Text>
+          <Text style={styles.title}>Let’s get you in</Text>
           <View style={{ width: "100%", gap: 16 }}>
             <SignInButton
               title="Continue with Facebook"
