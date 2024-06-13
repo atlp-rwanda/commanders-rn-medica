@@ -1,27 +1,33 @@
-import { PasswordInput } from "@/components/Input";
-import { NavigationHeader } from "@/components/NavigationHeader";
-import Checkbox from "expo-checkbox";
 import { useEffect, useState } from "react";
+import { supabase } from '../supabase';
 import {
   Animated,
+  BackHandler,
   Easing,
   Image,
   KeyboardAvoidingView,
   Modal,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
+  ActivityIndicator
 } from "react-native";
+import { Text } from "@/components/ThemedText";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
+import { PasswordInput } from "@/components/Input";
+import { NavigationHeader } from "@/components/Header";
+import Checkbox from "expo-checkbox";
+import { useRouter } from "expo-router";
 export default function NewPasswordScreen() {
+  const router = useRouter();
   const [isChecked, setIsChecked] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [confirmPasswordRef, setConfirmPasswordRef] =
-    useState<TextInput | null>(null);
-
+  const [confirmPasswordRef, setConfirmPasswordRef] = useState<TextInput | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState<{ type: string; text: string } | null>(null);
+  const[loading, setLoading]=useState(false);
   const rotateValue = new Animated.Value(0);
   const rotate = rotateValue.interpolate({
     inputRange: [0, 1],
@@ -37,15 +43,84 @@ export default function NewPasswordScreen() {
       useNativeDriver: true,
     }).start(() => spin());
   };
-
   useEffect(() => {
     if (isModalVisible) {
       spin();
       setTimeout(() => {
         setIsModalVisible(false);
-      }, 3000);
+        router.push("/(tabs)"); 
+      }, 4000);
     }
   }, [isModalVisible]);
+  const validatePassword = (newpassword: string) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(newpassword);
+    const hasLowerCase = /[a-z]/.test(newpassword);
+    const hasDigit = /\d/.test(newpassword);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newpassword);
+
+    if (newpassword.length < minLength) {
+      return "Password must be at least 8 characters long";
+    }
+    if (!hasUpperCase) {
+      return "Password must contain at least one uppercase letter";
+    }
+    if (!hasLowerCase) {
+      return "Password must contain at least one lowercase letter";
+    }
+    if (!hasDigit) {
+      return "Password must contain at least one digit";
+    }
+    if (!hasSpecialChar) {
+      return "Password must contain at least one special character";
+    }
+    return null;
+  };
+ 
+  const handlePasswordReset = async () => {
+    setLoading(true)
+   if(!newPassword || !confirmPassword){
+    setMessage({ type: "error", text: "fill in all fields" });
+    setLoading(false)
+   }
+   const passwordValidationError = validatePassword(newPassword);
+   if (passwordValidationError) {
+     setMessage({ type: "error", text: passwordValidationError });
+     setLoading(false);
+     return;
+   }
+    if (newPassword !== confirmPassword) {
+      setMessage({ type: "error", text: "Passwords do not match" });
+      setLoading(false)
+      return;
+    }
+
+    const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+    if (updateError) {
+    console.log(updateError);
+      setLoading(false);
+    } else {
+      setMessage({ type: "success", text: "Password was reset successfully ✅" });
+      setTimeout(() => {
+        setLoading(false);
+        setIsModalVisible(true);
+      }, 4000);
+    }
+    
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      return true; 
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <>
@@ -80,6 +155,8 @@ export default function NewPasswordScreen() {
       <View style={[styles.container, { zIndex: 1, backgroundColor: "#fff" }]}>
         <NavigationHeader title="Create New Password" />
       </View>
+     
+   
       <KeyboardAvoidingView
         behavior="position"
         style={{ flex: 1 }}
@@ -102,17 +179,30 @@ export default function NewPasswordScreen() {
             placeholder="Password"
             returnKeyType="next"
             blurOnSubmit={false}
-            onSubmitEditing={() => {
-              console.log("Next");
-              confirmPasswordRef?.focus();
-            }}
+            onSubmitEditing={() => confirmPasswordRef?.focus()}
+            value={newPassword}
+            onChangeText={setNewPassword}
           />
           <PasswordInput
             placeholder="Confirm Password"
             returnKeyType="done"
             blurOnSubmit={true}
             setRef={setConfirmPasswordRef}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
+          <View>
+          {message?.type === "error" && (
+              <Text className="text-[#913831] text-center font-[UrbanistRegular] text-[18px]">
+                {message.text}
+              </Text>
+            )}
+            {message?.type === "success" && (
+              <Text className="text-[#4BB543] text-center font-[UrbanistRegular] text-[18px]">
+                {message.text}
+              </Text>
+            )}
+          </View>
           <View style={styles.checkboxContainer}>
             <Checkbox
               value={isChecked}
@@ -125,11 +215,14 @@ export default function NewPasswordScreen() {
           <View style={{ flex: 1 }} />
           <TouchableOpacity
             className="bg-lightblue p-4 my-5 rounded-full shadow-sm shadow-lightblue"
-            onPress={() => {
-              setIsModalVisible(true);
-            }}
+            onPress={ handlePasswordReset }
+            disabled={loading}
           >
-            <Text className="text-white text-center font-bold">Continue</Text>
+            {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <Text className="text-white text-center font-bold">Continue</Text>
+            )}
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -162,7 +255,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     objectFit: "contain",
   },
-
   modalTitle: {
     fontSize: 24,
     fontWeight: "bold",

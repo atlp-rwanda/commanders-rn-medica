@@ -6,12 +6,15 @@ import {
   Pressable,
   StyleSheet,
   TextInputProps,
-  View
+  View,
+  TouchableOpacity
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Icon } from "./Icon";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export const TextInput = ({ ...rest }: TextInputProps) => {
+ 
   return (
     <DefaultTextInput
       className="px-5 py-4 bg-[#FAFAFA]  rounded-lg w-full text-base font-UrbanistRegular"
@@ -31,17 +34,31 @@ export const PasswordInput = ({
   setRef,
   ...rest
 }: PasswordInputProps) => {
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
   return (
     <View style={[styles.passwordContainer, style]}>
       <Icon name="lock" />
       <DefaultTextInput
         style={styles.passwordInput}
         placeholder="Password"
-        secureTextEntry
+        secureTextEntry={!isPasswordVisible}
         ref={(r) => setRef?.(r)}
         {...rest}
       />
-      <Icon name="hide" />
+   <TouchableOpacity
+        onPress={togglePasswordVisibility}
+        style={styles.iconContainer}
+      >
+        <MaterialIcons
+          name={isPasswordVisible ? "visibility" : "visibility-off"}
+          size={20}
+          color="#9E9E9E"
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -102,5 +119,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 16,
     fontSize: 16,
+  },
+  iconContainer: {
+    marginLeft: 10,
   },
 });
