@@ -6,11 +6,13 @@ interface Props {
   title: string;
   logo: any;
   color?: string;
+  onPress?: () => void;
 }
 
-const SignInButton: React.FC<Props> = ({ title, logo, color }) => {
+const SignInButton: React.FC<Props> = ({ title, logo, color, onPress }) => {
   return (
     <TouchableOpacity
+    onPress={onPress}
       style={[
         btnStyle,
         {

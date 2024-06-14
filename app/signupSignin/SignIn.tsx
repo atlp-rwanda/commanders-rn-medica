@@ -16,7 +16,7 @@ import EmailPasswordInput from "../../components/EmailPasswordInput";
 import Or from "../../components/Or";
 import RememberMe from "../../components/RememberMe";
 import SignUpText from "../../components/SignUpText";
-import SignUpWith from "../../components/SignUpWith";
+import { SignUpWith } from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
 import { supabase } from "../supabase";
@@ -53,7 +53,7 @@ const SignIn = () => {
 
   async function signInWithEmail() {
     setLoading(true);
-    setError(""); 
+    setError("");
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -83,41 +83,38 @@ const SignIn = () => {
             Login to Your Account
           </Text>
           <View style={{ rowGap: 20, width: "100%" }}>
-              <EmailPasswordInput
-                icon="email"
-                placeholder="Email"
-                onActiveChange={handleEmailActiveChange}
-                value={email}
-                onChangeText={handleEmailChange}
-              />
-              <EmailPasswordInput
-                icon="lock"
-                placeholder="Password"
-                secureTextEntry
-                onActiveChange={handlePasswordActiveChange}
-                value={password}
-                onChangeText={handlePasswordChange}
-                isFilled={isPasswordFilled}
-              />
+            <EmailPasswordInput
+              icon="email"
+              placeholder="Email"
+              onActiveChange={handleEmailActiveChange}
+              value={email}
+              onChangeText={handleEmailChange}
+            />
+            <EmailPasswordInput
+              icon="lock"
+              placeholder="Password"
+              secureTextEntry
+              onActiveChange={handlePasswordActiveChange}
+              value={password}
+              onChangeText={handlePasswordChange}
+              isFilled={isPasswordFilled}
+            />
             <RememberMe />
             <View style={styles.inputContainer}>
-
-            <Button
-              title={loading == true ? "Loading" : "Sign in"}
-              rounded
-              onPress={signInWithEmail}
-            />
-            {error &&
-              error !== "Email is required" &&
-              error !== "Password is required" && (
-                <Text style={styles.errorText}>{error}</Text>
+              <Button
+                title={loading == true ? "Loading" : "Sign in"}
+                rounded
+                onPress={signInWithEmail}
+              />
+              {error &&
+                error !== "Email is required" &&
+                error !== "Password is required" && (
+                  <Text style={styles.errorText}>{error}</Text>
                 )}
-              </View>
+            </View>
             <Pressable
               style={{ alignItems: "center" }}
-              onPress={()=>
-                router.push("/reset-password/")
-              }
+              onPress={() => router.push("/reset-password/")}
             >
               <Text
                 style={{
@@ -161,14 +158,13 @@ const styles = StyleSheet.create({
   },
   errorText: {
     position: "absolute",
-    left: screenWidth / 2 -120 ,
+    left: screenWidth / 2 - 120,
     top: "15%",
     transform: [{ translateY: -20 }],
     color: "red",
     fontFamily: "UrbanistSemiBold",
     fontSize: 14,
   },
-  
 });
 
 export default SignIn;

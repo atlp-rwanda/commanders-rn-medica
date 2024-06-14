@@ -4,7 +4,7 @@
     "slug": "medica-commanders",
     "owner": "apiimperfect",
     "version": "1.0.0",
-    "scheme": "your-app-scheme",
+    "scheme": "medica",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Dimensions, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
 import { screenbgcolor } from "@/styles/usecolor";
 import { router } from "expo-router";
@@ -8,12 +14,11 @@ import EmailPasswordInput from "../../components/EmailPasswordInput";
 import Or from "../../components/Or";
 import RememberMe from "../../components/RememberMe";
 import SignUpText from "../../components/SignUpText";
-import SignUpWith from "../../components/SignUpWith";
+import { SignUpWith } from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
 import { supabase } from "../supabase";
 
-const { width: screenWidth } = Dimensions.get("window");
 
 const SignUp = () => {
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
@@ -173,7 +178,7 @@ const SignUp = () => {
               <Button
                 title={loading == true ? "Loading" : "Sign up"}
                 rounded
-                onPress={(signUpWithEmail)}
+                onPress={signUpWithEmail}
               />
               {error &&
                 error !== "Email is required" &&
@@ -225,8 +230,8 @@ const styles = StyleSheet.create({
   },
   errorTextIn: {
     position: "absolute",
-    top: "15%",  
-  left: "20%",
+    top: "15%",
+    left: "20%",
     transform: [{ translateY: -20 }],
     color: "red",
     fontFamily: "UrbanistSemiBold",
