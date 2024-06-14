@@ -1,5 +1,6 @@
 import { heart, heartFilledIcon } from "@/assets/icons/heart";
 import {
+  Alert,
   Image,
   ImageSourcePropType,
   Pressable,
@@ -14,21 +15,29 @@ type docCardProps = {
   stars: string;
   hospital: string;
   reviews: string;
-  image: ImageSourcePropType;
+  image: string;
+  images: ImageSourcePropType;
   liked?: boolean;
+  id:string;
+  created_at:string;
+
   onPress?: () => void;
 };
 
 export default function DoctorCard(props: docCardProps) {
+
+  if(!props.name){
+    console.log("here is your image --->",props.image)
+  }
   return (
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
         <View className="flex-row justify-between w-full">
-          <Image source={props.image} className="w-28 h-28" />
+          <Image source={{uri:props.image}} className="w-28 h-28" />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
               <Text className="font-[18px] font-[UrbanistBold]">
-                {props.name}
+                {props?.name}
               </Text>
               <SvgXml
                 xml={props.liked ? heartFilledIcon : heart}
@@ -42,7 +51,7 @@ export default function DoctorCard(props: docCardProps) {
               <Text className="font-[UrbanistMedium] text-xs">
                 {props.role}
                 {"   |   "}
-                {props.hospital}
+                {props?.hospital}
               </Text>
             </View>
             <View className="flex-row gap-1">
@@ -51,7 +60,7 @@ export default function DoctorCard(props: docCardProps) {
                 {props.stars}
               </Text>
               <Text className="font-[UrbanistMedium] text-xs">
-                ({props.reviews} reviews)
+                ({props.reviews} 123 reviews)
               </Text>
             </View>
           </View>

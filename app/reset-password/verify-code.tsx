@@ -72,6 +72,7 @@ export default function VerifyCodeScreen() {
   const verifyCode = async () => {
     setLoading(true)
     const otpCode = code.join("");
+  
     const { data, error } = await supabase.auth.verifyOtp({ email, token: otpCode, type: "recovery" });
 
     if (error) {
