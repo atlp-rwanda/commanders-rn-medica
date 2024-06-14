@@ -1,12 +1,20 @@
-import { KeyboardAvoidingView, SafeAreaView, View, Pressable,Modal, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, Image, Animated,Easing } from "react-native";
-import { useNavigation, router} from "expo-router";
-import { SvgXml } from "react-native-svg"
 import { back, fingerprint } from "@/assets/icons/userprofile/icons";
 import * as LocalAuthentication from "expo-local-authentication";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
+import {
+  Animated,
+  Easing,
+  Image,
+  Modal,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SvgXml } from "react-native-svg";
 
 export default function SetFingerPrint() {
-  const navigation = useNavigation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const spinValue = new Animated.Value(0);
 
@@ -43,34 +51,51 @@ export default function SetFingerPrint() {
     }
   };
 
-    return (
-            <SafeAreaView>
-                <View className="my-4 flex-row gap-x-2 mt-10 ml-2">
-                    <SvgXml xml={back} onPress={() => navigation.goBack()} />
-                    <Text className="text-xl text-black font-UrbanistSemiBold">Set Your Fingerprint </Text>
-                </View>
-                <View>
-                    <Text className="text-lg text-center mt-10 px-2 font-UrbanistRegular">
-                    Add a fingerprint to make your account more secure.
-                    </Text>
-                </View>
-                <View className="justify-center flex-row mt-10">
-                    <SvgXml xml={fingerprint} width={220} height={220} onPress={handleAuth}/>
-                </View>
-                   <View>
-                   <Text className="text-lg text-center my-10 px-2 font-UrbanistRegular">
-                   Please put your finger on the fingerprint scanner to get started.
-                    </Text>
-                   </View>
-                <View className="flex-row justify-center gap-x-3">
-                    <TouchableOpacity className="bg-reducedblue w-2/5 rounded-3xl py-3 mt-2"  onPress={() => router.push("/(tabs)/")}>
-                        <Text className="text-lightblue text-base text-center font-UrbanistBold">Skip</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="bg-lightblue w-2/5 rounded-3xl py-3 mt-2" onPress={()=>setIsModalVisible(true)}>
-                        <Text className="text-def text-base text-center font-UrbanistBold">Continue</Text>
-                    </TouchableOpacity>
-                </View>
-                <Modal
+  return (
+    <SafeAreaView>
+      <View className="my-4 flex-row gap-x-2 mt-10 ml-2">
+        <SvgXml xml={back} onPress={() => router.back()} />
+        <Text className="text-xl text-black font-UrbanistSemiBold">
+          Set Your Fingerprint{" "}
+        </Text>
+      </View>
+      <View>
+        <Text className="text-lg text-center mt-10 px-2 font-UrbanistRegular">
+          Add a fingerprint to make your account more secure.
+        </Text>
+      </View>
+      <View className="justify-center flex-row mt-10">
+        <SvgXml
+          xml={fingerprint}
+          width={220}
+          height={220}
+          onPress={handleAuth}
+        />
+      </View>
+      <View>
+        <Text className="text-lg text-center my-10 px-2 font-UrbanistRegular">
+          Please put your finger on the fingerprint scanner to get started.
+        </Text>
+      </View>
+      <View className="flex-row justify-center gap-x-3">
+        <TouchableOpacity
+          className="bg-reducedblue w-2/5 rounded-3xl py-3 mt-2"
+          onPress={() => router.push("/(tabs)/")}
+        >
+          <Text className="text-lightblue text-base text-center font-UrbanistBold">
+            Skip
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="bg-lightblue w-2/5 rounded-3xl py-3 mt-2"
+          onPress={() => setIsModalVisible(true)}
+        >
+          <Text className="text-def text-base text-center font-UrbanistBold">
+            Continue
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <Modal
         animationType="fade"
         transparent={true}
         visible={isModalVisible}

@@ -24,3 +24,6 @@ yarn-error.log*
 .DS_Store
 
 expo-env.d.ts
+
+android/
+ios/
