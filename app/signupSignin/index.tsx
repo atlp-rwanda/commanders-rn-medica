@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import BackIcon from "../../components/BackIcon";
 import Or from "../../components/Or";
@@ -9,13 +9,14 @@ import { areaView, containerStyle } from "../../styles/common";
 import { screenbgcolor } from "../../styles/usecolor";
 
 const LetsYouIn = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={areaView}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={[containerStyle, screenbgcolor, styles.container]}>
           <BackIcon
             imageSource={require("../../assets/Frame.png")}
-            onPress={router.back}
+           onPress={() => navigation.goBack()}
           />
           <Text style={styles.title}>Let’s you in</Text>
           <View style={{ width: "100%", gap: 16 }}>

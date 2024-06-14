@@ -34,7 +34,8 @@ export default function RootLayout() {
         <Host>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
-            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="signupSignin" />
+            <Stack.Screen name="(tabs)"/>
             <Stack.Screen name="counter/Counter" />
             <Stack.Screen
               name="Userprofile/userprofile"
