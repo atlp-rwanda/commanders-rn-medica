@@ -13,7 +13,7 @@ type docCardProps = {
   stars: string;
   hospital: string;
   reviews: string;
-  image: ImageSourcePropType;
+  image: string;
   images: ImageSourcePropType;
   onPress?: () => void;
 };
@@ -23,13 +23,13 @@ export default function DoctorCard(props: docCardProps) {
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
         <View className="flex-row justify-between w-full">
-          <Image source={props.images} className="w-28 h-28" />
+          <Image source={{uri:props.image}} className="w-28 h-28" />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
               <Text className="font-[18px] font-[UrbanistBold]">
                 {props.name}
               </Text>
-              <Image source={props.image} className="w-4 h-4" />
+              <Image source={props.images} className="w-4 h-4" />
             </View>
             <Text style={styles.line}></Text>
             <View className="flex-row items-center">
