@@ -7,6 +7,7 @@
     "!**/node_modules/**",
     "!**/vendor/**",
     "!**/__tests__/**"],
-    "transformIgnorePatterns": ["./node_modules/(?!expo-status-bar|(?!react-native).+)\\.js$"]
+    "transformIgnorePatterns": ["./node_modules/(?!expo-status-bar|(?!react-native).+)\\.js$"],
+    "setupFilesAfterEnv": ["./jest.setup.js"]
   
 }
