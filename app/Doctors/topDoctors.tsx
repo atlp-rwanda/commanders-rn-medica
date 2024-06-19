@@ -73,6 +73,7 @@ export default function DoctorDetails() {
           <DocButton selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
 
           {filteredDocCards.map((spot, index) => (
+            //@ts-ignore
             <DoctorCard key={index} {...spot} />
           ))}
 
