@@ -9,25 +9,45 @@ import { Text } from "@/components/ThemedText";
 import { MinimalDoctorCard } from "@/components/cards/doctors/MinimalDoctorCard";
 import { ReviewCard } from "@/components/cards/reiews/review";
 import { RootState } from "@/redux/store/store";
-import { createSelector } from "@reduxjs/toolkit";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams, router, Link } from "expo-router";
 import { View } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { supabase } from "../supabase";
 
 export default function DoctorAppointmentScreen() {
-  const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
+  const { doctorId } = useGlobalSearchParams<{ doctorId: string }>();
+  const [doctor, setDoctor] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const doctor = createSelector(
-    (doctors: RootState["doctors"]["doctors"]) => doctors,
-    (doctors) => doctors.find((doc) => doc.id == doctorId)
-  )(useSelector((state: RootState) => state.doctors.doctors));
+  const reviews = useSelector((state: RootState) => state.doctors.reviews).slice(0, 2);
 
-  const reviews = createSelector(
-    [(reviews: RootState["doctors"]["reviews"]) => reviews],
-    (reviews) => reviews.slice(0, 2)
-  )(useSelector((state: RootState) => state.doctors.reviews));
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("doctor")
+          .select("name, role, image, hospital, Stars, reviews")
+          .eq("id", doctorId)
+          .single();
+
+        if (error) {
+          throw error;
+        }
+
+        setDoctor(data);
+      } catch (error) {
+        console.error("Error fetching doctor data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctor();
+  }, [doctorId]);
 
   return (
     <View className="px-5 flex-1">
@@ -72,7 +92,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={starIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              {doctor?.stars}
+              {doctor?.Stars}
             </Text>
             <Text className="text-sm">rating</Text>
           </View>
@@ -90,9 +110,8 @@ export default function DoctorAppointmentScreen() {
         <View className="mb-6">
           <Text className="text-xl font-UrbanistBold mb-2">About me</Text>
           <Text>
-            Dr. Jenny Watson is the top most Immunologists specialist in Christ
-            Hospital at London. She achived several awards for her wonderful
-            contribution in medical field. She is available for private
+            {doctor?.name} is the top most Immunologists specialist in {doctor?.hospital} at London. She achieved several awards for her wonderful
+            contribution in the medical field. She is available for private
             consultation.{" "}
             <Text className="text-primary-500 font-UrbanistSemiBold">
               view more
@@ -125,8 +144,9 @@ export default function DoctorAppointmentScreen() {
           className="bg-primary-500 p-4 rounded-full items-center"
           onPress={() => {
             router.push({
-             pathname: "/doctor-appointments/book-appointment",
-            params:{doctorId}});
+              pathname: "/doctor-appointments/book-appointment",
+              params: { doctorId },
+            });
           }}
         >
           <Text className="text-white font-UrbanistBold">Book Appointment</Text>

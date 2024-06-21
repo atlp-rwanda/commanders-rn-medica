@@ -25,6 +25,7 @@ const hours = [
 const today = new Date();
 
 export default function BookAppointmentScreen() {
+  const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
   const [date, setDate] = useState(new Date());
   const [selectedHour, setSelectedHour] = useState("");
   const [message, setMessage] = useState("");
@@ -39,6 +40,7 @@ export default function BookAppointmentScreen() {
     const { data: appointmentExist, error } = await supabase
       .from("appointment")
       .select("appointment_date, appointment_time")
+      .eq("doctor_id", doctorId)
       .eq("appointment_date", date.toISOString().split("T")[0]);
 
     if (error && error.code !== "PGRST116") {
@@ -68,6 +70,7 @@ export default function BookAppointmentScreen() {
       const { data: appointmentExist, error } = await supabase
         .from("appointment")
         .select("*")
+        .eq("doctor_id", doctorId)
         .eq("appointment_date", date.toISOString().split("T")[0])
         .eq("appointment_time", formattedTime)
         .single();
@@ -84,7 +87,7 @@ export default function BookAppointmentScreen() {
 
       router.push({
         pathname: "/doctor-appointments/select-package",
-        params: { date: date.toISOString().split('T')[0], time: formattedTime }
+        params: { date: date.toISOString().split('T')[0], time: formattedTime ,doctorId}
       });
     } catch (error) {
       console.error("Error checking appointment:", error);

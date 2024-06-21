@@ -21,6 +21,7 @@ function Screen() {
   const [notupcome, setNotupcome] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const[appointmentData, setAppointmentData]=useState<any[]>([]);
+  const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
 
   const handleUpcoming = () => {
     setCancels(false);
@@ -59,9 +60,19 @@ function Screen() {
       if (userError) throw userError;
       const userId = userData?.user?.id;
 const{data, error}=await supabase
-  .from("appointment")
-  .select("*")
-  .eq("patient_id", userId)
+.from("appointment")
+.select(`
+  *,
+  doctor(
+    id,
+    name,
+    role,
+    image,
+    hospital
+  )
+`)
+.eq("patient_id", userId);
+
 if(error){
   console.log("Error occured while fetching appointments", error)
 }else{
@@ -263,8 +274,8 @@ const getPackageIcon = (typecall:any) => {
               {appointmentData.map((appointment:any, index:any) => (
                 <Cardscomponent
                   key={index}
-                  name="Eloi Mwokolo"
-                  imager={require("../../assets/doctors/doc1.png")}
+                  name={appointment.doctor.name}
+                  imager={appointment.doctor.image}
                   typecall={appointment.package}
                   action="Upcoming"
                   date={appointment.appointment_date}
