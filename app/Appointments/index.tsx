@@ -1,6 +1,6 @@
 import { Text } from "@/components/ThemedText";
-import { router } from "expo-router";
-import { useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState , useEffect} from "react";
 import {
   Image,
   Modal,
@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+import { supabase } from "../supabase"; 
 import Cardcomponent from "./doctorcard/cards";
 import Cardscomponent from "./doctorcard/cardss";
 
@@ -18,6 +20,7 @@ function Screen() {
   const [complete, setComlpete] = useState(false);
   const [notupcome, setNotupcome] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const[appointmentData, setAppointmentData]=useState<any[]>([]);
 
   const handleUpcoming = () => {
     setCancels(false);
@@ -50,6 +53,41 @@ function Screen() {
     }
   };
 
+  const fetchAppointment=async()=>{
+    try{
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
+      const userId = userData?.user?.id;
+const{data, error}=await supabase
+  .from("appointment")
+  .select("*")
+  .eq("patient_id", userId)
+if(error){
+  console.log("Error occured while fetching appointments", error)
+}else{
+  setAppointmentData(data);
+  console.log("fetched data:");
+}}  
+catch(error){
+console.log(error);
+} 
+}
+useEffect(()=>{
+fetchAppointment();
+},[])
+
+const getPackageIcon = (typecall:any) => {
+  switch (typecall) {
+    case 'Voice Call':
+      return require("../../assets/appointmentIcon/voice.png");
+    case 'Video Call':
+      return require("../../assets/appointmentIcon/video.png");
+    case 'Messaging':
+      return require("../../assets/appointmentIcon/message.png");
+    default:
+      return null;
+  }
+}
   return (
     <>
       <Modal animationType="fade" transparent={true} visible={isModalVisible}>
@@ -166,7 +204,7 @@ function Screen() {
           contentContainerStyle={styles.scrollViewContent}
           showsVerticalScrollIndicator={false}
         >
-          {cancels && (
+          {/* {cancels && (
             <View style={styles.content}>
               <Cardcomponent
                 name="Dr.Mutoni Dach"
@@ -219,72 +257,31 @@ function Screen() {
                 styles={styles.cancelStyles}
               />
             </View>
-          )}
+          )} */}
           {upcoming && (
             <View style={styles.content}>
-              <Cardscomponent
-                name="Dr.Raul Kamanzi"
-                imager={require("../../assets/doctors/doc1.png")}
-                typecall="Voice call"
-                action="Upcoming"
-                date="Dec 12,2022"
-                time="16:00 PM"
-                imagerr={require("../../assets/appointmentIcon/voice.png")}
-                styles={styles.upcomingStyles}
-                chance="Cancel Appointment"
-                backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
-                cantchance="Reschedule"
-                fact={() => router.push("/Appointments/reschedul")}
-                cancle={() => setIsModalVisible(true)}
-              />
-              <Cardscomponent
-                name="Dr.Mutoni Dach"
-                imager={require("../../assets/doctors/doc2.png")}
-                typecall="Messaging"
-                action="Upcoming"
-                date="Dec 12,2022"
-                time="16:00 PM"
-                imagerr={require("../../assets/appointmentIcon/message.png")}
-                styles={styles.upcomingStyles}
-                backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
-                chance="Cancel Appointment"
-                cantchance="Reschedule"
-                fact={() => router.push("/Appointments/reschedul")}
-                cancle={() => setIsModalVisible(true)}
-              />
-              <Cardscomponent
-                name="Dr.Muhire Beison"
-                imager={require("../../assets/doctors/doc3.png")}
-                typecall="Video call"
-                action="Upcoming"
-                date="Dec 12,2022"
-                time="16:00 PM"
-                imagerr={require("../../assets/appointmentIcon/video.png")}
-                styles={styles.upcomingStyles}
-                backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
-                chance="Cancel Appointment"
-                cantchance="Reschedule"
-                fact={() => router.push("/Appointments/reschedul")}
-                cancle={() => setIsModalVisible(true)}
-              />
-              <Cardscomponent
-                name="Dr.Quinn Slatter"
-                imager={require("../../assets/doctors/doc5.png")}
-                typecall="Voice call"
-                action="Upcoming"
-                date="Dec 12,2022"
-                time="16:00 PM"
-                imagerr={require("../../assets/appointmentIcon/voice.png")}
-                styles={styles.upcomingStyles}
-                backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
-                chance="Cancel Appointment"
-                cantchance="Reschedule"
-                fact={() => router.push("/Appointments/reschedul")}
-                cancle={() => setIsModalVisible(true)}
-              />
+              {appointmentData.map((appointment:any, index:any) => (
+                <Cardscomponent
+                  key={index}
+                  name="Eloi Mwokolo"
+                  imager={require("../../assets/doctors/doc1.png")}
+                  typecall={appointment.package}
+                  action="Upcoming"
+                  date={appointment.appointment_date}
+                  imagerr={getPackageIcon(appointment.package)}
+                  time={appointment.appointment_time.slice(0,5)}
+                  styles={styles.upcomingStyles}
+                  backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
+                  chance="Cancel Appointment"
+                  cantchance="Reschedule"
+                  // fact={() => router.push("/Appointments/reschedul")}
+                  // cancle={() => setIsModalVisible(true)}
+                />
+              ))}
             </View>
           )}
-          {complete && (
+              
+          {/* {complete && (
             <View style={styles.content}>
               <Cardscomponent
                 name="Dr.Raul Kamanzi"
@@ -344,7 +341,7 @@ function Screen() {
                 fact={() => router.push("/Appointments/voice-call/writeReview")}
               />
             </View>
-          )}
+          )} */}
         </ScrollView>
 
         {notupcome && (

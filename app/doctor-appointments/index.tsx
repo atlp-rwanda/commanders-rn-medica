@@ -124,7 +124,9 @@ export default function DoctorAppointmentScreen() {
         <TouchableOpacity
           className="bg-primary-500 p-4 rounded-full items-center"
           onPress={() => {
-            router.push("/doctor-appointments/book-appointment");
+            router.push({
+             pathname: "/doctor-appointments/book-appointment",
+            params:{doctorId}});
           }}
         >
           <Text className="text-white font-UrbanistBold">Book Appointment</Text>

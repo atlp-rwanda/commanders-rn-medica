@@ -41,7 +41,6 @@ const Home = () => {
         console.error("Error fetching data:", error);
       } else {
         console.log("Doctors:----->", doctorsData);
-      
         setDoctors(doctorsData || []);
         setFilteredDoctors(doctorsData || []);
       }
