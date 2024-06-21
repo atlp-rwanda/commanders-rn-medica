@@ -19,7 +19,7 @@ function Cardcomponent(props: any) {
       className="bg-white rounded-3xl flex flex-row px-4 py-5 items-center shadow-md mb-4"
       style={styles.shadow}
     >
-      <Image source={props.imager} className="w-24 h-24 rounded-xl mr-3" />
+      <Image source={{uri:props.imager}} className="w-24 h-24 rounded-xl mr-3" />
       <View className="flex-1">
         <Text className="text-xl font-UrbanistBold mb-3">{props.name}</Text>
         <View className="flex items-center flex-row mb-3">

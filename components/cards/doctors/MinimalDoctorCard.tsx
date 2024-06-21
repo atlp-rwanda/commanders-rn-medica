@@ -1,15 +1,22 @@
 import { Text } from "@/components/ThemedText";
-import { Doctor } from "@/redux/reducers/doctors";
+// import { Doctor } from "@/redux/reducers/doctors";
 import { Image, View } from "react-native";
 
-type SimpleDoctorCardProps = Doctor;
+interface SimpleDoctorCardProps{
+  image?:any
+  name:string,
+  role:string,
+  hospital:string,
+}
 
 export function MinimalDoctorCard(doctor: SimpleDoctorCardProps) {
+  console.log("Doctor Image:", doctor.image);
+ // const imageUri = typeof doctor.images === 'string' ? doctor.images : '../../assets/doctors/doc2.png';
   return (
     <View className="flex-row items-center justify-between bg-white p-4 rounded-xl shadow-sm mx-1">
       <View className="flex-row items-start">
         <Image
-          source={doctor.image}
+          source={{uri:doctor.image}}
           className="w-28 h-28 rounded-xl object-cover"
         />
         <View className="ml-4 flex-1">

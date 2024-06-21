@@ -12,6 +12,7 @@ import { ScrollView, TouchableOpacity, View } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { supabase } from "../supabase"; 
 export default function SelectPackageScreen() {
+  const { doctorId } = useGlobalSearchParams<{ doctorId: string }>();
   const [selectedPackage, setSelectedPackage] = useState("1");
   const [selectedDuration, setSelectedDuration] = useState("1");
   const { date, time } = useGlobalSearchParams<{ date: any; time: any }>();
@@ -60,7 +61,7 @@ const submitPackage=()=>{
   const packageIntervals=SelectedTimeDuration?.intervals;
   router.push({
     pathname:"/doctor-appointments/review-summary",
-    params:{date, time, packageTitle, packageDuration, packagePrice, packageIntervals}
+    params:{date, time, packageTitle, packageDuration, packagePrice, packageIntervals, doctorId }
   })
 }
   return (
