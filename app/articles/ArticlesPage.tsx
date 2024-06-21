@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,24 +8,79 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { router, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import FieldComponent from "@/components/FieldComponent";
 import ArticleCard from "@/components/cards/ArticleCard";
-import { articles as allArticles } from "../constants/articlesDummy";
+import { supabase } from "../supabase";
+
+interface Article {
+  id: number;
+  title: string;
+  image: string;
+  category: string;
+  createdAt: string;
+  content: string[];
+  views: number;
+  bookmarked: boolean;
+}
 
 export default function Article() {
-   const [filteredArticles, setFilteredArticles] = useState(allArticles);
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [trendingArticles, setTrendingArticles] = useState<Article[]>([]);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  const fetchArticles = async () => {
+    setLoading(true);
+    const { data: articles, error } = await supabase
+      .from("articles")
+      .select("*");
+
+    if (error) {
+      console.error("Error fetching articles:", error);
+      setArticles([]);
+      setFilteredArticles([]);
+    } else if (articles) {
+      setArticles(articles);
+      setFilteredArticles(articles);
+      const sortedByViews = [...articles].sort((a, b) => b.views - a.views);
+      setTrendingArticles(sortedByViews);
+    } else {
+      setArticles([]);
+      setFilteredArticles([]);
+    }
+    setLoading(false);
+  };
 
   const handleCategoryChange = (category: string) => {
-    if (category === "all") {
-      setFilteredArticles(allArticles);
-      return;
+    if (category === "Newest") {
+      const sortedArticles = [...articles].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setFilteredArticles(sortedArticles);
     } else {
-      const filtered = allArticles.filter(article => article.category === category);
-    setFilteredArticles(filtered);
+      const filtered = articles.filter(
+        (article) => article.category === category
+      );
+      setFilteredArticles(filtered);
     }
   };
-  const navigation = useNavigation<any>();
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={{ paddingTop: 50, flex: 1, backgroundColor: "white" }}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -44,7 +99,11 @@ export default function Article() {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => router.push({pathname:"/articles/BookMarkedArticle"} as never)}
+              onPress={() =>
+                router.push({
+                  pathname: "/articles/BookMarkedArticle",
+                } as never)
+              }
             >
               <Image
                 style={styles.headerIcon}
@@ -57,40 +116,52 @@ export default function Article() {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Trending</Text>
           <TouchableOpacity
-            onPress={() => router.push({pathname:"/articles/SeeAllArticles"} as never)}
+            onPress={() =>
+              router.push({ pathname: "/articles/SeeAllArticles" } as never)
+            }
           >
             <Text style={styles.seeAll}>See All</Text>
           </TouchableOpacity>
         </View>
 
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {allArticles.map((article) => (
+          {trendingArticles.map((article) => (
             <View key={article.id} style={styles.articleContainer}>
               <View style={styles.articleContent}>
                 <TouchableOpacity
-                  onPress={() => router.push({pathname:"/articles/ArticlesDetails",params: { id: article.id }})
-                    // navigation.navigate("ArticlesDetails", { id: article.id })
+                  onPress={() =>
+                    router.push({
+                      pathname: "/articles/ArticlesDetails",
+                      params: { id: article.id },
+                    })
                   }
                 >
-                  <Image style={styles.articleImage} source={article.image} />
+                  <Image
+                    style={styles.articleImage}
+                    source={{ uri: article.image }}
+                  />
                 </TouchableOpacity>
                 <Text style={styles.articleTitle}>{article.title}</Text>
               </View>
             </View>
           ))}
         </ScrollView>
-
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Articles</Text>
           <TouchableOpacity
-            onPress={() => router.push({pathname:"/articles/SeeAllArticles"} as never)}
+            onPress={() =>
+              router.push({ pathname: "/articles/SeeAllArticles" } as never)
+            }
           >
             <Text style={styles.seeAll}>See All</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.fieldContainer}>
-           <FieldComponent articles={allArticles} onCategoryChange={handleCategoryChange} />
+          <FieldComponent
+            articles={articles}
+            onCategoryChange={handleCategoryChange}
+          />
         </View>
 
         <ScrollView style={styles.articlesList}>
@@ -172,5 +243,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     maxWidth: "100%",
     width: "95%",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 20,
+    fontFamily: "UrbanistBold",
+    color: "#212121",
   },
 });
