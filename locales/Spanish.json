@@ -1,0 +1,102 @@
+{
+  "homes": "Inicio",
+  "appointment": "Cita",
+  "history": "Historial",
+  "articles": "Artículos",
+  "profiles": "Perfil",
+  "onboarding": {
+    "slide1": "¡Miles de doctores y expertos para ayudar a tu salud!",
+    "slide2": "Chequeos de salud y consultas fácilmente en cualquier lugar y en cualquier momento",
+    "slide3": "¡Comencemos a vivir sanos y bien con nosotros ahora mismo!",
+    "next": "Siguiente",
+    "getStarted": "Empezar",
+    "welcome": "¡Bienvenido a Medica! 👋",
+    "welcomeMessage": "¡La mejor aplicación de citas y consultas médicas en línea del siglo para tus necesidades de salud y médicas!"
+  },
+  "letsYouIn": {
+    "title": "Vamos a dejarte entrar",
+    "continueWithFacebook": "Continuar con Facebook",
+    "continueWithGoogle": "Continuar con Google",
+    "continueWithApple": "Continuar con Apple",
+    "or": "O",
+    "signInWithPassword": "Iniciar sesión con contraseña",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "signUp": "Regístrate"
+  },
+  "signIn": {
+    "title": "Inicia sesión en tu cuenta",
+    "emailPlaceholder": "Correo electrónico",
+    "passwordPlaceholder": "Contraseña",
+    "rememberMe": "Recuérdame",
+    "signInButton": "Iniciar sesión",
+    "signInButtonLoading": "Cargando..",
+    "forgotPassword": "¿Olvidaste la contraseña?",
+    "orContinueWith": "o continuar con",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "signUpLink": "Regístrate",
+    "invalidLoginCredentials": "Credenciales de inicio de sesión inválidas",
+    "emailAlreadyExists": "Este correo electrónico ya existe"
+  },
+  "signUp": {
+    "createNewAccount": "Crear nueva cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recuérdame",
+    "signUp": "Regístrate",
+    "loading": "Cargando...",
+    "orContinueWith": "o continuar con",
+    "alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "allFieldIsRequired": "Todos los campos son obligatorios",
+    "emailIsRequired": "El correo electrónico es obligatorio",
+    "invalidEmailFormat": "Formato de correo electrónico inválido",
+    "passwordIsRequired": "La contraseña es obligatoria",
+    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+    "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
+    "passwordLowercase": "La contraseña debe contener al menos una letra minúscula",
+    "passwordDigit": "La contraseña debe contener al menos un dígito",
+    "passwordSpecialChar": "La contraseña debe contener al menos un carácter especial",
+    "tooManyAttempts": "Demasiados intentos. intenta de nuevo más tarde."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
+    },
+    "doctorSpeciality": "Especialidad del doctor",
+    "seeAll": "Ver todo",
+    "topDoctors": "Doctores destacados",
+    "searchPlaceholder": "Buscar...",
+    "specialties": {
+      "general": "General",
+      "dentist": "Dentista",
+      "opthamologist": "Oftalmólogo",
+      "nutritionist": "Nutricionista",
+      "neurologist": "Neurólogo",
+      "pediatric": "Pediatra",
+      "radiologist": "Radiólogo",
+      "more": "Más"
+    },
+    "carousel": {
+      "title": "¡Chequeos médicos!",
+      "description": "Revisa tu condición de salud regularmente para minimizar la incidencia de enfermedades en el futuro.",
+      "button": "Revisar ahora"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "notification": "Notificación",
+    "payment": "Pago",
+    "security": "Seguridad",
+    "language": "Idioma",
+    "dark_mode": "Modo oscuro",
+    "help_center": "Centro de ayuda",
+    "invite_friends": "Invitar amigos",
+    "logout": "Cerrar sesión",
+    "edit_profile": "Editar perfil",
+    "medical_checks": "¡Chequeos médicos!",
+    "health_description": "Revisa tu condición de salud regularmente para minimizar la incidencia de enfermedades en el futuro.",
+    "check_now": "Revisar ahora"
+  }
+}

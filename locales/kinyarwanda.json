@@ -1,0 +1,102 @@
+{
+  "homes": "Ahabanza",
+  "appointment": "Guhura",
+  "history": "Amateka",
+  "articles": "Inyandiko",
+  "profiles": "Umwirondoro",
+  "onboarding": {
+    "slide1": "Ibihumbi by'abaganga n'inzobere kugira ngo bagufashe ku buzima bwawe!",
+    "slide2": "Gusuzuma no kugisha inama byoroshye ahantu hose igihe icyo ari cyo cyose",
+    "slide3": "Reka dutangire kubaho neza kandi turi bazima hamwe natwe ubu ngubu!",
+    "next": "Ibikurikira",
+    "getStarted": "Tangira",
+    "welcome": "Murakaza neza kuri Medica! 👋",
+    "welcomeMessage": "Porogaramu nziza cyane yo guhura no kugisha inama abaganga mu kinyejana ku buzima bwawe n'ibikenewe by'ubuvuzi!"
+  },
+  "letsYouIn": {
+    "title": "Reka tukwinjize",
+    "continueWithFacebook": "Komeza na Facebook",
+    "continueWithGoogle": "Komeza na Google",
+    "continueWithApple": "Komeza na Apple",
+    "or": "Cyangwa",
+    "signInWithPassword": "Injira ukoresheje ijambo ry'ibanga",
+    "dontHaveAccount": "Nta konti ufite?",
+    "signUp": "Iyandikishe"
+  },
+  "signIn": {
+    "title": "Injira muri Konti Yawe",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Ijambo ry'ibanga",
+    "rememberMe": "Nkundira kwibuka",
+    "signInButton": "Injira",
+    "signInButtonLoading": "Birimo...",
+    "forgotPassword": "Wibagiwe ijambo ry'ibanga?",
+    "orContinueWith": "cyangwa ukomeze na",
+    "dontHaveAccount": "Nta konti ufite?",
+    "signUpLink": "Iyandikishe",
+    "invalidLoginCredentials": "Amakuru yo kwinjira aranga",
+    "emailAlreadyExists": "Iyi email irahari"
+  },
+  "signUp": {
+    "createNewAccount": "Hanga Konti Nshya",
+    "email": "Email",
+    "password": "Ijambo ry'ibanga",
+    "rememberMe": "Nkundira kwibuka",
+    "signUp": "Iyandikishe",
+    "loading": "Birimo...",
+    "orContinueWith": "cyangwa ukomeze na",
+    "alreadyHaveAnAccount": "Usanzwe ufite konti?",
+    "signIn": "Injira",
+    "allFieldIsRequired": "Inyito zose zirakenewe",
+    "emailIsRequired": "Email irakenewe",
+    "invalidEmailFormat": "Imiterere y'email ntabwo ari yo",
+    "passwordIsRequired": "Ijambo ry'ibanga rirakenewe",
+    "passwordMinLength": "Ijambo ry'ibanga rigomba kuba nibura inyuguti 8",
+    "passwordUppercase": "Ijambo ry'ibanga rigomba kugira inyuguti nini imwe",
+    "passwordLowercase": "Ijambo ry'ibanga rigomba kugira inyuguti ntoya imwe",
+    "passwordDigit": "Ijambo ry'ibanga rigomba kugira umubare umwe",
+    "passwordSpecialChar": "Ijambo ry'ibanga rigomba kugira ikimenyetso kidasanzwe kimwe",
+    "tooManyAttempts": "Kubigerageza kenshi cyane. Ongera ugerageze nyuma."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Mwaramutse",
+      "afternoon": "Mwiriwe",
+      "evening": "Mwiriwe neza"
+    },
+    "doctorSpeciality": "Ubwoko bw'abaganga",
+    "seeAll": "Reba Byose",
+    "topDoctors": "Abaganga Bakuru",
+    "searchPlaceholder": "Shakisha...",
+    "specialties": {
+      "general": "Rusange",
+      "dentist": "Umuganga w'amenyo",
+      "opthamologist": "Umuganga w'amaso",
+      "nutritionist": "Umuganga w'imirire",
+      "neurologist": "Umuganga w'ubwonko",
+      "pediatric": "Umuganga w'abana",
+      "radiologist": "Umuganga w'ibibagaragara",
+      "more": "Ibindi"
+    },
+    "carousel": {
+      "title": "Igenzura ry'Ubuzima!",
+      "description": "Genzura uko ubuzima bwawe bwifashe kenshi kugira ngo ugabanye indwara zishobora kuvuka mu bihe biri imbere.",
+      "button": "Reba Ubu"
+    }
+  },
+  "profile": {
+    "title": "Umwirondoro",
+    "notification": "Itangazo",
+    "payment": "Kwishyura",
+    "security": "Umutekano",
+    "language": "Ururimi",
+    "dark_mode": "Uburyo bwijimye",
+    "help_center": "Ikigo cy'ubufasha",
+    "invite_friends": "Tuma Inshuti",
+    "logout": "Sohoka",
+    "edit_profile": "Hindura Umwirondoro",
+    "medical_checks": "Igenzura ry'Ubuzima!",
+    "health_description": "Genzura uko ubuzima bwawe bwifashe kenshi kugira ngo ugabanye indwara zishobora kuvuka mu bihe biri imbere.",
+    "check_now": "Reba Ubu"
+  }
+}

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import {
+  Dimensions,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 
 import { screenbgcolor } from "@/styles/usecolor";
@@ -18,9 +19,11 @@ import { SignUpWith } from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
 import { supabase } from "../supabase";
+import { useTranslation } from "react-i18next";
 
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
   const [isPasswordActive, setIsPasswordActive] = useState<boolean>(false);
   const [email, setEmail] = useState("");
@@ -61,19 +64,19 @@ const SignUp = () => {
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
     if (password.length < minLength) {
-      return "Password must be at least 8 characters long";
+      return t("signUp.passwordMinLength");
     }
     if (!hasUpperCase) {
-      return "Password must contain at least one uppercase letter";
+      return t("signUp.passwordUppercase");
     }
     if (!hasLowerCase) {
-      return "Password must contain at least one lowercase letter";
+      return t("signUp.passwordLowercase");
     }
     if (!hasDigit) {
-      return "Password must contain at least one digit";
+      return t("signUp.passwordDigit");
     }
     if (!hasSpecialChar) {
-      return "Password must contain at least one special character";
+      return t("signUp.passwordSpecialChar");
     }
     return null;
   };
@@ -82,36 +85,36 @@ const SignUp = () => {
     setLoading(true);
     setError("");
 
-    if (!email && !password) {
-      setError("All fields are required");
-      setLoading(false);
-      return;
-    }
+     if (!email && !password) {
+       setError(t("signUp.allFieldIsRequired"));
+       setLoading(false);
+       return
+     }
 
-    if (!email) {
-      setError("Email is required");
-      setLoading(false);
-      return;
-    }
+     if (!email) {
+       setError(t("signUp.emailIsRequired"));
+       setLoading(false);
+       return;
+     }
 
-    if (!validateEmail(email)) {
-      setError("Invalid email format");
-      setLoading(false);
-      return;
-    }
+     if (!validateEmail(email)) {
+       setError(t("signUp.invalidEmailFormat"));
+       setLoading(false);
+       return;
+     }
 
-    if (!password) {
-      setError("Password is required");
-      setLoading(false);
-      return;
-    }
+     if (!password) {
+       setError(t("signUp.passwordIsRequired"));
+       setLoading(false);
+       return;
+     }
 
-    const passwordError = validatePassword(password);
-    if (passwordError) {
-      setError(passwordError);
-      setLoading(false);
-      return;
-    }
+     const passwordError = validatePassword(password);
+     if (passwordError) {
+       setError(passwordError);
+       setLoading(false);
+       return;
+     }
 
     const { error } = await supabase.auth.signUp({
       email: email,
@@ -120,11 +123,15 @@ const SignUp = () => {
 
     if (error) {
       if (error.message.includes("Email rate limit exceeded")) {
-        setError("Too many attempts. try again later.");
+        setError(t("signUp.tooManyAttempts"));
+        setLoading(false);
+      } else if (error.message === "User already registered") {
+        setError(t("signIn.emailAlreadyExists"));
+        setLoading(false);
       } else {
         setError(error.message);
+        setLoading(false);
       }
-      setLoading(false);
     } else {
       router.push("/Userprofile/userprofile");
       setLoading(false);
@@ -139,61 +146,67 @@ const SignUp = () => {
             imageSource={require("../../assets/Account.png")}
             onPress={router.back}
           />
-          <Text style={{ fontFamily: "UrbanistBold", fontSize: 32 }}>
-            Create New Account
+          <Text
+            style={{
+              fontFamily: "UrbanistBold",
+              fontSize: 32,
+              textAlign: "center",
+            }}
+          >
+            {t("signUp.createNewAccount")}
           </Text>
           <View style={{ rowGap: 20, width: "100%" }}>
             <View style={styles.inputContainer}>
               <EmailPasswordInput
                 icon="email"
-                placeholder="Email"
-                onActiveChange={handleEmailActiveChange}
+                placeholder={t("signUp.email")}
                 value={email}
                 onChangeText={handleEmailChange}
               />
-              {error === "Email is required" && (
-                <Text style={styles.errorText}>{error}</Text>
-              )}
-              {error === "Invalid email format" && (
-                <Text style={styles.errorText}>{error}</Text>
-              )}
+              {error &&
+                (error === t("signUp.emailIsRequired") ||
+                  error === t("signUp.invalidEmailFormat") ||
+                  error === t("signUp.tooManyAttempts")) && (
+                  <Text style={styles.errorText}>{error}</Text>
+                )}
             </View>
             <View style={styles.inputContainer}>
               <EmailPasswordInput
                 icon="lock"
-                placeholder="Password"
+                placeholder={t("signUp.password")}
                 secureTextEntry
-                onActiveChange={handlePasswordActiveChange}
                 value={password}
                 onChangeText={handlePasswordChange}
-                isFilled={isPasswordFilled}
               />
-              {(error === "Password is required" ||
-                error.startsWith("Password must")) && (
+              {(error === t("signUp.passwordIsRequired") ||
+                error === t("signUp.passwordMinLength") ||
+                error === t("signUp.passwordUppercase") ||
+                error === t("signUp.passwordLowercase") ||
+                error === t("signUp.passwordDigit") ||
+                error === t("signUp.passwordSpecialChar")) && (
                 <Text style={styles.errorText}>{error}</Text>
               )}
             </View>
-            <RememberMe />
-            <View style={styles.inputContainer}>
+            <RememberMe text={t("signUp.rememberMe")} />
+            <View style={{ rowGap: 20, width: "100%" }}>
               <Button
-                title={loading == true ? "Loading" : "Sign up"}
+                title={loading ? t("signUp.loading") : t("signUp.signUp")}
                 rounded
                 onPress={signUpWithEmail}
+                disabled={loading}
               />
               {error &&
-                error !== "Email is required" &&
-                error !== "Password is required" &&
-                !error.startsWith("Password must") &&
-                error !== "Invalid email format" && (
+                (error === t("signUp.allFieldIsRequired") ||
+                  error === t("signIn.emailAlreadyExists")) && (
                   <Text style={styles.errorTextIn}>{error}</Text>
                 )}
             </View>
           </View>
-          <Or text="or continue with" />
+          <Or text={t("signUp.orContinueWith")} />
           <SignUpWith />
           <SignUpText
-            text1="Already have an account?"
-            text2="Sign in"
+            text1={t("signUp.alreadyHaveAnAccount")}
+            text2={t("signUp.signIn")}
             onPress={() => {
               router.push("/signupSignin/SignIn");
             }}
@@ -231,11 +244,13 @@ const styles = StyleSheet.create({
   errorTextIn: {
     position: "absolute",
     top: "15%",
-    left: "20%",
+    left: "10%",
+    right: "10%",
     transform: [{ translateY: -20 }],
     color: "red",
     fontFamily: "UrbanistSemiBold",
     fontSize: 14,
+    textAlign: "center",
     width: "auto",
   },
 });

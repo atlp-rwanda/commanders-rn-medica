@@ -1,0 +1,102 @@
+{
+  "homes": "首页",
+  "appointment": "预约",
+  "history": "历史记录",
+  "articles": "文章",
+  "profiles": "个人资料",
+  "onboarding": {
+    "slide1": "成千上万的医生和专家帮助您的健康！",
+    "slide2": "随时随地轻松进行健康检查和咨询",
+    "slide3": "让我们现在就开始健康快乐的生活吧！",
+    "next": "下一步",
+    "getStarted": "开始",
+    "welcome": "欢迎来到 Medica！👋",
+    "welcomeMessage": "本世纪最好的在线医生预约和咨询应用程序，满足您的健康和医疗需求！"
+  },
+  "letsYouIn": {
+    "title": "让我们让您进入",
+    "continueWithFacebook": "继续使用 Facebook",
+    "continueWithGoogle": "继续使用 Google",
+    "continueWithApple": "继续使用 Apple",
+    "or": "或者",
+    "signInWithPassword": "使用密码登录",
+    "dontHaveAccount": "没有账户？",
+    "signUp": "注册"
+  },
+  "signIn": {
+    "title": "登录您的账户",
+    "emailPlaceholder": "电子邮箱",
+    "passwordPlaceholder": "密码",
+    "rememberMe": "记住我",
+    "signInButton": "登录",
+    "signInButtonLoading": "正在登录...",
+    "forgotPassword": "忘记密码？",
+    "orContinueWith": "或者继续使用",
+    "dontHaveAccount": "没有账户？",
+    "signUpLink": "注册",
+    "invalidLoginCredentials": "登录凭据无效",
+    "emailAlreadyExists": "此电子邮箱已存在"
+  },
+  "signUp": {
+    "createNewAccount": "创建新账户",
+    "email": "电子邮箱",
+    "password": "密码",
+    "rememberMe": "记住我",
+    "signUp": "注册",
+    "loading": "加载中...",
+    "orContinueWith": "或者继续使用",
+    "alreadyHaveAnAccount": "已有账户？",
+    "signIn": "登录",
+    "allFieldIsRequired": "所有字段为必填项",
+    "emailIsRequired": "电子邮箱为必填项",
+    "invalidEmailFormat": "电子邮箱格式无效",
+    "passwordIsRequired": "密码为必填项",
+    "passwordMinLength": "密码必须至少8个字符",
+    "passwordUppercase": "密码必须至少包含一个大写字母",
+    "passwordLowercase": "密码必须至少包含一个小写字母",
+    "passwordDigit": "密码必须至少包含一个数字",
+    "passwordSpecialChar": "密码必须至少包含一个特殊字符",
+    "tooManyAttempts": "尝试次数过多，请稍后再试。"
+  },
+  "home": {
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    },
+    "doctorSpeciality": "医生专长",
+    "seeAll": "查看全部",
+    "topDoctors": "顶级医生",
+    "searchPlaceholder": "搜索...",
+    "specialties": {
+      "general": "全科医生",
+      "dentist": "牙医",
+      "opthamologist": "眼科医生",
+      "nutritionist": "营养师",
+      "neurologist": "神经科医生",
+      "pediatric": "儿科医生",
+      "radiologist": "放射科医生",
+      "more": "更多"
+    },
+    "carousel": {
+      "title": "健康检查！",
+      "description": "定期检查您的健康状态，以减少未来患病的可能性。",
+      "button": "立即检查"
+    }
+  },
+  "profile": {
+    "title": "个人资料",
+    "notification": "通知",
+    "payment": "付款",
+    "security": "安全",
+    "language": "语言",
+    "dark_mode": "夜间模式",
+    "help_center": "帮助中心",
+    "invite_friends": "邀请朋友",
+    "logout": "登出",
+    "edit_profile": "编辑个人资料",
+    "medical_checks": "健康检查！",
+    "health_description": "定期检查您的健康状态，以减少未来患病的可能性。",
+    "check_now": "立即检查"
+  }
+}

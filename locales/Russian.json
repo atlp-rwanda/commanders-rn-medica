@@ -1,0 +1,102 @@
+{
+  "homes": "Главная",
+  "appointment": "Запись",
+  "history": "История",
+  "articles": "Статьи",
+  "profiles": "Профиль",
+  "onboarding": {
+    "slide1": "Тысячи врачей и экспертов помогут вам заботиться о здоровье!",
+    "slide2": "Здоровые проверки и консультации легко в любом месте и в любое время",
+    "slide3": "Давайте начнем жить здорово и хорошо сейчас!",
+    "next": "Далее",
+    "getStarted": "Начать",
+    "welcome": "Добро пожаловать в Медика! 👋",
+    "welcomeMessage": "Лучшее онлайн-приложение для записи на прием и консультации у врача в этом веке для вашего здоровья и медицинских нужд!"
+  },
+  "letsYouIn": {
+    "title": "Давайте войдем в систему",
+    "continueWithFacebook": "Продолжить с Facebook",
+    "continueWithGoogle": "Продолжить с Google",
+    "continueWithApple": "Продолжить с Apple",
+    "or": "Или",
+    "signInWithPassword": "Войти с паролем",
+    "dontHaveAccount": "Нет аккаунта?",
+    "signUp": "Зарегистрироваться"
+  },
+  "signIn": {
+    "title": "Вход в ваш аккаунт",
+    "emailPlaceholder": "Электронная почта",
+    "passwordPlaceholder": "Пароль",
+    "rememberMe": "Запомнить меня",
+    "signInButton": "Войти",
+    "signInButtonLoading": "Загрузка...",
+    "forgotPassword": "Забыли пароль?",
+    "orContinueWith": "Или продолжите с",
+    "dontHaveAccount": "Нет аккаунта?",
+    "signUpLink": "Зарегистрироваться",
+    "invalidLoginCredentials": "Неверные учетные данные",
+    "emailAlreadyExists": "Этот адрес электронной почты уже зарегистрирован"
+  },
+  "signUp": {
+    "createNewAccount": "Создать новый аккаунт",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "rememberMe": "Запомнить меня",
+    "signUp": "Зарегистрироваться",
+    "loading": "Загрузка...",
+    "orContinueWith": "Или продолжите с",
+    "alreadyHaveAnAccount": "Уже есть аккаунт?",
+    "signIn": "Войти",
+    "allFieldIsRequired": "Все поля обязательны для заполнения",
+    "emailIsRequired": "Требуется адрес электронной почты",
+    "invalidEmailFormat": "Неверный формат электронной почты",
+    "passwordIsRequired": "Требуется пароль",
+    "passwordMinLength": "Пароль должен содержать минимум 8 символов",
+    "passwordUppercase": "Пароль должен содержать хотя бы одну заглавную букву",
+    "passwordLowercase": "Пароль должен содержать хотя бы одну строчную букву",
+    "passwordDigit": "Пароль должен содержать хотя бы одну цифру",
+    "passwordSpecialChar": "Пароль должен содержать хотя бы один специальный символ",
+    "tooManyAttempts": "Слишком много попыток. Попробуйте позже."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Доброе утро",
+      "afternoon": "Добрый день",
+      "evening": "Добрый вечер"
+    },
+    "doctorSpeciality": "Специализация врача",
+    "seeAll": "Показать все",
+    "topDoctors": "Лучшие врачи",
+    "searchPlaceholder": "Поиск...",
+    "specialties": {
+      "general": "Терапевт",
+      "dentist": "Стоматолог",
+      "opthamologist": "Офтальмолог",
+      "nutritionist": "Нутрициолог",
+      "neurologist": "Невролог",
+      "pediatric": "Педиатр",
+      "radiologist": "Радиолог",
+      "more": "Еще"
+    },
+    "carousel": {
+      "title": "Медицинские проверки!",
+      "description": "Регулярно проверяйте свое здоровье, чтобы минимизировать риск заболеваний в будущем.",
+      "button": "Проверить сейчас"
+    }
+  },
+  "profile": {
+    "title": "Профиль",
+    "notification": "Уведомления",
+    "payment": "Оплата",
+    "security": "Безопасность",
+    "language": "Язык",
+    "dark_mode": "Темный режим",
+    "help_center": "Центр помощи",
+    "invite_friends": "Пригласить друзей",
+    "logout": "Выйти",
+    "edit_profile": "Редактировать профиль",
+    "medical_checks": "Медицинские проверки!",
+    "health_description": "Регулярно проверяйте свое здоровье, чтобы минимизировать риск заболеваний в будущем.",
+    "check_now": "Проверить сейчас"
+  }
+}

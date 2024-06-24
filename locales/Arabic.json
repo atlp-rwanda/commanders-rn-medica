@@ -1,0 +1,102 @@
+{
+  "homes": "الصفحة الرئيسية",
+  "appointment": "موعد",
+  "history": "التاريخ",
+  "articles": "المقالات",
+  "profiles": "الملفات الشخصية",
+  "onboarding": {
+    "slide1": "آلاف الأطباء والخبراء لمساعدتك في صحتك!",
+    "slide2": "فحوصات واستشارات صحية بسهولة في أي مكان وفي أي وقت",
+    "slide3": "لنبدأ العيش بصحة وسعادة معنا الآن!",
+    "next": "التالي",
+    "getStarted": "ابدأ",
+    "welcome": "مرحبًا بكم في Medica! 👋",
+    "welcomeMessage": "أفضل تطبيق لحجز المواعيد والاستشارات الطبية عبر الإنترنت من أجل صحتك واحتياجاتك الطبية!"
+  },
+  "letsYouIn": {
+    "title": "دعنا ندخلك",
+    "continueWithFacebook": "تابع باستخدام فيسبوك",
+    "continueWithGoogle": "تابع باستخدام جوجل",
+    "continueWithApple": "تابع باستخدام آبل",
+    "or": "أو",
+    "signInWithPassword": "تسجيل الدخول بكلمة المرور",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "signUp": "سجل"
+  },
+  "signIn": {
+    "title": "تسجيل الدخول إلى حسابك",
+    "emailPlaceholder": "البريد الإلكتروني",
+    "passwordPlaceholder": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "signInButton": "تسجيل الدخول",
+    "signInButtonLoading": "جاري الدخول..",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "orContinueWith": "أو تابع باستخدام",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "signUpLink": "سجل",
+    "invalidLoginCredentials": "بيانات الدخول غير صحيحة",
+    "emailAlreadyExists": "هذا البريد الإلكتروني موجود بالفعل"
+  },
+  "signUp": {
+    "createNewAccount": "إنشاء حساب جديد",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "signUp": "سجل",
+    "loading": "جاري التحميل...",
+    "orContinueWith": "أو تابع باستخدام",
+    "alreadyHaveAnAccount": "هل لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "allFieldIsRequired": "جميع الحقول مطلوبة",
+    "emailIsRequired": "البريد الإلكتروني مطلوب",
+    "invalidEmailFormat": "تنسيق البريد الإلكتروني غير صحيح",
+    "passwordIsRequired": "كلمة المرور مطلوبة",
+    "passwordMinLength": "يجب أن تكون كلمة المرور على الأقل 8 أحرف",
+    "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+    "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+    "passwordDigit": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+    "passwordSpecialChar": "يجب أن تحتوي كلمة المرور على حرف خاص واحد على الأقل",
+    "tooManyAttempts": "محاولات كثيرة جدًا. حاول مرة أخرى لاحقًا."
+  },
+  "home": {
+    "greeting": {
+      "morning": "صباح الخير",
+      "afternoon": "مساء الخير",
+      "evening": "مساء الخير"
+    },
+    "doctorSpeciality": "تخصص الطبيب",
+    "seeAll": "عرض الكل",
+    "topDoctors": "أفضل الأطباء",
+    "searchPlaceholder": "بحث...",
+    "specialties": {
+      "general": "عام",
+      "dentist": "طبيب أسنان",
+      "opthamologist": "طبيب عيون",
+      "nutritionist": "أخصائي تغذية",
+      "neurologist": "طبيب أعصاب",
+      "pediatric": "طبيب أطفال",
+      "radiologist": "أخصائي أشعة",
+      "more": "المزيد"
+    },
+    "carousel": {
+      "title": "الفحوصات الطبية!",
+      "description": "تحقق من حالتك الصحية بانتظام لتقليل حدوث الأمراض في المستقبل.",
+      "button": "افحص الآن"
+    }
+  },
+  "profile": {
+    "title": "الملفات الشخصية",
+    "notification": "الإشعارات",
+    "payment": "الدفع",
+    "security": "الأمان",
+    "language": "اللغة",
+    "dark_mode": "الوضع الداكن",
+    "help_center": "مركز المساعدة",
+    "invite_friends": "دعوة الأصدقاء",
+    "logout": "تسجيل الخروج",
+    "edit_profile": "تعديل الملف الشخصي",
+    "medical_checks": "الفحوصات الطبية!",
+    "health_description": "تحقق من حالتك الصحية بانتظام لتقليل حدوث الأمراض في المستقبل.",
+    "check_now": "افحص الآن"
+  }
+}

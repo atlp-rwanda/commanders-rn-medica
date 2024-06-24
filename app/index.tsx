@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link, router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -13,9 +12,12 @@ import {
 } from "react-native";
 import Swiper from "react-native-swiper";
 import RotatingImage from "./RotatingImage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from "react-i18next";
 const { width, height } = Dimensions.get("window");
 
 const OnBoarding = () => {
+  const { t } = useTranslation();
   const [showFirstSplash, setShowFirstSplash] = useState(true);
   const [showSecondSplash, setShowSecondSplash] = useState(false);
   const fadeAnimFirst = useRef(new Animated.Value(1)).current;
@@ -123,7 +125,7 @@ const OnBoarding = () => {
             style={styles.image}
           />
           <Text style={[styles.text]} className="font-UrbanistBold">
-            Thousands of doctors & experts to help your health!
+            {t("onboarding.slide1")}
           </Text>
         </View>
         <View style={styles.slide}>
@@ -132,7 +134,7 @@ const OnBoarding = () => {
             style={styles.image}
           />
           <Text style={styles.text} className="font-UrbanistBold">
-            Health checks & consultations easily anywhere anytime
+            {t("onboarding.slide2")}
           </Text>
         </View>
         <View style={styles.slide}>
@@ -141,20 +143,28 @@ const OnBoarding = () => {
             style={styles.image}
           />
           <Text style={[styles.text]} className="font-UrbanistBold">
-            Let's start living healthy and well with us right now!
+            {t("onboarding.slide3")}
           </Text>
         </View>
       </Swiper>
       <View style={styles.footer}>
         {index < 2 && (
           <TouchableOpacity style={styles.button} onPress={handleNext}>
-            <Text style={styles.buttonText} className="font-UrbanistSemiBold">Next</Text>
+            <Text style={styles.buttonText}>{t("onboarding.next")}</Text>
           </TouchableOpacity>
         )}
         {index >= 2 && (
-          <TouchableOpacity style={[styles.button, { padding: 0, paddingVertical: 1 }]}  >
-            <Link href="/signupSignin/" style={[styles.button]} className="font-UrbanistSemiBold">
-              Get Started
+          <TouchableOpacity
+            style={[styles.button, { padding: 0, paddingVertical: 1 }]}
+          >
+            {/* Example usage of Link for navigation */}
+            {/* <Link href="/signupSignin/" style={[styles.button]}>{t('onboarding.getStarted')}</Link> */}
+            <Link
+              href="/signupSignin/"
+              style={[styles.button]}
+              className="font-UrbanistSemiBold"
+            >
+              {t("onboarding.getStarted")}
             </Link>
           </TouchableOpacity>
         )}
@@ -171,10 +181,17 @@ const OnBoarding = () => {
             source={require("@/assets/images/onboarding/MedicaWelcome.png")}
           />
           <View style={styles.intro}>
-            <Text style={[styles.welcomeHeading]} className="font-UrbanistSemiBold">Welcome to Medica! 👋</Text>
-            <Text style={styles.welcomeParagraph} className="font-UrbanistSemiBold">
-              The best online doctor appointment & consultation app of the
-              century for your health and medical needs!
+            <Text
+              style={[styles.welcomeHeading]}
+              className="font-UrbanistSemiBold"
+            >
+              {t("onboarding.welcome")}
+            </Text>
+            <Text
+              style={styles.welcomeParagraph}
+              className="font-UrbanistSemiBold"
+            >
+              {t("onboarding.slide1")}
             </Text>
           </View>
         </Animated.View>
@@ -197,7 +214,6 @@ const OnBoarding = () => {
         <Text>Medica App</Text>
       </View>
     </View>
-
   );
 };
 
