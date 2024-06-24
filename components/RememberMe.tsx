@@ -1,7 +1,12 @@
+import { title } from "process";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text } from "react-native";
 
-const RememberMe = () => {
+interface RememberMeProps {
+  text: string
+}
+
+const RememberMe = ({text}: RememberMeProps) => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const toggleRememberMe = () => {
@@ -19,7 +24,7 @@ const RememberMe = () => {
         style={{ width: 24, height: 24 }}
       />
       <Text style={{ fontFamily: "UrbanistSemiBold", fontSize: 15 }}>
-        Remember me
+        {text}
       </Text>
     </Pressable>
   );

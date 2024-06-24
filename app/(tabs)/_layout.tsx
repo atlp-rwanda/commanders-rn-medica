@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { BackHandler } from "react-native";
+import { BackHandler, Platform } from "react-native";
 import { Tabs } from "expo-router";
-import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { TabsIcons } from "../../assets/icons";
 import { supabase } from "../supabase";
+import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const [authenticated, setAuthenticated] = useState(false);
+  const { t } = useTranslation(); 
 
   useEffect(() => {
     async function checkAuthentication() {
       try {
         const { data: user } = await supabase.auth.getSession();
-        setAuthenticated(!!user); 
+        setAuthenticated(!!user);
       } catch (error) {
         console.error("Error checking authentication:", error);
       }
@@ -37,10 +38,10 @@ export default function TabLayout() {
       backAction
     );
 
-    return () => backHandler.remove(); 
+    return () => backHandler.remove();
   }, [authenticated]);
 
-  return authenticated ? ( 
+  return authenticated ? (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "blue",
@@ -61,7 +62,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: t("homes"), 
           tabBarIcon: ({ focused }) => (
             <SvgXml xml={TabsIcons[focused ? "filled" : "outlined"]["Home"]} />
           ),
@@ -70,7 +71,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="appointment"
         options={{
-          title: "Appointment",
+          title: t("appointment"), 
           tabBarIcon: ({ focused }) => (
             <SvgXml
               xml={TabsIcons[focused ? "filled" : "outlined"]["Appointment"]}
@@ -81,7 +82,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: "History",
+          title: t("history"),
           tabBarIcon: ({ focused }) => (
             <SvgXml
               xml={TabsIcons[focused ? "filled" : "outlined"]["History"]}
@@ -92,7 +93,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="articles"
         options={{
-          title: "Articles",
+          title: t("articles"), 
           tabBarIcon: ({ focused }) => (
             <SvgXml
               xml={TabsIcons[focused ? "filled" : "outlined"]["Articles"]}
@@ -103,7 +104,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: t("profiles"), 
           tabBarIcon: ({ focused }) => (
             <SvgXml
               xml={TabsIcons[focused ? "filled" : "outlined"]["Profile"]}

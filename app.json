@@ -1,68 +1,73 @@
 {
-	"expo": {
-		"name": "medica-rn-commanders",
-		"slug": "medica-commanders",
-		"owner": "apiimperfect",
-		"version": "1.0.0",
-		"scheme": "your-app-scheme",
-		"orientation": "portrait",
-		"icon": "./assets/icon.png",
-		"userInterfaceStyle": "light",
-		"splash": {
-			"image": "./assets/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"supportsTablet": true,
-			"bundleIdentifier": "com.andela.commanders.medica",
-			"usesAppleSignIn": true
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
-			},
-			"package": "com.andela.commanders.medica",
-			"permissions": [
-				"android.permission.CAMERA",
-				"android.permission.RECORD_AUDIO"
-			]
-		},
-		"web": {
-			"favicon": "./assets/favicon.png"
-		},
-		"plugins": [
-			"expo-router",
-			"expo-font",
-			"expo-video",
-			[
-				"expo-camera",
-				{
-					"cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-					"microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
-					"recordAudioAndroid": true
-				}
-			],
-			"expo-apple-authentication"
-		],
-		"extra": {
-			"router": {
-				"origin": false
-			},
-			"eas": {
-				"projectId": "aaa92720-37aa-4291-bd17-f0efcf64ef8e"
-			}
-		},
-		"runtimeVersion": {
-			"policy": "appVersion"
-		},
-		"updates": {
-			"url": "https://u.expo.dev/53313078-5ee6-4fcd-8284-a14826f4f14a"
-		},
-		"experiments": {
-			"typedRoutes": true
-		}
-	}
+  "expo": {
+    "name": "medica-rn-commanders",
+    "slug": "medica-commanders",
+    "owner": "apiimperfect",
+    "version": "1.0.0",
+    "scheme": "your-app-scheme",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andela.commanders.medica",
+      "infoPlist": {
+        "NSContactsUsageDescription": "This app requires access to your contacts to invite friends.",
+        "LSApplicationQueriesSchemes": [
+          "whatsapp"
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.andela.commanders.medica",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "READ_CONTACTS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-video",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "aaa92720-37aa-4291-bd17-f0efcf64ef8e"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/53313078-5ee6-4fcd-8284-a14826f4f14a"
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
 }
