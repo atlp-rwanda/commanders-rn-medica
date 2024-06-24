@@ -124,7 +124,7 @@ const UserProfile = () => {
 			return;
 		}
 
-		const phoneRegex = /^[0-9]{10}$/;
+		const phoneRegex = /^[0-9]{12}$/;
 		if (!phoneRegex.test(phone)) {
 			setError("Invalid phone number");
 			setLoading(false);
