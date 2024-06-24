@@ -66,7 +66,7 @@ export default function ForgotPasswordScreen() {
 			} else {
 				Alert.alert(
 					"Success",
-					"Reset OTP has been sent to yuor phone number."
+					"Reset OTP has been sent to your phone number."
 				);
 				router.push({
 					params: { phone, method: selected },
@@ -151,16 +151,21 @@ const SelectContactMethod = ({
 		<Pressable
 			style={[styles.card, selected && styles.selectedCard]}
 			onPress={onPress}
+			className="justify-between"
 		>
 			<View style={styles.cardIcon}>
 				<Icon name={icon} />
 			</View>
-			<View>
+			<View className="w-4/5">
 				<Text style={styles.cardTitle}>{title}</Text>
 				{selected ? (
 					<TextInput
 						style={styles.cardSubtitle}
-						placeholder="Type here"
+						placeholder={`Enter your ${
+							icon === "chat"
+								? "phone Number"
+								: "Enter your email"
+						}`}
 						value={subtitle}
 						onChangeText={setContact}
 					/>
@@ -212,6 +217,7 @@ const styles = StyleSheet.create({
 	},
 	cardSubtitle: {
 		fontWeight: "bold",
+		width: "100%",
 	},
 	button: {
 		backgroundColor: "#5089FF",
