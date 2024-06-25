@@ -1,5 +1,5 @@
 import { RootState } from "@/redux/store/store";
-import { Link, router } from "expo-router";
+import { Link, router, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import {
 	ActivityIndicator,
@@ -32,6 +32,7 @@ import {
 const roleFilters = ["All", "General", "Dentist", "Nutritionist", "Pediatric"];
 
 const Home = () => {
+	const navigation = useNavigation();
 	const dispatch = useDispatch();
 	const [doctors, setDoctors] = useState<Doctor[]>([]);
 	const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
@@ -40,28 +41,51 @@ const Home = () => {
 
 	const { loading, user } = useSelector(
 		(state: RootState) => state.getProfileReducer
-	);
+  );
 	const fetchDoctors = async () => {
-		try {
+    try {
+      const { data } = await supabase.auth.getUser();
+      const user_id = data.user?.id;
+      console.log("Userid: " + user_id);
 			let { data: doctorsData, error } = await supabase
 				.from("doctor")
 				.select("*");
 
-			if (error) {
-				console.error("Error fetching data:", error);
-			} else {
-				setDoctors(doctorsData || []);
-				setFilteredDoctors(doctorsData || []);
-			}
+        const { data: favoriteData, error: favoriteError } = await supabase
+        .from('favorites')
+        .select('doctor_id')
+        .eq('user_id', user_id);
+    
+      if (favoriteError) {
+        console.error('Error fetching favorites:', favoriteError);
+        return [];
+      }
+    
+    //   console.log("Favorites:----->", favoriteData);
+    
+      const favoriteDoctorIds = favoriteData.map(favorite => favorite.doctor_id);
+    
+      const doctorsWithLikedStatus = doctorsData?.map(doctor => ({
+        ...doctor,
+        liked: favoriteDoctorIds.includes(doctor.id)
+      }));
+      setDoctors(doctorsWithLikedStatus || []);
+      setFilteredDoctors(doctorsWithLikedStatus || []);
 		} catch (error) {
 			console.error("Error:", error);
 		}
 	};
 
 	useEffect(() => {
+		const unsubscribeFocus = navigation.addListener('focus', () => {
+			fetchDoctors();
+		});
 		fetchDoctors();
 		dispatch(getProfile() as unknown as UnknownAction);
-	}, []);
+		return () => {
+			unsubscribeFocus();
+		  };
+	}, [navigation,roleFilters]);
 
 	const greeting = () => {
 		const date = new Date();
@@ -184,7 +208,14 @@ const Home = () => {
 							className="w-[86px] items-center justify-between me-3 mb-6 h-24"
 						>
 							<TouchableOpacity
-								activeOpacity={0.8}
+                activeOpacity={0.8}
+                onPress={()=>{
+                router.push({
+                  pathname: "/Doctors/topDoctors",
+                  params: {
+                    category: item.name
+                  },
+                });}}
 								className="bg-[#246BFD14] p-2.5 items-center justify-center rounded-full mb-3 w-[60px] h-[60px]"
 							>
 								<SvgXml
@@ -276,6 +307,7 @@ const Home = () => {
 								pathname: "/doctor-appointments/",
 								params: {
 									doctorId: item.id,
+									liked: item.liked?'true':'false'
 								},
 							});
 						}}

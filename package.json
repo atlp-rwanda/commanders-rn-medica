@@ -17,6 +17,7 @@
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-native-picker/picker": "2.7.5",
+    "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
     "@reduxjs/toolkit": "^2.2.3",
     "@supabase/supabase-js": "^2.43.4",
@@ -24,6 +25,7 @@
     "date-fns": "^3.6.0",
     "eas-cli": "^10.0.2",
     "expo": "~51.0.14",
+    "expo-apple-authentication": "~6.4.1",
     "expo-auth-session": "~5.5.2",
     "expo-av": "^14.0.5",
     "expo-camera": "~15.0.11",
@@ -71,8 +73,7 @@
     "redux": "^5.0.1",
     "toggle-switch-react-native": "^3.3.0",
     "uuid": "^10.0.0",
-    "world-countries": "^5.0.0",
-    "expo-apple-authentication": "~6.4.1"
+    "world-countries": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

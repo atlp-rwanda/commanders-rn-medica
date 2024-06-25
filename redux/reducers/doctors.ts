@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ImageSourcePropType } from "react-native";
 
 export interface Doctor {
+  liked: string | number | (string | number)[] | null | undefined;
   id?: number;
   name: string;
   role: string;

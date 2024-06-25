@@ -1,6 +1,6 @@
 import { activityIcon } from "@/assets/icons/activity";
 import { chatIcon } from "@/assets/icons/chat";
-import { heart } from "@/assets/icons/heart";
+import { heart, heartFilledIcon } from "@/assets/icons/heart";
 import { moreOutlinedIcon } from "@/assets/icons/more";
 import { starIcon } from "@/assets/icons/star";
 import { userIcon } from "@/assets/icons/user";
@@ -20,16 +20,21 @@ import { getReview } from "@/redux/Thunk/doctorThunk";
 import { getReviews } from "@/redux/reducers/doctors";
 export default function DoctorAppointmentScreen() {
   const { doctorId } = useGlobalSearchParams<{ doctorId: string }>();
+  let { liked = 'false' } = useGlobalSearchParams<{ liked: string }>();
+  const [favorite, setFavorite] = useState(liked == 'true' ? true : false)
   const [doctor, setDoctor] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-   const [patientCount, setPatientCount] = useState(0);
+  const [patientCount, setPatientCount] = useState(0);
+  const [userID, setUserID] = useState('');
 
   const reviews = useSelector((state: RootState) => state.doctors.reviews).slice(0, 2);
   const dispatch = useDispatch();
-  const reviewEnclenent = reviews.length;
 
   useEffect(() => {
     const fetchDoctor = async () => {
+      const { data } = await supabase.auth.getUser();
+      const user_id = data.user?.id;
+      setUserID(user_id as string);
       setLoading(true);
       try {
         let { data, error } = await supabase
@@ -48,7 +53,6 @@ export default function DoctorAppointmentScreen() {
 
         setDoctor(data);
         const res = await dispatch(getReview(`${doctorId}`)as any).unwrap();
-        console.log(res);
         dispatch(getReviews(res)as any)
         
       } catch (error) {
@@ -66,7 +70,6 @@ export default function DoctorAppointmentScreen() {
       .from("appointment")
       .select("*")
       .eq("doctor_id", doctorId);
-      console.log("Data1------>",data?.length)
      setPatientCount(data?.length as number)
 
     }
@@ -77,8 +80,38 @@ export default function DoctorAppointmentScreen() {
   return (
     <View className="px-5 flex-1">
       <NavigationHeader title={doctor?.name || ""}>
-        <TouchableOpacity className="w-7 h-7 mr-2">
-          <SvgXml xml={heart} width={"100%"} height={"100%"} className="text-gray-900" />
+        <TouchableOpacity className="w-7 h-7 mr-2" onPress={
+          async() => {
+            if (favorite) {
+              const { error } = await supabase
+              .from("favorites")
+              .delete()
+              .eq("doctor_id", doctorId)
+                .eq("user_id", userID);
+              if (error) {
+                alert('Try again please!')
+              }
+              else {
+                setFavorite(false);
+              }
+            }
+            else {
+              const { data, error } = await supabase
+              .from('favorites')
+              .insert([
+                {user_id: userID, doctor_id: doctorId },
+              ])
+                .select()
+              if (error) {
+                alert('Try again please!')
+              }
+              else {
+                setFavorite(true);
+              }
+            }
+          }
+        }>
+          <SvgXml xml={favorite ? heartFilledIcon : heart} width={"100%"} height={"100%"} className={favorite ? "text-primary-500" : "text-gray-900"} />
         </TouchableOpacity>
         <TouchableOpacity className="w-7 h-7">
           <SvgXml
