@@ -69,7 +69,8 @@
     "redux": "^5.0.1",
     "toggle-switch-react-native": "^3.3.0",
     "uuid": "^10.0.0",
-    "world-countries": "^5.0.0"
+    "world-countries": "^5.0.0",
+    "expo-apple-authentication": "~6.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
