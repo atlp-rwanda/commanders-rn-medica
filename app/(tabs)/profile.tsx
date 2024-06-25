@@ -1,12 +1,5 @@
-import {
-	View,
-	Text,
-	ScrollView,
-	Image,
-	FlatList,
-	useWindowDimensions,
-} from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import { View, Text, ScrollView, Image, FlatList } from "react-native";
+import React, { useEffect, useRef } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { medicaLogo } from "@/assets/icons/medica-logo";
@@ -17,9 +10,11 @@ import SettingCard from "@/components/settings/settingCard";
 import * as icons from "@/assets/icons/settings";
 import { Modalize } from "react-native-modalize";
 import LogoutModal from "@/components/settings/logoutModal";
-import { supabase } from "../supabase";
-import { User } from "@supabase/supabase-js";
-import { getImage } from "@/utils/profile";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store/store";
+import parsePhoneNumber from "libphonenumber-js";
+import { getProfile } from "@/redux/actions/profile";
+import { UnknownAction } from "redux";
 
 const settings: {
 	text: string;
@@ -78,36 +73,20 @@ const settings: {
 
 const Profile = () => {
 	const insets = useSafeAreaInsets();
-	const { width } = useWindowDimensions();
-	const [user, setUser] = useState<any | null>(null);
+	const dispatch = useDispatch();
 	const modalizeRef = useRef<Modalize>(null);
+
+	const { loading, user } = useSelector(
+		(state: RootState) => state.getProfileReducer
+	);
+
+	useEffect(() => {
+		dispatch(getProfile() as unknown as UnknownAction);
+	}, []);
+
 	const onOpen = () => {
 		modalizeRef.current?.open();
 	};
-
-	useEffect(() => {
-		(async () => {
-			const { data } = await supabase.auth.getUser();
-			const { data: userData } = await supabase
-				.from("patient")
-				.select("*")
-				.eq("id", data.user?.id)
-				.single();
-			const profileUrl = await getImage({
-				bucket: "files",
-				fileName: userData.profile_picture.startsWith("public/")
-					? userData.profile_picture
-					: userData.profile_picture.split("/files/")[1],
-			});
-			profileUrl
-				? setUser({ ...userData, profile_picture: profileUrl })
-				: setUser({
-						...userData,
-						profile_picture:
-							"https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg",
-				  });
-		})();
-	}, []);
 
 	return (
 		<View className={`flex-1 w-full mt-[${insets.top}px]`}>
@@ -141,7 +120,12 @@ const Profile = () => {
 						{user && user.full_name}
 					</Text>
 					<Text className="text-[14px] font-UrbanistSemiBold text-greyscale-900">
-						{user && user.phone}
+						{user &&
+							user.phone &&
+							parsePhoneNumber(
+								user.phone,
+								"RW"
+							)?.formatInternational()}
 					</Text>
 				</View>
 				<FlatList
