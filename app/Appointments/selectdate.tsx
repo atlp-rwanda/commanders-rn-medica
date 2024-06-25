@@ -1,134 +1,254 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image,Modal,StyleSheet,ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, Modal, StyleSheet, ScrollView } from "react-native";
 import CalendarScreen from './doctorcard/calendal';
-import { router } from 'expo-router';
-const arrow = require("../../assets/icons/arrow-left.png")
+import { router, useGlobalSearchParams } from 'expo-router';
 import { useFonts } from 'expo-font';
+import { Formik } from "formik";
+import { parseISO } from 'date-fns';
+import { createClient } from '@supabase/supabase-js';
 
-function SelectDate(){
+const arrow = require("../../assets/icons/arrow-left.png");
 
-    const [fontLoaded]=useFonts({
-        'UrbanistBold':require('../../assets/fonts/Urbanist-Bold.ttf'),
-        'UrbanistRegular':require("../../assets/fonts/Urbanist-Regular.ttf"),
-        'Urbanist-SemiBold':require("../../assets/fonts/Urbanist-SemiBold.ttf"),
-        'UrbanistMedium':require("../../assets/fonts/Urbanist-Medium.ttf")
-       })
-        if(!fontLoaded){
-       return null
-       }
+const supabaseUrl = 'https://your-supabase-url.supabase.co';
+const supabaseKey = 'your-anon-key';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const [selectedTime, setSelectedTime] = useState(null);
-    const [isModalVisible, setIsModalVisible] = useState(false);
+function SelectDate() {
+  const [fontLoaded] = useFonts({
+    'UrbanistBold': require('../../assets/fonts/Urbanist-Bold.ttf'),
+    'UrbanistRegular': require("../../assets/fonts/Urbanist-Regular.ttf"),
+    'UrbanistSemiBold': require("../../assets/fonts/Urbanist-SemiBold.ttf"),
+    'UrbanistMedium': require("../../assets/fonts/Urbanist-Medium.ttf")
+  });
 
-    const time = ["09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","15:00 PM","15:30 PM","16:00 PM","16:30 PM",
-                   "17:00 PM","17:30 PM"];
+  if (!fontLoaded) {
+    return null;
+  }
 
-    const handleTimeSelect = (selected:any) => {
-        if (selectedTime === selected) {
-            setSelectedTime(null); 
-        } else {
-            setSelectedTime(selected);
-        }
-    };
+  const { selectedreason, date, time, appointmentId } = useGlobalSearchParams();
+  const [selectedTime, setSelectedTime] = useState(time || null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-   return (
-      <>
-        <Modal
+  const hour = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "15:00 PM", "15:30 PM", "16:00 PM", "16:30 PM", "17:00 PM", "17:30 PM"];
+
+  const handleTimeSelect = (selected:any) => {
+    setSelectedTime(selectedTime === selected ? null : selected);
+  };
+
+  const updateAppointment = async (values:any) => {
+    try {
+      const { error } = await supabase
+        .from('appointment')
+        .update({ date: values.date, time: values.time })
+        .eq('id', values.appointmentId);
+
+      if (error) {
+        console.error('Error updating appointment:', error);
+      } else {
+        setIsModalVisible(true);
+      }
+    } catch (error) {
+      console.error('Network request failed:', error);
+    }
+  };
+
+
+  return (
+    <>
+      <Modal
         animationType="fade"
         transparent={true}
         visible={isModalVisible}
-        >
-            <View style={styles.modalOverlay}>
-            <View className='bg-white absolute w-[340px] rounded-[48px] flex justify-center items-center p-10 '>
-                <Image source={require("../../assets/appointmentIcon/Group.png")}/>
-                <Text className='text-blue-700 text-lg font-UrbanistBold pt-5 pb-5'>Rescheduling Success!</Text>
-                <Text className='font-UrbanistRegular text-[16px]'>Appointment successfuly changed. You will receive notification and the doctor you selected will contact you</Text>
-                <TouchableOpacity className='bg-blue-700 rounded-3xl pb-3 w-64 pt-3 pl-10 pr-10 my-3.5'>
-                    <Text className='text-white font-UrbanistBold text-center'>View Appointment</Text>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                   onPress={() => {
-                    setIsModalVisible(false);
-                  }}
-                > 
-                    <View className=' rounded-3xl pb-3 pt-3 pl-20 pr-20 w-64 bg-slate-100 '>
-                    <Text className='text-blue-700 text-center font-UrbanistBold '>Cancel</Text>
-                    </View>
-                </TouchableOpacity>
-             </View>
-            </View>
-        </Modal>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View className='flex-1 pl-5 pr-5 pb-10 pt-5 justify-center '>
-        <View className='flex flex-row gap-3 items-center pb-5'>
-        <TouchableOpacity onPress={()=>router.back()}>        
-                    <Image  className='w-[35px] h-[35px]' source={arrow}/>
-                </TouchableOpacity>
-            <Text className='text-2xl font-UrbanistBold '>Reschedule Appointment</Text>
-        </View>
-        <Text className='text-xl font-UrbanistBold pb-3'>Select Date</Text>
-        <CalendarScreen/>
-        <Text className='text-xl font-UrbanistBold pt-3'>Select Hour</Text>
-        <View className="justify-between w-[100%] flex-row flex-wrap pt-5 pb-5">
-            {time.map((hour) => (
-              <View key={hour} className="flex-grow-[1]">
-                <TouchableOpacity
-                  className={
-                    "py-2 px-4 rounded-[40px] items-center justify-center border-2 border-primary-500 mr-3 mb-4 " +
-                    (selectedTime === hour
-                      ? "bg-primary-500"
-                      : "bg-transparent")
-                  }
-                  onPress={() => handleTimeSelect(hour)}
-                >
-                  <Text
-                    className={
-                      "font-UrbanistBold " +
-                      (selectedTime === hour
-                        ? " text-white"
-                        : "text-primary-500")
-                    }
-                  >
-                    {hour}
-                  </Text>
-                </TouchableOpacity>
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Image source={require("../../assets/appointmentIcon/Group.png")} />
+            <Text style={styles.modalTitle}>Rescheduling Success!</Text>
+            <Text style={styles.modalText}>Appointment successfully changed. You will receive notification and the doctor you selected will contact you</Text>
+            <TouchableOpacity style={styles.modalButton} onPress={()=>
+               router.push("/Appointments")
+            }>
+              <Text style={styles.modalButtonText}>View Appointment</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIsModalVisible(false);
+              }}
+            >
+              <View style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Cancel</Text>
               </View>
-            ))}
+            </TouchableOpacity>
           </View>
-
-          <View style={styles.butshadow} className='bg-blue-600 rounded-[100px] w-[370px] h-[58px] mt-5 justify-center items-center'>
-          <TouchableOpacity 
-          onPress={() => {
-            setIsModalVisible(true);
-          }}
-        >
-            <Text className=' text-white  text-lg font-UrbanistBold '>Submit</Text>
-         </TouchableOpacity>
+        </View>
+      </Modal>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => router.back()}>
+              <Image style={styles.arrow} source={arrow} />
+            </TouchableOpacity>
+            <Text style={styles.title}>Reschedule Appointment</Text>
           </View>
-        
-           
-    </View>
-        </ScrollView>
-      </>
-   );
+          <Text style={styles.sectionTitle}>Select Date</Text>
+          <Formik
+            initialValues={{ selectedreason, date, time: selectedTime, appointmentId }}
+            onSubmit={(values) => {
+              console.log(values);
+              updateAppointment(values);
+            }}
+          >
+            {({ handleSubmit, setFieldValue }) => (
+              <>
+                <CalendarScreen
+                  selectedDate={typeof date === "string" ? parseISO(date) : undefined}
+                  onDateChange={(newDate) => setFieldValue('date', newDate.toISOString())}
+                />
+                <Text style={styles.sectionTitle}>Select Hour</Text>
+                <View style={styles.timeContainer}>
+                  {hour.map((selecthour) => (
+                    <TouchableOpacity
+                      key={selecthour}
+                      style={[
+                        styles.timeButton,
+                        selectedTime === selecthour && styles.selectedTimeButton,
+                      ]}
+                      onPress={() => {
+                        handleTimeSelect(selecthour);
+                        setFieldValue('time', selecthour);
+                      }}
+                    >
+                      <Text style={[
+                        styles.timeText,
+                        selectedTime === selecthour && styles.selectedTimeText,
+                      ]}>{selecthour}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <TouchableOpacity style={styles.submitButton} onPress={() => handleSubmit()}>
+                  <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </Formik>
+        </View>
+      </ScrollView>
+    </>
+  );
 }
 
 export default SelectDate;
+
 const styles = StyleSheet.create({
-    modalOverlay: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-      },
-    scrollViewContent: {
-        flexGrow: 1,
-    },
-    butshadow:{
-        shadowColor: '#246bfd',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        elevation: 5,
-      },
-})
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    width: 340,
+    borderRadius: 48,
+    padding: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    color: '#246bfd',
+    fontSize: 20,
+    fontFamily: 'UrbanistBold',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  modalText: {
+    fontFamily: 'UrbanistRegular',
+    fontSize: 16,
+    textAlign: 'center',
+    paddingBottom: 10,
+  },
+  modalButton: {
+    backgroundColor: '#246bfd',
+    borderRadius: 30,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 10,
+  },
+  modalButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'UrbanistBold',
+    textAlign: 'center',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  container: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
+    paddingTop: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 5,
+  },
+  arrow: {
+    width: 35,
+    height: 35,
+  },
+  title: {
+    fontSize: 24,
+    fontFamily: 'UrbanistBold',
+    marginLeft: 10,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontFamily: 'UrbanistBold',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  timeButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#246bfd',
+    marginBottom: 10,
+  },
+  selectedTimeButton: {
+    backgroundColor: '#246bfd',
+  },
+  timeText: {
+    fontSize: 16,
+    fontFamily: 'UrbanistBold',
+    color: '#246bfd',
+  },
+  selectedTimeText: {
+    color: '#fff',
+  },
+  submitButton: {
+    backgroundColor: '#246bfd',
+    borderRadius: 100,
+    width: 370,
+    height: 58,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  submitButtonText: {
+    color: '#fff',
+    fontSize: 20,
+    fontFamily: 'UrbanistBold',
+  },
+});

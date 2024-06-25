@@ -86,7 +86,6 @@ console.log(error);
 useEffect(()=>{
 fetchAppointment();
 },[])
-
 const getPackageIcon = (typecall:any) => {
   switch (typecall) {
     case 'Voice Call':
@@ -285,8 +284,17 @@ const getPackageIcon = (typecall:any) => {
                   backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
                   chance="Cancel Appointment"
                   cantchance="Reschedule"
-                  // fact={() => router.push("/Appointments/reschedul")}
-                  // cancle={() => setIsModalVisible(true)}
+                  fact={() =>
+                    router.push({
+                      pathname: "/Appointments/reschedul",
+                      params: {
+                        date: appointment.appointment_date,
+                        time: appointment.appointment_time.slice(0,5),
+                        appointmentId: appointment?.id,
+                      },
+                    })
+                  }
+                  cancle={() => setIsModalVisible(true)}
                 />
               ))}
             </View>

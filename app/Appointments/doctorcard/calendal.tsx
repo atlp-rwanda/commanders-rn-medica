@@ -1,18 +1,21 @@
-
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet,Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay } from 'date-fns';
 import { useFonts } from 'expo-font';
 
-const CalendarScreen: React.FC = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+interface CalendarScreenProps {
+  selectedDate: Date | undefined;  
+  onDateChange: (newDate: Date) => void;  
+}
 
-  const [fontLoaded]=useFonts({
-    'UrbanistBold':require('../../../assets/fonts/Urbanist-Bold.ttf'),
-    'UrbanistMedium':require("../../../assets/fonts/Urbanist-Medium.ttf"),
-    'Urbanist-SemiBold':require("../../../assets/fonts/Urbanist-SemiBold.ttf")
-   })
+const CalendarScreen: React.FC<CalendarScreenProps> = ({ selectedDate, onDateChange }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const [fontLoaded] = useFonts({
+    'UrbanistBold': require('../../../assets/fonts/Urbanist-Bold.ttf'),
+    'UrbanistMedium': require("../../../assets/fonts/Urbanist-Medium.ttf"),
+    'UrbanistSemiBold': require("../../../assets/fonts/Urbanist-SemiBold.ttf")
+  });
 
   const handlePrevMonth = () => {
     setCurrentDate(prevDate => subMonths(prevDate, 1));
@@ -23,24 +26,21 @@ const CalendarScreen: React.FC = () => {
   };
 
   const handleDayPress = (day: Date) => {
-    setSelectedDate(prevSelectedDate =>
-      isSameDay(prevSelectedDate || new Date(), day) ? null : day
-    );
+    onDateChange(day); 
   };
-  
 
   const renderHeader = () => {
     return (
       <View style={styles.header}>
         <Text style={styles.headerText}>{format(currentDate, 'MMMM yyyy')}</Text>
-         <View className='flex flex-row gap-1'>
-         <TouchableOpacity onPress={handlePrevMonth}>
-         <Image  source={require("../../../assets/appointmentIcon/Arcl1.png")}/>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleNextMonth}>
-        <Image source={require("../../../assets/appointmentIcon/Arcal.png")}/>
-        </TouchableOpacity>
-         </View>
+        <View style={styles.navButtons}>
+          <TouchableOpacity onPress={handlePrevMonth}>
+            <Image source={require("../../../assets/appointmentIcon/Arcl1.png")} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleNextMonth}>
+            <Image source={require("../../../assets/appointmentIcon/Arcal.png")} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -50,7 +50,7 @@ const CalendarScreen: React.FC = () => {
     return (
       <View style={styles.daysOfWeek}>
         {daysOfWeek.map(day => (
-          <Text key={day} className='font-UrbanistBold' style={styles.dayOfWeekText}>{day}</Text>
+          <Text key={day} style={styles.dayOfWeekText}>{day}</Text>
         ))}
       </View>
     );
@@ -69,10 +69,10 @@ const CalendarScreen: React.FC = () => {
             onPress={() => handleDayPress(day)}
             style={[
               styles.dayButton,
-              isSameDay(selectedDate || new Date(), day) && styles.selectedDayButton,
+              selectedDate && isSameDay(selectedDate, day) && styles.selectedDayButton,
             ]}
           >
-            <Text style={[styles.dayText, isSameDay(selectedDate || new Date(), day) && styles.selectedDayText]}>
+            <Text style={[styles.dayText, selectedDate && isSameDay(selectedDate, day) && styles.selectedDayText]}>
               {format(day, 'd')}
             </Text>
           </TouchableOpacity>
@@ -81,9 +81,10 @@ const CalendarScreen: React.FC = () => {
     );
   };
 
-  if(!fontLoaded){
-    return null
-    }
+  if (!fontLoaded) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       {renderHeader()}
@@ -96,33 +97,32 @@ const CalendarScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor:'#d3dae7',
-    borderRadius:20,
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center'
+    backgroundColor: '#d3dae7',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom:5,
-    width:315
+    marginBottom: 5,
+    width: 315
   },
-  navButton: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  navButtons: {
+    flexDirection: 'row',
+    gap: 1,
   },
   headerText: {
     fontSize: 18,
-    fontFamily:'UrbanistBold'
+    fontFamily: 'UrbanistBold'
   },
   daysOfWeek: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop:10,
-    gap:16,
-    marginBottom:10
+    marginTop: 10,
+    gap: 16,
+    marginBottom: 10
   },
   dayOfWeekText: {
     width: 32,
@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
   days: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap:16,
-    paddingLeft:5
+    gap: 16,
+    paddingLeft: 5
   },
   dayButton: {
     width: 32,
@@ -143,15 +143,14 @@ const styles = StyleSheet.create({
   },
   selectedDayButton: {
     backgroundColor: '#246bfd',
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   dayText: {
     width: 60,
     textAlign: 'center',
-    fontFamily:'UrbanistMedium',
-    color:'#424242'
+    fontFamily: 'UrbanistMedium',
+    color: '#424242'
   },
   selectedDayText: {
     color: 'white',
@@ -159,5 +158,3 @@ const styles = StyleSheet.create({
 });
 
 export default CalendarScreen;
-
-
