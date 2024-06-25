@@ -5,13 +5,10 @@ import { router, useGlobalSearchParams } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { Formik } from "formik";
 import { parseISO } from 'date-fns';
-import { createClient } from '@supabase/supabase-js';
+import { Calendar } from "@/components/cards/calendar";
+import {supabase} from "../supabase"
 
 const arrow = require("../../assets/icons/arrow-left.png");
-
-const supabaseUrl = 'https://your-supabase-url.supabase.co';
-const supabaseKey = 'your-anon-key';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 function SelectDate() {
   const [fontLoaded] = useFonts({
@@ -24,10 +21,11 @@ function SelectDate() {
   if (!fontLoaded) {
     return null;
   }
-
+  const today = new Date();
   const { selectedreason, date, time, appointmentId } = useGlobalSearchParams();
   const [selectedTime, setSelectedTime] = useState(time || null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dates, setDate] = useState(new Date());
 
   const hour = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "15:00 PM", "15:30 PM", "16:00 PM", "16:30 PM", "17:00 PM", "17:30 PM"];
 
@@ -92,7 +90,7 @@ function SelectDate() {
           </View>
           <Text style={styles.sectionTitle}>Select Date</Text>
           <Formik
-            initialValues={{ selectedreason, date, time: selectedTime, appointmentId }}
+            initialValues={{ selectedreason, date:date, time: selectedTime, appointmentId }}
             onSubmit={(values) => {
               console.log(values);
               updateAppointment(values);
@@ -100,10 +98,10 @@ function SelectDate() {
           >
             {({ handleSubmit, setFieldValue }) => (
               <>
-                <CalendarScreen
-                  selectedDate={typeof date === "string" ? parseISO(date) : undefined}
-                  onDateChange={(newDate) => setFieldValue('date', newDate.toISOString())}
-                />
+                <Calendar date={dates} minDate={today.toDateString()} onDateChange={(newDate) => {
+                  setDate(newDate);
+                  setFieldValue('date', newDate);
+                }} />
                 <Text style={styles.sectionTitle}>Select Hour</Text>
                 <View style={styles.timeContainer}>
                   {hour.map((selecthour) => (
