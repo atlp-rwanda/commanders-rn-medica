@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet } from "react-native";
-import { useRouter } from 'expo-router';
+import { useRouter, useGlobalSearchParams } from 'expo-router';
 import { useFonts } from 'expo-font';
 
 const arrow = require("../../assets/icons/arrow-left.png");
+
 interface CustomCheckBoxProps {
   selected: boolean;
   onPress: () => void;
 }
+
 const CustomCheckBox: React.FC<CustomCheckBoxProps> = ({ selected, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.checkbox}>
@@ -15,6 +17,7 @@ const CustomCheckBox: React.FC<CustomCheckBoxProps> = ({ selected, onPress }) =>
     </TouchableOpacity>
   );
 }
+
 function ReschedulApointment() {
   const [fontLoaded] = useFonts({
     'UrbanistBold': require('../../assets/fonts/Urbanist-Bold.ttf'),
@@ -25,9 +28,12 @@ function ReschedulApointment() {
   const [selectedReason, setSelectedReason] = useState('');
   const [text, setText] = useState('');
   const router = useRouter();
+  const {appointmentId,appointmentime,appointmentdate}= useGlobalSearchParams<{ appointmentId:string,appointmentime:any,appointmentdate:any}>();
+  
   if (!fontLoaded) {
     return null;
   }
+
   const reasons = [
     "I'm having a schedule clash",
     "I'm not available on schedule",
@@ -35,11 +41,22 @@ function ReschedulApointment() {
     "I don't want to tell",
     "Others"
   ];
-  const handleChangeText = (value:any) => {
+
+  const handleChangeText = (value: any) => {
     setText(value);
   };
+
+  const submitreason=()=>{
+    const reason = selectedReason === 'Others' ? text : selectedReason;
+
+    router.push({
+     pathname:"/Appointments/selectdate",
+     params:{reason,appointmentId,appointmentime,appointmentdate}
+   })
+ }
+
   return (
-    <View className="flex-1 justify-between  pl-5 pr-5 pb-10 pt-10 bg-white">
+    <View className="flex-1 justify-between pl-5 pr-5 pb-10 pt-10 bg-white">
       <View className="flex gap-2">
         <View className="flex flex-row pb-5 pt-5">
           <TouchableOpacity onPress={() => router.back()}>
@@ -77,20 +94,21 @@ function ReschedulApointment() {
           </View>
         )}
       </View>
-      <View style={styles.butshadow} className="bg-blue-600  w-[380px] h-[58px] justify-center items-center rounded-[100px]">
-      <TouchableOpacity
-        onPress={() => router.push("/Appointments/selectdate")} 
-      >
-        <Text  className='text-white font-UrbanistBold text-[16px]'>
-          Next
-        </Text>
-      </TouchableOpacity>
-      </View >
-     
+      <View style={styles.butshadow} className="bg-blue-600 w-[380px] h-[58px] justify-center items-center rounded-[100px]">
+        <TouchableOpacity
+          onPress={submitreason}
+        >
+          <Text className='text-white font-UrbanistBold text-[16px]'>
+            Next
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+
 export default ReschedulApointment;
+
 const styles = StyleSheet.create({
   checkbox: {
     width: 22,
@@ -113,11 +131,11 @@ const styles = StyleSheet.create({
     fontFamily: 'UrbanistMedium',
     fontSize: 16,
     padding: 16,
-    textAlignVertical: 'top', 
+    textAlignVertical: 'top',
     width: '100%',
     minHeight: 100,
   },
-  butshadow:{
+  butshadow: {
     shadowColor: '#246bfd',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
