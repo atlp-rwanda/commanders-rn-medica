@@ -13,32 +13,44 @@ import { useGlobalSearchParams, router, Link } from "expo-router";
 import { View } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { SvgXml } from "react-native-svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
-
+import { getReview } from "@/redux/Thunk/doctorThunk";
+import { getReviews } from "@/redux/reducers/doctors";
 export default function DoctorAppointmentScreen() {
   const { doctorId } = useGlobalSearchParams<{ doctorId: string }>();
   const [doctor, setDoctor] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+   const [patientCount, setPatientCount] = useState(0);
 
   const reviews = useSelector((state: RootState) => state.doctors.reviews).slice(0, 2);
+  const dispatch = useDispatch();
+  const reviewEnclenent = reviews.length;
 
   useEffect(() => {
     const fetchDoctor = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase
+        let { data, error } = await supabase
           .from("doctor")
-          .select("name, role, image, hospital, Stars, reviews")
+          .select("*")
           .eq("id", doctorId)
           .single();
 
         if (error) {
           throw error;
         }
+        
+        if (error) {
+          throw error;
+        }
 
         setDoctor(data);
+        const res = await dispatch(getReview(`${doctorId}`)as any).unwrap();
+        console.log(res);
+        dispatch(getReviews(res)as any)
+        
       } catch (error) {
         console.error("Error fetching doctor data:", error);
       } finally {
@@ -48,6 +60,19 @@ export default function DoctorAppointmentScreen() {
 
     fetchDoctor();
   }, [doctorId]);
+  useEffect(()=>{
+    const abc = async()=>{
+      const { data, error } = await supabase
+      .from("appointment")
+      .select("*")
+      .eq("doctor_id", doctorId);
+      console.log("Data1------>",data?.length)
+     setPatientCount(data?.length as number)
+
+    }
+    abc();
+   
+  },[doctorId])
 
   return (
     <View className="px-5 flex-1">
@@ -65,6 +90,7 @@ export default function DoctorAppointmentScreen() {
         </TouchableOpacity>
       </NavigationHeader>
 
+
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {doctor && <MinimalDoctorCard {...doctor} />}
 
@@ -74,7 +100,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={userIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              5,000+
+              {patientCount}
             </Text>
             <Text className="text-sm">patients</Text>
           </View>
@@ -92,7 +118,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={starIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              {doctor?.Stars}
+              {doctor?.Stars.length}
             </Text>
             <Text className="text-sm">rating</Text>
           </View>
@@ -101,7 +127,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={chatIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              {doctor?.reviews}
+              {reviews.length}
             </Text>
             <Text className="text-sm">reviews</Text>
           </View>
@@ -110,18 +136,13 @@ export default function DoctorAppointmentScreen() {
         <View className="mb-6">
           <Text className="text-xl font-UrbanistBold mb-2">About me</Text>
           <Text>
-            {doctor?.name} is the top most Immunologists specialist in {doctor?.hospital} at London. She achieved several awards for her wonderful
-            contribution in the medical field. She is available for private
-            consultation.{" "}
-            <Text className="text-primary-500 font-UrbanistSemiBold">
-              view more
-            </Text>
+          {doctor?.about}
           </Text>
         </View>
 
         <View className="mb-6">
           <Text className="text-xl font-UrbanistBold mb-2">Working Time</Text>
-          <Text>Monday - Friday, 08.00 AM - 20.00 PM</Text>
+        <Text>{doctor?.time}</Text>
         </View>
 
         <View className="mb-3">
@@ -134,9 +155,11 @@ export default function DoctorAppointmentScreen() {
               See All
             </Link>
           </View>
-          {reviews.map((review, index) => (
+          {reviews.map((review, index) =>{
+            review.name = doctor?.name as any
+            return(
             <ReviewCard key={index} {...review} />
-          ))}
+          )})}
         </View>
       </ScrollView>
       <View className="py-3">
