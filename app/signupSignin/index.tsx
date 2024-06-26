@@ -159,12 +159,16 @@ const LetsYouIn = () => {
     });
     if (error) throw error;
     await AsyncStorage.setItem("data", JSON.stringify(data.session));
-    if (willRedirect) {
-      router.push("/(tabs)");
-    }
-    // else {
-    //   router.push("/Userprofile/userprofile");
-    // }
+    
+    setTimeout(()=>{
+      if (willRedirect) {
+        router.push("/Userprofile/userprofile");
+      }
+      else {
+        router.push("/(tabs)");
+     }
+    }, 2000);
+    
     return data.session;
   };
 
@@ -206,14 +210,15 @@ const LetsYouIn = () => {
       userId: data?.user.id,
       nickname: data?.user.user_metadata.nickname,
     }));
-    const user = await supabase.auth.getUser();
-    if (!user.data.user?.phone && user.data.user?.id) {
+    const {data:user, error}= await supabase.from('patient').select('id,phone,gender,nickname,profile_picture').eq('id',sessionData.userId).single();
+    if( user?.phone=='') {
       setWillRedirect(true);
     }
     else {
       setWillRedirect(false);
     }
-    console.log(sessionData);
+    console.log(user);
+    return;
   }
   useEffect(() => {
     session();
