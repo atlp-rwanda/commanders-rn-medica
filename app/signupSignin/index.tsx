@@ -2,7 +2,6 @@ import Spinner from "@/components/spinner";
 import { User } from "@supabase/supabase-js";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as Google from "expo-auth-session/providers/google";
-import { router } from "expo-router";
 import { useRouteInfo } from "expo-router/build/hooks";
 import * as WebBrowser from "expo-web-browser";
 import { useEffect, useState } from "react";
@@ -17,6 +16,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { router, useNavigation } from "expo-router";
 import BackIcon from "../../components/BackIcon";
 import Or from "../../components/Or";
 import SignInButton from "../../components/SignInButton";
@@ -24,10 +24,15 @@ import SignUpText from "../../components/SignUpText";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
 import { screenbgcolor } from "../../styles/usecolor";
+
+import { makeRedirectUri } from "expo-auth-session";
+import * as QueryParams from "expo-auth-session/build/QueryParams";
+import * as Linking from "expo-linking";
 import { supabase } from "../supabase";
-
-WebBrowser.maybeCompleteAuthSession();
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserSessionType, setSession } from "@/redux/reducers/session";
+import { AppDispatch, RootState } from "@/redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
 const LetsYouIn = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -134,6 +139,98 @@ const LetsYouIn = () => {
     }
   };
 
+  const [willRedirect, setWillRedirect] = useState(false);
+  WebBrowser.maybeCompleteAuthSession(); // required for web only
+  const redirectTo = makeRedirectUri({ scheme: "com.andela.commanders.medica" });
+  console.log("redirectTo", redirectTo);
+  const createSessionFromUrl = async (url: string) => {
+    const { params, errorCode } = QueryParams.getQueryParams(url);
+
+    if (errorCode) throw new Error(errorCode);
+    const { access_token, refresh_token } = params;
+
+    if (!access_token) return;
+
+
+
+    const { data, error } = await supabase.auth.setSession({
+      access_token,
+      refresh_token,
+    });
+    if (error) throw error;
+    await AsyncStorage.setItem("data", JSON.stringify(data.session));
+    
+    setTimeout(()=>{
+      if (willRedirect) {
+        router.push("/Userprofile/userprofile");
+      }
+      else {
+        router.push("/(tabs)");
+     }
+    }, 2000);
+    
+    return data.session;
+  };
+
+  const performOAuth = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "facebook",
+      options: {
+        redirectTo: redirectTo+'/signupSignin',
+        skipBrowserRedirect: true,
+      },
+    });
+    if (error) throw error;
+
+    const res = await WebBrowser.openAuthSessionAsync(
+      data?.url ?? "",
+      redirectTo
+    );
+
+    if (res.type === "success") {
+      const { url } = res;
+      await createSessionFromUrl(url);
+    }
+  };
+
+  const sessionData = useSelector((state: RootState) => state?.session)
+  const dispatch = useDispatch<AppDispatch>();
+  const [data, setData] = useState<any>();
+  const session = async () => {
+    const datas = await AsyncStorage.getItem("data");
+    if (datas) {
+      setData(JSON.parse(datas));
+      console.log(datas);
+    }
+    dispatch(setSession({
+      accessToken: data?.access_token,
+      fullName: data?.user.user_metadata.full_name,
+      email: data?.user.email,
+      picture: data?.user.user_metadata.picture,
+      userId: data?.user.id,
+      nickname: data?.user.user_metadata.nickname,
+    }));
+    const {data:user, error}= await supabase.from('patient').select('id,phone,gender,nickname,profile_picture').eq('id',sessionData.userId).single();
+    if( user?.phone=='') {
+      setWillRedirect(true);
+    }
+    else {
+      setWillRedirect(false);
+    }
+    console.log(user);
+    return;
+  }
+  useEffect(() => {
+    session();
+  }, [sessionData]);
+  // if (data){
+  //   router.push("/(tabs)");
+  // }
+
+
+  const url = Linking.useURL();
+  console.log(url);
+  if (url) createSessionFromUrl(url);
   return (
     <>
       <Modal transparent={true} animationType="fade" visible={loading}>
@@ -150,12 +247,13 @@ const LetsYouIn = () => {
                 BackHandler.exitApp();
               }}
             />
-            <Text style={styles.title}>Let’s get you in</Text>
+            <Text style={styles.title}>Let’s you in</Text>
             <View style={{ width: "100%", gap: 16 }}>
               <SignInButton
                 title="Continue with Facebook"
                 logo={require("../../assets/facebook-logo.png")}
-              />
+                onPress={performOAuth}
+            />
               <SignInButton
                 title="Continue with Google"
                 logo={require("../../assets/google-logo.png")}
