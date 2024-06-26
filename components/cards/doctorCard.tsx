@@ -60,7 +60,7 @@ export default function DoctorCard(props: docCardProps) {
                 {props.stars}
               </Text>
               <Text className="font-[UrbanistMedium] text-xs">
-                ({props.reviews} 123 reviews)
+                ({props.reviews} reviews)
               </Text>
             </View>
           </View>

@@ -22,15 +22,17 @@ export default function DoctorAppointmentScreen() {
   const { doctorId } = useGlobalSearchParams<{ doctorId: string }>();
   const [doctor, setDoctor] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+   const [patientCount, setPatientCount] = useState(0);
 
   const reviews = useSelector((state: RootState) => state.doctors.reviews).slice(0, 2);
   const dispatch = useDispatch();
+  const reviewEnclenent = reviews.length;
 
   useEffect(() => {
     const fetchDoctor = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase
+        let { data, error } = await supabase
           .from("doctor")
           .select("*")
           .eq("id", doctorId)
@@ -39,13 +41,16 @@ export default function DoctorAppointmentScreen() {
         if (error) {
           throw error;
         }
+        
+        if (error) {
+          throw error;
+        }
 
         setDoctor(data);
         const res = await dispatch(getReview(`${doctorId}`)as any).unwrap();
         console.log(res);
         dispatch(getReviews(res)as any)
-
-
+        
       } catch (error) {
         console.error("Error fetching doctor data:", error);
       } finally {
@@ -55,9 +60,19 @@ export default function DoctorAppointmentScreen() {
 
     fetchDoctor();
   }, [doctorId]);
+  useEffect(()=>{
+    const abc = async()=>{
+      const { data, error } = await supabase
+      .from("appointment")
+      .select("*")
+      .eq("doctor_id", doctorId);
+      console.log("Data1------>",data?.length)
+     setPatientCount(data?.length as number)
 
-    
-
+    }
+    abc();
+   
+  },[doctorId])
 
   return (
     <View className="px-5 flex-1">
@@ -74,7 +89,7 @@ export default function DoctorAppointmentScreen() {
           />
         </TouchableOpacity>
       </NavigationHeader>
-      {/* i will render doctor card here */}
+
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {doctor && <MinimalDoctorCard {...doctor} />}
@@ -85,7 +100,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={userIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              5,000+
+              {patientCount}
             </Text>
             <Text className="text-sm">patients</Text>
           </View>
@@ -103,7 +118,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={starIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              {doctor?.Stars}
+              {doctor?.Stars.length}
             </Text>
             <Text className="text-sm">rating</Text>
           </View>
@@ -112,7 +127,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={chatIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              {doctor?.reviews}
+              {reviews.length}
             </Text>
             <Text className="text-sm">reviews</Text>
           </View>
@@ -163,5 +178,3 @@ export default function DoctorAppointmentScreen() {
     </View>
   );
 }
-
-
