@@ -1,21 +1,20 @@
 import { back } from "@/assets/icons/userprofile/icons";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
-import { useNavigation } from "expo-router";
+import { router } from "expo-router";
+import { useState } from "react";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
-  SafeAreaView,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator,
 } from "react-native";
+import { OtpInput } from "react-native-otp-entry";
 import { SvgXml } from "react-native-svg";
 import { supabase } from "../supabase";
-import { useState } from "react";
 
 export default function CreatePin() {
-  const navigation = useNavigation();
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +51,7 @@ export default function CreatePin() {
       if (insertError) {
         setError("Failed to save PIN. Please try again.");
       } else {
-        navigation.navigate("Userprofile/setfingerprint" as never);
+        router.push("/Userprofile/setfingerprint");
       }
     } else {
       setError("User not found. Please log in again.");
@@ -61,10 +60,14 @@ export default function CreatePin() {
   };
 
   return (
-    <KeyboardAvoidingView>
-      <SafeAreaView>
+    <KeyboardAvoidingView className="flex-1">
+      <ScrollView
+        className="flex-1 pb-12"
+        bounces={false}
+        contentContainerStyle={{ flex: 1 }}
+      >
         <View className="my-4 flex-row gap-x-2 mt-10 ml-2">
-          <SvgXml xml={back} onPress={() => navigation.goBack()} />
+          <SvgXml xml={back} onPress={() => router.back()} />
           <Text className="text-xl text-black font-UrbanistSemiBold">
             Create New Pin
           </Text>
@@ -74,31 +77,41 @@ export default function CreatePin() {
             Add a PIN number to make your account more secure
           </Text>
         </View>
-        <View className="flex-row justify-center">
-          <OTPInputView
-            style={{ width: "70%", height: 200 }}
-            pinCount={4}
-            autoFocusOnLoad={false}
+        <View className="flex-row justify-center items-center flex-1">
+          <OtpInput
+            numberOfDigits={4}
             secureTextEntry={true}
-            codeInputFieldStyle={{
-              width: 60,
-              height: 50,
-              marginHorizontal: 5,
-              borderWidth: 1,
-              color: "black",
-              fontSize: 40,
-              borderRadius: 10,
-              borderColor: "#00000020",
-              fontFamily: "UrbanistBold",
-              textAlign: "center",
-              backgroundColor: "#FAFAFA",
+            onTextChange={(code) => setPin(code)}
+            theme={{
+              containerStyle: {
+                width: "auto",
+                height: 50,
+                marginHorizontal: "auto",
+              },
+              pinCodeContainerStyle: {
+                width: 60,
+                height: 50,
+                borderWidth: 1,
+                borderRadius: 10,
+                marginHorizontal: 8,
+                borderColor: "#00000020",
+                backgroundColor: "#FAFAFA",
+                alignItems: "center",
+                justifyContent: "center",
+              },
+              focusedPinCodeContainerStyle: {
+                borderColor: "#246BFD",
+                borderWidth: 1,
+                backgroundColor: "#246BFD14",
+              },
+              pinCodeTextStyle: {
+                color: "black",
+                fontSize: 80,
+                fontFamily: "UrbanistBold",
+                textAlign: "center",
+                lineHeight: 70,
+              },
             }}
-            codeInputHighlightStyle={{
-              borderColor: "#246BFD",
-              borderWidth: 1,
-              backgroundColor: "#246BFD14",
-            }}
-            onCodeFilled={(code) => setPin(code)}
           />
         </View>
         <View>
@@ -129,7 +142,7 @@ export default function CreatePin() {
             </Text>
           ) : null}
         </View>
-      </SafeAreaView>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
