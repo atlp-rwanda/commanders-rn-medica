@@ -62,7 +62,6 @@ const LetsYouIn = () => {
           Alert.alert("Error", sbRequest.error.message);
         } else {
           const { data } = await supabase.auth.getUser();
-          console.log(data);
           if (data) {
             setUser(data.user);
           } else {
@@ -134,7 +133,7 @@ const LetsYouIn = () => {
       router.push("/(tabs)/");
       return;
     } catch (e) {
-      console.log(JSON.stringify(e, null, 2));
+      // console.log(JSON.stringify(e, null, 2));
       return;
     }
   };
@@ -142,7 +141,7 @@ const LetsYouIn = () => {
   const [willRedirect, setWillRedirect] = useState(false);
   WebBrowser.maybeCompleteAuthSession(); // required for web only
   const redirectTo = makeRedirectUri({ scheme: "com.andela.commanders.medica" });
-  console.log("redirectTo", redirectTo);
+  // console.log("redirectTo", redirectTo);
   const createSessionFromUrl = async (url: string) => {
     const { params, errorCode } = QueryParams.getQueryParams(url);
 
@@ -176,7 +175,7 @@ const LetsYouIn = () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "facebook",
       options: {
-        redirectTo: redirectTo+'/signupSignin',
+        redirectTo: redirectTo+'signupSignin',
         skipBrowserRedirect: true,
       },
     });
@@ -200,7 +199,7 @@ const LetsYouIn = () => {
     const datas = await AsyncStorage.getItem("data");
     if (datas) {
       setData(JSON.parse(datas));
-      console.log(datas);
+      // console.log(datas);
     }
     dispatch(setSession({
       accessToken: data?.access_token,
@@ -217,7 +216,7 @@ const LetsYouIn = () => {
     else {
       setWillRedirect(false);
     }
-    console.log(user);
+    // console.log(user);
     return;
   }
   useEffect(() => {
@@ -229,7 +228,7 @@ const LetsYouIn = () => {
 
 
   const url = Linking.useURL();
-  console.log(url);
+  // console.log(url);
   if (url) createSessionFromUrl(url);
   return (
     <>

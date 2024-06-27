@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "medica-rn-commanders",
-    "slug": "medica-commanders",
-    "owner": "apiimperfect",
-    "version": "1.0.0",
+    "name": "medica",
+    "slug": "medica",
+    "owner": "mihigojustin",
+    "version": "1.0.1",
     "scheme": "com.andela.commanders.medica",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -50,7 +50,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "aaa92720-37aa-4291-bd17-f0efcf64ef8e"
+        "projectId": "5c45ac93-6e48-41ab-8d9b-4f2f0cb64bf5"
       }
     },
     "runtimeVersion": {

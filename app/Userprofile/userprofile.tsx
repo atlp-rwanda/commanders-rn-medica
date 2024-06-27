@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -21,11 +22,6 @@ import {
   emailIcon,
   selector,
 } from "../../assets/icons/userprofile/icons";
-import * as ImagePicker from "expo-image-picker";
-import { useEffect, useState } from "react";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { SelectList } from "react-native-dropdown-select-list";
-import { router, useNavigation } from "expo-router";
 import { supabase } from "../supabase";
 import { UserSessionType, setSession } from "@/redux/reducers/session";
 import { AppDispatch, RootState } from "@/redux/store/store";
