@@ -28,20 +28,8 @@ function ReschedulApointment() {
   const [selectedReason, setSelectedReason] = useState('');
   const [text, setText] = useState('');
   const router = useRouter();
-  const {date,time,appointmentId}= useGlobalSearchParams<{ date:any,time:any,appointmentId:string}>();
+  const {days,time,appointmentId}= useGlobalSearchParams<{ days:any,time:any,appointmentId:string}>();
   
- 
-  const submitreason=()=>{
-     const selectedreason=selectedReason
-     
-     router.push({
-      pathname:"/Appointments/selectdate",
-      params:{selectedreason,date,time,appointmentId}
-    })
-  }
-  
-  
-
   if (!fontLoaded) {
     return null;
   }
@@ -57,6 +45,15 @@ function ReschedulApointment() {
   const handleChangeText = (value: any) => {
     setText(value);
   };
+
+  const submitreason=()=>{
+    const reason = selectedReason === 'Others' ? text : selectedReason;
+
+    router.push({
+     pathname:"/Appointments/selectdate",
+     params:{reason,days,time,appointmentId}
+   })
+ }
 
   return (
     <View className="flex-1 justify-between pl-5 pr-5 pb-10 pt-10 bg-white">

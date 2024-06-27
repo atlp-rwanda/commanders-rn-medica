@@ -9,7 +9,8 @@ function Cardscomponent(props: any) {
       });
     }
   };
-
+  
+  
   return (
     <View
       style={props.bacColor}

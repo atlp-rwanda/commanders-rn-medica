@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Modal, StyleSheet, ScrollView } from "react-native";
-import CalendarScreen from './doctorcard/calendal';
 import { router, useGlobalSearchParams } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { Formik } from "formik";
-import { parseISO } from 'date-fns';
 import { Calendar } from "@/components/cards/calendar";
-import {supabase} from "../supabase"
+import { supabase } from "../supabase";
 
 const arrow = require("../../assets/icons/arrow-left.png");
 
@@ -21,35 +19,47 @@ function SelectDate() {
   if (!fontLoaded) {
     return null;
   }
+
   const today = new Date();
-  const { selectedreason, date, time, appointmentId } = useGlobalSearchParams();
+  const { reason, days, time, appointmentId } = useGlobalSearchParams<{ days: any, time: any, appointmentId: string, reason: string }>();
   const [selectedTime, setSelectedTime] = useState(time || null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dates, setDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(days ? new Date(days) : undefined);
+  const [updateError, setUpdateError] = useState<string | null>(null);
 
   const hour = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "15:00 PM", "15:30 PM", "16:00 PM", "16:30 PM", "17:00 PM", "17:30 PM"];
 
-  const handleTimeSelect = (selected:any) => {
+  const handleTimeSelect = (selected: string) => {
     setSelectedTime(selectedTime === selected ? null : selected);
   };
 
-  const updateAppointment = async (values:any) => {
+  const updateAppointment = async (values: any) => {
+    console.log('Updating appointment with values:', values);
     try {
-      const { error } = await supabase
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
+      const userId = userData?.user?.id;
+      const { data, error } = await supabase
         .from('appointment')
-        .update({ date: values.date, time: values.time })
-        .eq('id', values.appointmentId);
+        .update({ appointment_date: values.days, appointment_time: values.time })
+        .eq('id', values.appointmentId)
+        .eq("patient_id",userId)
+
+      console.log('Supabase response:', { data, error });
 
       if (error) {
         console.error('Error updating appointment:', error);
-      } else {
+        setUpdateError('Failed to update appointment.');
+      } else if (data) {
         setIsModalVisible(true);
+        setUpdateError(null);
+        console.log('Appointment updated successfully:', data);
       }
     } catch (error) {
       console.error('Network request failed:', error);
+      setUpdateError('Network request failed.');
     }
   };
-
 
   return (
     <>
@@ -63,8 +73,8 @@ function SelectDate() {
             <Image source={require("../../assets/appointmentIcon/Group.png")} />
             <Text style={styles.modalTitle}>Rescheduling Success!</Text>
             <Text style={styles.modalText}>Appointment successfully changed. You will receive notification and the doctor you selected will contact you</Text>
-            <TouchableOpacity style={styles.modalButton} onPress={()=>
-               router.push("/Appointments")
+            <TouchableOpacity style={styles.modalButton} onPress={() =>
+              router.push("/Appointments")
             }>
               <Text style={styles.modalButtonText}>View Appointment</Text>
             </TouchableOpacity>
@@ -90,18 +100,21 @@ function SelectDate() {
           </View>
           <Text style={styles.sectionTitle}>Select Date</Text>
           <Formik
-            initialValues={{ selectedreason, date:date, time: selectedTime, appointmentId }}
+            initialValues={{ reason, days: selectedDate?.toISOString().split('T')[0], time, appointmentId }}
             onSubmit={(values) => {
-              console.log(values);
               updateAppointment(values);
             }}
           >
             {({ handleSubmit, setFieldValue }) => (
               <>
-                <Calendar date={dates} minDate={today.toDateString()} onDateChange={(newDate) => {
-                  setDate(newDate);
-                  setFieldValue('date', newDate);
-                }} />
+                <Calendar
+                  date={selectedDate}
+                  minDate={today.toISOString().split('T')[0]}
+                  onDateChange={(date) => {
+                    setSelectedDate(date);
+                    setFieldValue('days', date.toISOString().split('T')[0]);
+                  }}
+                />
                 <Text style={styles.sectionTitle}>Select Hour</Text>
                 <View style={styles.timeContainer}>
                   {hour.map((selecthour) => (
@@ -123,7 +136,18 @@ function SelectDate() {
                     </TouchableOpacity>
                   ))}
                 </View>
-                <TouchableOpacity style={styles.submitButton} onPress={() => handleSubmit()}>
+                {updateError && (
+                  <Text style={styles.errorText}>{updateError}</Text>
+                )}
+                <TouchableOpacity 
+                  style={[styles.submitButton, (!selectedDate || !selectedTime) && styles.disabledButton]} 
+                  onPress={() => {
+                    if (selectedDate && selectedTime) {
+                      handleSubmit();
+                    }
+                  }}
+                  disabled={!selectedDate || !selectedTime}
+                >
                   <Text style={styles.submitButtonText}>Submit</Text>
                 </TouchableOpacity>
               </>
@@ -169,8 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingTop: 10,
     paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
+    width: '70%',
     marginTop: 10,
   },
   modalButtonText: {
@@ -235,6 +258,12 @@ const styles = StyleSheet.create({
   selectedTimeText: {
     color: '#fff',
   },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+    fontFamily: 'UrbanistRegular',
+    marginTop: 10,
+  },
   submitButton: {
     backgroundColor: '#246bfd',
     borderRadius: 100,
@@ -249,4 +278,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'UrbanistBold',
   },
+  disabledButton: {
+    backgroundColor: '#A9A9A9',
+  }
 });
