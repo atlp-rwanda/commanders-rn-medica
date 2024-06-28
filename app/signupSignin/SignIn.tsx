@@ -20,10 +20,12 @@ import { SignUpWith } from "../../components/SignUpWith";
 import Button from "../../components/button";
 import { areaView, containerStyle } from "../../styles/common";
 import { supabase } from "../supabase";
+import { useTranslation } from "react-i18next";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 const SignIn = () => {
+  const { t } = useTranslation();
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
   const [isPasswordActive, setIsPasswordActive] = useState<boolean>(false);
   const [email, setEmail] = useState("");
@@ -54,16 +56,22 @@ const SignIn = () => {
   async function signInWithEmail() {
     setLoading(true);
     setError("");
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
 
     if (!password && !email) {
-      setError("All fields are required");
+      setError(t("signUp.allFieldIsRequired"));
+      setLoading(false);
+    } 
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+    
+    if (!password && !email) {
+      setError(t("signUp.allFieldIsRequired"));
       setLoading(false);
     } else if (error) {
-      setError(error.message);
+      setError(t("signIn.invalidLoginCredentials"));
       setLoading(false);
     } else {
       router.push("/(tabs)/");
@@ -79,42 +87,46 @@ const SignIn = () => {
             imageSource={require("../../assets/Account.png")}
             onPress={router.back}
           />
-          <Text style={{ fontFamily: "UrbanistBold", fontSize: 32 }}>
-            Login to Your Account
+          <Text
+            style={{
+              fontFamily: "UrbanistBold",
+              fontSize: 32,
+              textAlign: "center",
+            }}
+          >
+            {t("signIn.title")}
           </Text>
-          <View style={{ rowGap: 20, width: "100%" }}>
+          <View style={{ gap: 20, width: "100%" }}>
             <EmailPasswordInput
               icon="email"
-              placeholder="Email"
-              onActiveChange={handleEmailActiveChange}
+              placeholder={t("signIn.emailPlaceholder")}
               value={email}
               onChangeText={handleEmailChange}
             />
             <EmailPasswordInput
               icon="lock"
-              placeholder="Password"
+              placeholder={t("signIn.passwordPlaceholder")}
               secureTextEntry
-              onActiveChange={handlePasswordActiveChange}
               value={password}
               onChangeText={handlePasswordChange}
-              isFilled={isPasswordFilled}
             />
-            <RememberMe />
-            <View style={styles.inputContainer}>
+            <RememberMe text={t("signIn.rememberMe")} />
+            <View style={{ rowGap: 20, width: "100%" }}>
               <Button
-                title={loading == true ? "Loading" : "Sign in"}
+                title={
+                  loading
+                    ? t("signIn.signInButtonLoading")
+                    : t("signIn.signInButton")
+                }
                 rounded
                 onPress={signInWithEmail}
+                disabled={loading}
               />
-              {error &&
-                error !== "Email is required" &&
-                error !== "Password is required" && (
-                  <Text style={styles.errorText}>{error}</Text>
-                )}
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </View>
             <Pressable
               style={{ alignItems: "center" }}
-              onPress={() => router.push("/reset-password/")}
+              onPress={() => router.push("/reset-password")}
             >
               <Text
                 style={{
@@ -123,18 +135,16 @@ const SignIn = () => {
                   fontSize: 16,
                 }}
               >
-                Forgot the password?
+                {t("signIn.forgotPassword")}
               </Text>
             </Pressable>
           </View>
-          <Or text="or continue with" />
+          <Or text={t("signIn.orContinueWith")} />
           <SignUpWith />
           <SignUpText
-            text1="Don’t have an account?"
-            text2="Sign up"
-            onPress={() => {
-              router.push("/signupSignin/SignUp");
-            }}
+            text1={t("signIn.dontHaveAccount")}
+            text2={t("signIn.signUpLink")}
+            onPress={() => router.push("/signupSignin/SignUp")}
           />
         </View>
       </ScrollView>
@@ -158,12 +168,15 @@ const styles = StyleSheet.create({
   },
   errorText: {
     position: "absolute",
-    left: screenWidth / 2 - 120,
     top: "15%",
+    left: "10%",
+    right: "10%",
     transform: [{ translateY: -20 }],
     color: "red",
     fontFamily: "UrbanistSemiBold",
     fontSize: 14,
+    textAlign: "center",
+    width: "auto",
   },
 });
 

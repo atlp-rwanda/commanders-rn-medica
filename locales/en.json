@@ -1,0 +1,103 @@
+{
+  
+  "homes": "Home",
+  "appointment": "Appointment",
+  "history": "History",
+  "articles": "Articles",
+  "profiles": "Profile",
+  "onboarding": {
+    "slide1": "Thousands of doctors & experts to help your health!",
+    "slide2": "Health checks & consultations easily anywhere anytime",
+    "slide3": "Let's start living healthy and well with us right now!",
+    "next": "Next",
+    "getStarted": "Get Started",
+    "welcome": "Welcome to Medica! 👋",
+    "welcomeMessage": "The best online doctor appointment & consultation app of the century for your health and medical needs!"
+  },
+  "letsYouIn": {
+    "title": "Let’s get you in",
+    "continueWithFacebook": "Continue with Facebook",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithApple": "Continue with Apple",
+    "or": "Or",
+    "signInWithPassword": "Sign in with password",
+    "dontHaveAccount": "Don’t have an account?",
+    "signUp": "Sign up"
+  },
+  "signIn": {
+    "title": "Login to Your Account",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "rememberMe": "Remember me",
+    "signInButton": "Sign in",
+    "signInButtonLoading": "Loading..",
+    "forgotPassword": "Forgot the password?",
+    "orContinueWith": "or continue with",
+    "dontHaveAccount": "Don’t have an account?",
+    "signUpLink": "Sign up",
+    "invalidLoginCredentials": "Invalid login credentials",
+    "emailAlreadyExists": "This email already exists"
+  },
+  "signUp": {
+    "createNewAccount": "Create New Account",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "signUp": "Sign up",
+    "loading": "Loading...",
+    "orContinueWith": "or continue with",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "allFieldIsRequired": "All fields are required",
+    "emailIsRequired": "Email is required",
+    "invalidEmailFormat": "Invalid email format",
+    "passwordIsRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters long",
+    "passwordUppercase": "Password must contain at least one uppercase letter",
+    "passwordLowercase": "Password must contain at least one lowercase letter",
+    "passwordDigit": "Password must contain at least one digit",
+    "passwordSpecialChar": "Password must contain at least one special character",
+    "tooManyAttempts": "Too many attempts. try again later."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "doctorSpeciality": "Doctor Speciality",
+    "seeAll": "See All",
+    "topDoctors": "Top Doctors",
+    "searchPlaceholder": "Search...",
+    "specialties": {
+    "general": "General",
+    "dentist": "Dentist",
+    "opthamologist": "Opthamologist",
+    "nutritionist": "Nutritionist",
+    "neurologist": "Neurologist",
+    "pediatric": "Pediatric",
+    "radiologist": "Radiologist",
+    "more": "More"
+  },
+    "carousel": {
+      "title": "Medical Checks!",
+      "description": "Check your health condition regularly to minimize the incidence of disease in the future.",
+      "button": "Check Now"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "notification": "Notification",
+    "payment": "Payment",
+    "security": "Security",
+    "language": "Language",
+    "dark_mode": "Dark mode",
+    "help_center": "Help Center",
+    "invite_friends": "Invite Friends",
+    "logout": "Logout",
+    "edit_profile": "Edit Profile",
+    "medical_checks": "Medical Checks!",
+    "health_description": "Check your health condition regularly to minimize the incidence of disease in the future.",
+    "check_now": "Check Now"
+  }
+}
