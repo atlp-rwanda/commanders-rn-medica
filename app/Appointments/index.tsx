@@ -78,12 +78,16 @@ if(error){
 }else{
   setAppointmentData(data);
   console.log("fetched data:");
+  setTimeout(()=>{
+    router.push("/(tabs)/appointment")
+  },0)
 }}  
 catch(error){
 console.log(error);
 } 
 }
 useEffect(()=>{
+  
 fetchAppointment();
 },[])
 
