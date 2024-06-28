@@ -6,11 +6,13 @@ interface Props {
   title: string;
   logo: any;
   color?: string;
+  onPress?: () => void;
 }
 
-const SignInButton: React.FC<Props> = ({ title, logo, color }) => {
+const SignInButton: React.FC<Props> = ({ title, logo, color, onPress }) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={[
         btnStyle,
         {
@@ -29,7 +31,18 @@ const SignInButton: React.FC<Props> = ({ title, logo, color }) => {
         }}
       >
         {logo && <Image source={logo} className="w-6 h-6" />}
-        <Text style={[textStyle, { marginLeft: logo ? 5 : 0, fontFamily: "UrbanistSemiBold", fontSize: 16 }]}>{title}</Text>
+        <Text
+          style={[
+            textStyle,
+            {
+              marginLeft: logo ? 5 : 0,
+              fontFamily: "UrbanistSemiBold",
+              fontSize: 16,
+            },
+          ]}
+        >
+          {title}
+        </Text>
       </View>
     </TouchableOpacity>
   );

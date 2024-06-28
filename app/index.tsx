@@ -1,19 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link, router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
+  BackHandler,
   Dimensions,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  BackHandler,
-  Alert
+  View
 } from "react-native";
 import Swiper from "react-native-swiper";
 import RotatingImage from "./RotatingImage";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width, height } = Dimensions.get("window");
 
 const OnBoarding = () => {

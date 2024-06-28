@@ -1,6 +1,6 @@
 
 import DoctorCard from "../../components/cards/doctCard";
-import { router } from "expo-router";
+import { router, useGlobalSearchParams, useNavigation } from "expo-router";
 import { Icon } from "@/components/Icon";
 import { StatusBar } from "expo-status-bar";
 import DocButton from "../../components/cards/DocButtons";
@@ -30,7 +30,7 @@ export default function DoctorDetails() {
       if (error) {
         console.error("Error fetching data:", error);
       } else {
-        console.log("Doctors:----->", doctorsData);
+        // console.log("Doctors:----->", doctorsData);
       
         setDoctors(doctorsData || []);
         setFilteredDoctors(doctorsData || []);
@@ -40,15 +40,22 @@ export default function DoctorDetails() {
     }
   };
 
+  let { category = 'all' } = useGlobalSearchParams<{ category: string }>();
+  if (category == 'More') {
+    category = 'all';
+}
   useEffect(() => {
     fetchDoctors();
+    setSelectedCategory(category as string);
   }, []);
 
 
   const filteredDocCards = selectedCategory === "all"
     ? doctors
     : doctors.filter(doc => doc.role.toLowerCase() === selectedCategory.toLowerCase());
-
+    
+  const navigation = useNavigation();
+  
   return (
     <View className="flex-1 bg-white ">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -57,7 +64,7 @@ export default function DoctorDetails() {
           <View className="flex-row justify-between items-center my-[30px] ">
  
             <Icon name="back" onPress={router.back} />
-            <Text className="flex-1 font-UrbanistBold text-2xl ml-2"> Top Doctor</Text>
+            <Text className="flex-1 font-UrbanistBold text-2xl ml-2"> {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</Text>
 
             <View className="flex-row">
               <TouchableOpacity onPress={() => {
@@ -73,6 +80,7 @@ export default function DoctorDetails() {
           <DocButton selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
 
           {filteredDocCards.map((spot, index) => (
+            //@ts-ignore
             <DoctorCard key={index} {...spot} />
           ))}
 

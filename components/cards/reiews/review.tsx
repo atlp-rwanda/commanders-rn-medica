@@ -8,10 +8,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { SvgXml } from "react-native-svg";
 
 export function ReviewCard(review: Review) {
+  // console.log("reviewData----->",review)
   return (
     <View className="my-4">
       <View className="flex-row items-center mb-3">
-        <Image source={review.image} className="rounded-full w-12 h-12" />
+        <Image source={{uri:review?.image}} className="rounded-full w-12 h-12" />
         <Text className="flex-1 px-3 text-lg font-UrbanistBold">
           {review.name}
         </Text>

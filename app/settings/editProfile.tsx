@@ -12,6 +12,14 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Select } from "@/components/select";
 import countries from "world-countries";
 import { supabase } from "../supabase";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store/store";
+import {
+	getProfile,
+	resetProfileState,
+	updateProfile,
+} from "@/redux/actions/profile";
+import { UnknownAction } from "redux";
 
 const genders = [
 	{ key: 1, value: "Male" },
@@ -20,20 +28,25 @@ const genders = [
 
 const EditProfile = () => {
 	const insets = useSafeAreaInsets();
+	const dispatch = useDispatch();
 	const [open, setOpen] = useState(false);
-	const [user, setUser] = useState<any | null>(null);
+
+	const { user } = useSelector((state: RootState) => state.getProfileReducer);
+	const { loading, message } = useSelector(
+		(state: RootState) => state.updateProfileReducer
+	);
 
 	useEffect(() => {
-		(async () => {
-			const { data } = await supabase.auth.getUser();
-			const { data: userData } = await supabase
-				.from("patient")
-				.select("*")
-				.eq("id", data.user?.id)
-				.single();
-			setUser(userData);
-		})();
+		dispatch(getProfile() as unknown as UnknownAction);
 	}, []);
+
+	useEffect(() => {
+		if (message) {
+			dispatch(getProfile() as unknown as UnknownAction);
+			dispatch(resetProfileState());
+			router.back();
+		}
+	}, [dispatch, message, router]);
 
 	return (
 		<View className={`flex-1 pt-[${insets.top}px] bg-white`}>
@@ -42,19 +55,17 @@ const EditProfile = () => {
 			</View>
 			<Formik
 				initialValues={{
-					names: user?.full_name,
-					userName: user?.nickname,
-					dob: user?.date_of_birth,
+					id: user.id,
+					full_name: user?.full_name,
+					nickname: user?.nickname,
+					date_of_birth: user?.date_of_birth,
 					email: user?.email,
-					country: "Rwanda",
-					phoneNumber: user?.phone,
+					phone: user?.phone,
 					gender: user?.gender,
 				}}
 				onSubmit={(values) => {
 					console.log(values);
-					setTimeout(() => {
-						router.back();
-					}, 1000);
+					dispatch(updateProfile(values) as unknown as UnknownAction);
 				}}
 			>
 				{({
@@ -68,33 +79,33 @@ const EditProfile = () => {
 						<ScrollView className="flex-1 pb-6">
 							<View className="h-14 items-center bg-lightgrey flex-row px-5 rounded-2xl mb-6">
 								<TextInput
-									// value={values.names}
+									value={values.full_name}
 									defaultValue={user && user.full_name}
-									placeholder="Names"
-									className="text-base font-UrbanistRegular w-max"
-									onChangeText={handleChange("names")}
+									placeholder="Full Name"
+									className="text-base font-UrbanistRegular w-full"
+									onChangeText={handleChange("full_name")}
 								/>
 							</View>
 							<View className="h-14 items-center bg-lightgrey flex-row px-5 rounded-2xl mb-6">
 								<TextInput
 									defaultValue={user && user.nickname}
-									// value={values.userName}
+									value={values.nickname}
 									placeholder="Username"
 									className="text-base font-UrbanistRegular w-[95%]"
-									onChangeText={handleChange("userName")}
+									onChangeText={handleChange("nickname")}
 								/>
 							</View>
 							<View className="h-14 items-center bg-lightgrey flex-row px-5 rounded-2xl mb-6">
 								<TextInput
 									placeholder="Birthdate"
 									className="text-base font-UrbanistRegular w-[95%]"
-									// value={`${new Date(
-									// 	values.dob
-									// ).toLocaleDateString()}`}
+									value={`${new Date(
+										values.date_of_birth
+									).toLocaleDateString()}`}
 									defaultValue={new Date(
 										user && user.date_of_birth
 									).toLocaleDateString()}
-									onChangeText={handleChange("dob")}
+									onChangeText={handleChange("date_of_birth")}
 								/>
 								<Touchable
 									onPress={() => setOpen((prev) => !prev)}
@@ -108,35 +119,21 @@ const EditProfile = () => {
 							<View className="h-14 items-center bg-lightgrey flex-row px-5 rounded-2xl mb-6">
 								<TextInput
 									defaultValue={user && user.email}
-									// value={values.email}
+									value={values.email}
 									placeholder="Email"
 									className="text-base font-UrbanistRegular w-[95%]"
 									onChangeText={handleChange("email")}
 								/>
 								<SvgXml xml={emailIcon} strokeOpacity={0.5} />
 							</View>
-							<Select
-								data={countries.map((country, index) => ({
-									key: index,
-									value: country.name.common,
-								}))}
-								setSelected={(text: string) =>
-									setFieldValue("country", text)
-								}
-								search
-								defaultOption={{
-									key: countries[0].idd,
-									value: countries[0].name.official,
-								}}
-							/>
 							<View className="h-6" />
 							<View className="h-14 items-center bg-lightgrey flex-row px-5 rounded-2xl mb-6">
 								<TextInput
 									defaultValue={user && user.phone}
-									// value={values.phoneNumber}
+									value={values.phone}
 									placeholder="+1 111 467 378 399"
-									className="text-base font-UrbanistRegular w-max"
-									onChangeText={handleChange("phoneNumber")}
+									className="text-base font-UrbanistRegular w-full"
+									onChangeText={handleChange("phone")}
 								/>
 							</View>
 							<Select
@@ -156,6 +153,8 @@ const EditProfile = () => {
 							rounded
 							onPress={() => handleSubmit()}
 							classes="mb-10"
+							loading={loading}
+							disabled={loading}
 						/>
 						<DateTimePickerModal
 							onCancel={() => setOpen((prev) => !prev)}

@@ -19,8 +19,12 @@ yarn-error.log*
 # VS Code
 .history/
 .vscode/launch.json
+.vscode
 
 # macOS
 .DS_Store
 
 expo-env.d.ts
+
+android/
+ios/
