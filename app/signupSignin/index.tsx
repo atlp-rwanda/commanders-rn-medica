@@ -158,16 +158,15 @@ const LetsYouIn = () => {
     });
     if (error) throw error;
     await AsyncStorage.setItem("data", JSON.stringify(data.session));
-    
-    setTimeout(()=>{
+    setTimeout(() => {
       if (willRedirect) {
         router.push("/Userprofile/userprofile");
+        console.log("willRedirect", willRedirect);
       }
       else {
         router.push("/(tabs)");
-     }
-    }, 2000);
-    
+      }
+    },)
     return data.session;
   };
 
@@ -175,7 +174,7 @@ const LetsYouIn = () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "facebook",
       options: {
-        redirectTo: redirectTo+'signupSignin',
+        redirectTo: redirectTo + 'signupSignin',
         skipBrowserRedirect: true,
       },
     });
@@ -207,29 +206,30 @@ const LetsYouIn = () => {
       email: data?.user.email,
       picture: data?.user.user_metadata.picture,
       userId: data?.user.id,
-      nickname: data?.user.user_metadata.nickname,
+      nickname: "",
     }));
-    const {data:user, error}= await supabase.from('patient').select('id,phone,gender,nickname,profile_picture').eq('id',sessionData.userId).single();
-    if( user?.phone=='') {
-      setWillRedirect(true);
+    const { data: user, error } = await supabase.from('patient').select('id,phone,gender,nickname,profile_picture').eq('id', sessionData.userId).single();
+    if (error) {
+      console.log(error.message);
     }
-    else {
-      setWillRedirect(false);
+    if (user) {
+      if (!user?.phone) {
+        setWillRedirect(true);
+      }
+      else {
+        setWillRedirect(false);
+      }
+      console.log("user", user);
     }
-    // console.log(user);
-    return;
   }
+  const url = Linking.useURL();
   useEffect(() => {
     session();
-  }, [sessionData]);
-  // if (data){
-  //   router.push("/(tabs)");
-  // }
+    // console.log(url);
+    if (url) createSessionFromUrl(url);
+  }, []);
 
 
-  const url = Linking.useURL();
-  // console.log(url);
-  if (url) createSessionFromUrl(url);
   return (
     <>
       <Modal transparent={true} animationType="fade" visible={loading}>
@@ -252,7 +252,7 @@ const LetsYouIn = () => {
                 title="Continue with Facebook"
                 logo={require("../../assets/facebook-logo.png")}
                 onPress={performOAuth}
-            />
+              />
               <SignInButton
                 title="Continue with Google"
                 logo={require("../../assets/google-logo.png")}

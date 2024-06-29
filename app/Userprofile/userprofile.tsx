@@ -230,7 +230,7 @@ const UserProfile = () => {
               className="bg-lightgrey text-base font-UrbanistRegular p-2 pl-5 rounded-xl w-max"
               onChangeText={setFullName}
               value={fullName}
-            ><Text>{fullName}</Text></TextInput>
+            />
           </View>
           <View>
             <TextInput
