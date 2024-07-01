@@ -33,10 +33,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserSessionType, setSession } from "@/redux/reducers/session";
 import { AppDispatch, RootState } from "@/redux/store/store";
 import { useDispatch, useSelector } from "react-redux";
+import { compose } from "redux";
 const LetsYouIn = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const route = useRouteInfo();
+  const sessionData = useSelector((state: RootState) => state?.session)
+  const dispatch = useDispatch<AppDispatch>();
+  const [data, setData] = useState<any>();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
@@ -137,11 +141,76 @@ const LetsYouIn = () => {
       return;
     }
   };
-
-  const [willRedirect, setWillRedirect] = useState(false);
-  WebBrowser.maybeCompleteAuthSession(); // required for web only
+  
   const redirectTo = makeRedirectUri({ scheme: "com.andela.commanders.medica" });
-  // console.log("redirectTo", redirectTo);
+  const checkUserProfile = async (userId: string) => {
+    const { data: user, error } = await supabase
+      .from('patient')
+      .select('id,phone,gender,nickname,profile_picture')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.log('Error checking user profile:', error.message);
+      return false;
+    }
+
+    return user && user.phone && user.gender && user.nickname;
+  };
+
+  const redirectUserFb = async (userId: string) => {
+    const profileComplete = await checkUserProfile(userId);
+    if (profileComplete) {
+      router.push('/(tabs)/');
+    } else {
+      router.push('/Userprofile/userprofile');
+    }
+  };
+
+  const handleAuthentication = async (session: any) => {
+    await AsyncStorage.setItem('data', JSON.stringify(session));
+
+    dispatch(setSession({
+      accessToken: session?.access_token,
+      fullName: session?.user.user_metadata.full_name,
+      email: session?.user.email,
+      picture: session?.user.user_metadata.picture,
+      userId: session?.user.id,
+      nickname: '',
+    }));
+
+    await redirectUserFb(session?.user.id);
+  };
+
+  const performOAuth = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+          redirectTo: redirectTo + 'signupSignin',
+          skipBrowserRedirect: true,
+        },
+      });
+      if (error) throw error;
+
+      const res = await WebBrowser.openAuthSessionAsync(
+        data?.url ?? "",
+        redirectTo
+      );
+
+      if (res.type === 'success') {
+        const { url } = res;
+        await createSessionFromUrl(url);
+      }
+    } catch (error) {
+      console.error('Facebook auth error:', error);
+      Alert.alert('Authentication Error', 'Failed to sign in with Facebook. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createSessionFromUrl = async (url: string) => {
     const { params, errorCode } = QueryParams.getQueryParams(url);
 
@@ -150,84 +219,23 @@ const LetsYouIn = () => {
 
     if (!access_token) return;
 
-
-
     const { data, error } = await supabase.auth.setSession({
       access_token,
       refresh_token,
     });
     if (error) throw error;
-    await AsyncStorage.setItem("data", JSON.stringify(data.session));
-    setTimeout(() => {
-      if (willRedirect) {
-        router.push("/Userprofile/userprofile");
-        console.log("willRedirect", willRedirect);
-      }
-      else {
-        router.push("/(tabs)");
-      }
-    },)
-    return data.session;
+
+    await handleAuthentication(data.session);
   };
 
-  const performOAuth = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "facebook",
-      options: {
-        redirectTo: redirectTo + 'signupSignin',
-        skipBrowserRedirect: true,
-      },
-    });
-    if (error) throw error;
-
-    const res = await WebBrowser.openAuthSessionAsync(
-      data?.url ?? "",
-      redirectTo
-    );
-
-    if (res.type === "success") {
-      const { url } = res;
-      await createSessionFromUrl(url);
-    }
-  };
-
-  const sessionData = useSelector((state: RootState) => state?.session)
-  const dispatch = useDispatch<AppDispatch>();
-  const [data, setData] = useState<any>();
-  const session = async () => {
-    const datas = await AsyncStorage.getItem("data");
-    if (datas) {
-      setData(JSON.parse(datas));
-      // console.log(datas);
-    }
-    dispatch(setSession({
-      accessToken: data?.access_token,
-      fullName: data?.user.user_metadata.full_name,
-      email: data?.user.email,
-      picture: data?.user.user_metadata.picture,
-      userId: data?.user.id,
-      nickname: "",
-    }));
-    const { data: user, error } = await supabase.from('patient').select('id,phone,gender,nickname,profile_picture').eq('id', sessionData.userId).single();
-    if (error) {
-      console.log(error.message);
-    }
-    if (user) {
-      if (!user?.phone) {
-        setWillRedirect(true);
-      }
-      else {
-        setWillRedirect(false);
-      }
-      console.log("user", user);
-    }
-  }
   const url = Linking.useURL();
   useEffect(() => {
-    session();
-    // console.log(url);
-    if (url) createSessionFromUrl(url);
-  }, []);
+    if (url) {
+      createSessionFromUrl(url);
+    }
+  }, [url]);
+
+  WebBrowser.maybeCompleteAuthSession();
 
 
   return (
