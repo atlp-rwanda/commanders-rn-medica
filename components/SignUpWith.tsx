@@ -15,10 +15,61 @@ import {
   View,
 } from "react-native";
 import Spinner from "./spinner";
+import { makeRedirectUri } from "expo-auth-session";
+import * as QueryParams from "expo-auth-session/build/QueryParams";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserSessionType, setSession } from "@/redux/reducers/session";
+import { AppDispatch, RootState } from "@/redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
+
+export const SignUpWith = () => {
+WebBrowser.maybeCompleteAuthSession(); // required for web only
+const redirectTo = makeRedirectUri({scheme:"com.andela.commanders.medica"});
+const createSessionFromUrl = async (url: string) => {
+  const { params, errorCode } = QueryParams.getQueryParams(url);
+
+  if (errorCode) throw new Error(errorCode);
+  const { access_token, refresh_token } = params;
+
+  if (!access_token) return;
+
+
+
+  const { data, error } = await supabase.auth.setSession({
+    access_token,
+    refresh_token,
+  });
+  if (error) throw error;
+  await AsyncStorage.setItem("data", JSON.stringify(data.session));
+  router.push("/(tabs)");
+  return data.session;
+};
+
+const performOAuth = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "facebook",
+    options: {
+      redirectTo:redirectTo+'(tabs)',
+      skipBrowserRedirect: true,
+    },
+  });
+  if (error) throw error;
+
+  const res = await WebBrowser.openAuthSessionAsync(
+    data?.url ?? "",
+    redirectTo
+  );
+
+  if (res.type === "success") {
+    const { url } = res;
+    await createSessionFromUrl(url);
+  }
+};
 
 type iconName = "apple" | "google" | "facebook" | undefined;
 
-export const SignUpWith = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const route = useRouteInfo();
@@ -47,7 +98,7 @@ export const SignUpWith = () => {
           Alert.alert("Error", sbRequest.error.message);
         } else {
           const { data } = await supabase.auth.getUser();
-          console.log(data);
+          // console.log(data);
           if (data) {
             setUser(data.user);
           } else {
@@ -76,9 +127,30 @@ export const SignUpWith = () => {
       router.push("/Userprofile/userprofile");
     }
   }
+  const sessionData = useSelector((state: RootState) => state?.session)
+  const dispatch = useDispatch<AppDispatch>();
+  const [data, setData] = useState<any>();
+  const session = async () => {
+    const datas = await AsyncStorage.getItem("data");
+    if (datas) {
+      setData(JSON.parse(datas));
+    }
+    dispatch(setSession({accessToken: data?.access_token,
+      fullName: data?.user.user_metadata.full_name,
+      email:data?.user.email,
+      picture:data?.user.user_metadata.picture,
+    }));
+    // console.log(sessionData);
+  }
+  useEffect(() => {
+    session();
+  }, [sessionData]);
 
+  const url = Linking.useURL();
+  // console.log(url);
+  if (url) createSessionFromUrl(url);
   const handleFacebookSignUp = () => {
-    // Handle Facebook sign-up
+    performOAuth();
   };
 
   const handleGoogleSignUp = () => {
@@ -126,7 +198,7 @@ export const SignUpWith = () => {
       router.push("/(tabs)/");
       return;
     } catch (e) {
-      console.log(JSON.stringify(e, null, 2));
+      // console.log(JSON.stringify(e, null, 2));
       return;
     }
   };

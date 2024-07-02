@@ -22,6 +22,7 @@ const SignInButton: React.FC<Props> = ({ title, logo, color, onPress }) => {
           borderRadius: 16,
         },
       ]}
+      onPress={onPress}
     >
       <View
         style={{

@@ -18,10 +18,15 @@
       "ios": {
         "simulator": false
       },
-      "android": {}
+      "android": {
+        "buildType": "apk"
+      }
     }
   },
   "submit": {
     "production": {}
+  },
+  "cli": {
+    "version": ">= 0.49.0"
   }
 }
