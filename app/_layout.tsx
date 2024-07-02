@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import { store } from "../redux/store/store";
 import { Host } from "react-native-portalize";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StreamVideo } from "@stream-io/video-react-native-sdk";
+import { streamClient } from "@/utils/stream";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -30,27 +32,29 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <GestureHandlerRootView>
-        <Host>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="counter/Counter" />
-            <Stack.Screen
-              name="Userprofile/userprofile"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Userprofile/createpin"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Userprofile/setfingerprint"
-              options={{ headerShown: false }}
-            />
-          </Stack>
-        </Host>
-      </GestureHandlerRootView>
+      <StreamVideo client={streamClient}>
+        <GestureHandlerRootView>
+          <Host>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="counter/Counter" />
+              <Stack.Screen
+                name="Userprofile/userprofile"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Userprofile/createpin"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Userprofile/setfingerprint"
+                options={{ headerShown: false }}
+              />
+            </Stack>
+          </Host>
+        </GestureHandlerRootView>
+      </StreamVideo>
     </Provider>
   );
 }
