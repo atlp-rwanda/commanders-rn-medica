@@ -10,8 +10,7 @@ interface SimpleDoctorCardProps{
 }
 
 export function MinimalDoctorCard(doctor: SimpleDoctorCardProps) {
-  console.log("Doctor Image:", doctor.image);
- // const imageUri = typeof doctor.images === 'string' ? doctor.images : '../../assets/doctors/doc2.png';
+ 
   return (
     <View className="flex-row items-center justify-between bg-white p-4 rounded-xl shadow-sm mx-1">
       <View className="flex-row items-start">
