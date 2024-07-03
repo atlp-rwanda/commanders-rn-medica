@@ -1,22 +1,28 @@
-import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, ScrollView, Image, StyleSheet, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
-import { back } from "@/assets/icons/userprofile/icons";
 import { NavigationHeader } from "@/components/NavigationHeader";
-import { router, useGlobalSearchParams, useLocalSearchParams, useRouter } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import Touchable from "@/components/common/touchable";
-import { heartFilledIcon } from "@/assets/icons/heart";
-import { videoIcon, videoIconWhite } from "@/assets/icons/video";
+import { videoIconWhite } from "@/assets/icons/video";
 import Button from "@/components/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
 import { chatIcon, chatIconWhite } from "@/assets/icons/chat";
 import { callIcon, callIconWhite } from "@/assets/icons/call";
 import AppointmentPkg from "@/components/cards/packages/appointmentPackage";
+import { createMeeting, videoSDKToken } from "@/utils/api";
+import { PermissionRequest } from "@/utils/permissionsRquest";
+import { TextInput } from "@/components/Input";
 
+export enum TypeCall {
+  VoiceCall = "Voice Call",
+  Messaging = "Messaging",
+  VideoCall = "Video Call",
+}
 const pkgs = {
-  Messaging: {
+  [TypeCall.Messaging]: {
     key: "1",
     title: "Messaging",
     description: "Chat messages with doctor",
@@ -29,9 +35,9 @@ const pkgs = {
       nextTo: "/messagingAppointment/messaging",
     },
   },
-  "Voice call": {
+  [TypeCall.VoiceCall]: {
     key: "2",
-    title: "Voice Call",
+    title: TypeCall.VoiceCall,
     description: "Voice call with doctor",
     price: "$40",
     period: "30 mins",
@@ -42,9 +48,9 @@ const pkgs = {
       nextTo: "/Appointments/voice-call/call",
     },
   },
-  "Video call": {
+  [TypeCall.VideoCall]: {
     key: "3",
-    title: "Video Call",
+    title: TypeCall.VideoCall,
     description: "Video call with doctor",
     price: "$60",
     period: "30 mins",
@@ -58,14 +64,46 @@ const pkgs = {
 };
 
 const VideoCallAppointment = ({ route }: any) => {
-
   const insets = useSafeAreaInsets();
+  const [meetId, setMeetId] = useState<string | undefined>(undefined);
+  const [joinMeetId, setJointMeetId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { user } = useSelector((state: RootState) => state.getProfileReducer);
 
   const { typecall } = useLocalSearchParams<{
-    typecall: "Voice call" | "Messaging" | "Video call";
+    typecall: TypeCall;
   }>();
 
-  const appointment = useSelector((state: RootState) => state.appointment.selectedAppointment);
+  const appointment = useSelector(
+    (state: RootState) => state.appointment.selectedAppointment
+  );
+
+  const getMeetingId = async (id?: string): Promise<void> => {
+    setIsLoading(true);
+    if (!videoSDKToken) {
+      console.log("PLEASE PROVIDE TOKEN IN api.js FROM app.videosdk.live");
+      Alert.alert("Please provide valid Token");
+      setIsLoading(false);
+      return;
+    }
+    const meetingId = id
+      ? id
+      : appointment.meetingId
+        ? appointment.meetingId
+        : await createMeeting({ token: videoSDKToken });
+    setMeetId(meetingId);
+  };
+
+  useEffect(() => {
+    PermissionRequest();
+    if (meetId && isLoading) {
+      router.push({
+        pathname: "/Appointments/voice-call/call",
+        params: { meetId },
+      });
+      setIsLoading(false);
+    }
+  }, [meetId]);
 
   return (
     <View className={`flex-1 pt-[${insets.top}px] bg-white`}>
@@ -92,16 +130,16 @@ const VideoCallAppointment = ({ route }: any) => {
           <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
             <View className="flex-row justify-between w-full">
               <Image
-                source={{uri:appointment.doctor.image}}
+                source={{ uri: appointment.doctor.image }}
                 className="w-28 h-28"
               />
               <View className="justify-evenly pl-1 w-[60%]">
                 <Text className="text-[18px] font-[UrbanistBold] text-greyscale-900">
-                 {appointment.doctor.name}
+                  {appointment.doctor.name}
                 </Text>
                 <View className="border-t border-t-[#EEEEEE] w-full" />
                 <Text className="font-[UrbanistMedium] text-xs text-greyscale-800">
-                {appointment.doctor.role}
+                  {appointment.doctor.role}
                 </Text>
                 {/* <Text className="font-[UrbanistMedium] text-xs text-greyscale-800">
                   The Venus Hospital in Paris, France
@@ -115,10 +153,10 @@ const VideoCallAppointment = ({ route }: any) => {
             Scheduled Appointment
           </Text>
           <Text className="text-[16px] font-UrbanistRegular text-greyscale-800 mb-3">
-          {appointment.appointment_date}
+            {appointment.appointment_date}
           </Text>
           <Text className="text-[16px] font-UrbanistRegular text-greyscale-800 mb-3">
-          {appointment.appointment_time}
+            {appointment.appointment_time}
           </Text>
         </View>
         <View className="mb-5 mx-6">
@@ -128,30 +166,35 @@ const VideoCallAppointment = ({ route }: any) => {
           <Detail title={"Full Name"} text={appointment.patient.full_name} />
           <Detail title={"Gender"} text={appointment.patient.gender} />
           <Detail title={"Age"} text={appointment.patient.date_of_birth} />
-          <Detail
-            title={""}
-            text={
-              appointment.Reason_couse_toUpdated
-            }
-          />
+          <Detail title={""} text={appointment.Reason_couse_toUpdated} />
         </View>
+        {/* <TextInput onChangeText={setJointMeetId} className="bg-white" /> */}
         <View className="mb-5 mx-6">
           <Text className="text-[20px] font-UrbanistBold text-greyscale-900 mb-4">
             Your Package
           </Text>
-          {typecall && pkgs[typecall] && <AppointmentPkg {...pkgs[typecall]} />}
+          {typecall && pkgs && pkgs[typecall] && (
+            <AppointmentPkg {...pkgs[typecall]} />
+          )}
         </View>
         <Button
-          title={typecall ? pkgs[typecall].button.title : ""}
+          title={typecall && pkgs ? pkgs[typecall]?.button.title : ""}
           rounded
+          loading={isLoading}
           startIcon={
             <SvgXml
-              xml={typecall ? pkgs[typecall].button.icon : chatIconWhite}
+              xml={
+                typecall && pkgs ? pkgs[typecall].button.icon : chatIconWhite
+              }
               className="mr-2.5"
             />
           }
           onPress={() =>
-            router.push(typecall ? pkgs[typecall].button.nextTo : "")
+            typecall === TypeCall.VoiceCall
+              ? getMeetingId(joinMeetId)
+              : router.push(
+                  typecall && pkgs ? pkgs[typecall].button.nextTo : ""
+                )
           }
           classes="mx-6"
         />

@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import en from "../locales/en.json";
 import fr from "../locales/fr.json";
 import Kinyarwanda from "../locales/kinyarwanda.json";
-import Swahili from "../locales/Swahili.json"
+import Swahili from "../locales/Swahili.json";
 import Spanish from "../locales/Spanish.json";
 import Yoruba from "../locales/Yoruba.json";
 import Arabic from "../locales/Arabic.json";
@@ -16,7 +16,7 @@ import Luganda from "../locales/Luganda.json";
 import Hausa from "../locales/Hausa.json";
 import Russian from "../locales/Russian.json";
 import Chinese from "../locales/Chinese.json";
-import Shona from "../locales/Shona.json"
+import Shona from "../locales/Shona.json";
 import { supabase } from "./supabase";
 
 const customDetector = {
@@ -76,7 +76,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: "en",
-    debug: true,
+    // debug: true,
     resources: {
       en: { translation: en },
       fr: { translation: fr },

@@ -46,20 +46,7 @@
         }
       ],
       "expo-apple-authentication",
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "minSdkVersion": 24,
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 33,
-            "extraMavenRepos": [
-              "../../node_modules/@notifee/react-native/android/libs"
-            ]
-          }
-        }
-      ],
-      "@stream-io/video-react-native-sdk",
+      "@videosdk.live/expo-config-plugin",
       [
         "@config-plugins/react-native-webrtc",
         {
