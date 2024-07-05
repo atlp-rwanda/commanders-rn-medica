@@ -1,0 +1,102 @@
+{
+  "homes": "Awaka",
+  "appointment": "Okusaba",
+  "history": "Ebyafaayo",
+  "articles": "Ebyawandiikibwa",
+  "profiles": "Omulambo gwaffe",
+  "onboarding": {
+    "slide1": "Abasawo bangi n’abakugu okuwa obuyambi ku bulamu bwo!",
+    "slide2": "Okukebera obulamu n’okufuna obulanga ekifo kyonna nga buli kiseera",
+    "slide3": "Kale ka tutandike okubeera abalamu era abagalane kati nga tuli wamu!",
+    "next": "Eddako",
+    "getStarted": "Tandika",
+    "welcome": "Tusanyuse okukulaba ku Medica! 👋",
+    "welcomeMessage": "Ekikozesebwa eky’ekitone eky’okufuna omusawo n’okufuna obulanga obw’omu nteekateeka ez’ekika kino zonna!"
+  },
+  "letsYouIn": {
+    "title": "Tukuleeta munda",
+    "continueWithFacebook": "Genda mu maaso n’akatale ka Facebook",
+    "continueWithGoogle": "Genda mu maaso n’akatale ka Google",
+    "continueWithApple": "Genda mu maaso n’akatale ka Apple",
+    "or": "Oba",
+    "signInWithPassword": "Yingira nga okozesa akasumuluzo",
+    "dontHaveAccount": "Tolina akaunti?",
+    "signUp": "Wewandiise"
+  },
+  "signIn": {
+    "title": "Yingira mu Akaunti Yo",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Akasumuluzo",
+    "rememberMe": "Nzijukire",
+    "signInButton": "Yingira",
+    "signInButtonLoading": "Ng’eyingira..",
+    "forgotPassword": "Owerabidde akasumuluzo?",
+    "orContinueWith": "oba genda mu maaso n’akatale ka",
+    "dontHaveAccount": "Tolina akaunti?",
+    "signUpLink": "Wewandiise",
+    "invalidLoginCredentials": "Ebikwata ku yingira si bituufu",
+    "emailAlreadyExists": "Ekkwate ly’email likya"
+  },
+  "signUp": {
+    "createNewAccount": "Kola Akaunti Empya",
+    "email": "Email",
+    "password": "Akasumuluzo",
+    "rememberMe": "Nzijukire",
+    "signUp": "Wewandiise",
+    "loading": "Ng’ekola...",
+    "orContinueWith": "oba genda mu maaso n’akatale ka",
+    "alreadyHaveAnAccount": "Ddala tolina akaunti?",
+    "signIn": "Yingira",
+    "allFieldIsRequired": "Ebifo byonna bisaliddwako",
+    "emailIsRequired": "Email kyesaanye",
+    "invalidEmailFormat": "Olupapula lw’email lulya",
+    "passwordIsRequired": "Akasumuluzo kyesaanye",
+    "passwordMinLength": "Akasumuluzo kesaanye kulina akajjembe akang’aka alufafa",
+    "passwordUppercase": "Akasumuluzo kesaanye kulina akajjembe akaka e kagalo",
+    "passwordLowercase": "Akasumuluzo kesaanye kulina akajjembe akaka e kakakane",
+    "passwordDigit": "Akasumuluzo kesaanye kulina omuwendo",
+    "passwordSpecialChar": "Akasumuluzo kesaanye kulina akajjembe akakate e kakya kakyama",
+    "tooManyAttempts": "Kuzaako okumala ku minsi. Genda mu maaso ng’eyambuka."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Wasuze otya",
+      "afternoon": "Osiibye otya",
+      "evening": "Osiibye otya ku makya"
+    },
+    "doctorSpeciality": "Obukugu bwa musawo",
+    "seeAll": "Laba Byonna",
+    "topDoctors": "Abasawo Abasinga Obuyambi",
+    "searchPlaceholder": "Noonya...",
+    "specialties": {
+      "general": "Mubulamu",
+      "dentist": "Musawo w’eby’engalo",
+      "opthamologist": "Musawo w’amaaso",
+      "nutritionist": "Musawo w’eby’obulamu",
+      "neurologist": "Musawo w’eby’omutwe",
+      "pediatric": "Musawo w’abaana",
+      "radiologist": "Musawo w’eby’okukebera",
+      "more": "Eby’okuyongera"
+    },
+    "carousel": {
+      "title": "Okukebera Okufumbirwa!",
+      "description": "Kebereza obulamu bwo bulikiseera okusobola okutuma ebiwuka nebiwakanya okulumya obulamu bwo n’ekizibu.",
+      "button": "Kebereza kati"
+    }
+  },
+  "profile": {
+    "title": "Omulambo gwaffe",
+    "notification": "Obubaka",
+    "payment": "Okusasula",
+    "security": "Obukuumi",
+    "language": "Olulimi",
+    "dark_mode": "Akaguza ka bulikiro",
+    "help_center": "Ekituwa obuyambi",
+    "invite_friends": "Sanyusa mikwano jange",
+    "logout": "Va mu akaunti",
+    "edit_profile": "Kyusa omulambo gwaffe",
+    "medical_checks": "Okukebera Okufumbirwa!",
+    "health_description": "Kebereza obulamu bwo bulikiseera okusobola okutuma ebiwuka nebiwakanya okulumya obulamu bwo n’ekizibu.",
+    "check_now": "Kebereza kati"
+  }
+}

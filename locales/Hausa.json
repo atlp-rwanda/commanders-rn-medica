@@ -1,0 +1,102 @@
+{
+  "homes": "Gida",
+  "appointment": "Alƙawari",
+  "history": "Tarihi",
+  "articles": "Makaloli",
+  "profiles": "Bayyanannun",
+  "onboarding": {
+    "slide1": "Dubunnan likitoci da kwararru don taimaka maka tare da lafiyar ka!",
+    "slide2": "Sauƙin gwaje-gwajen lafiya da shawarwari a duk inda kake a kowane lokaci",
+    "slide3": "Bari mu fara rayuwa cikin lafiya da farin ciki tare yanzu!",
+    "next": "Gaba",
+    "getStarted": "Fara",
+    "welcome": "Barka da zuwa Medica! 👋",
+    "welcomeMessage": "Mafi kyawun manhajar janye likita ta kan layi don buƙatun lafiyar ku da na likitanci!"
+  },
+  "letsYouIn": {
+    "title": "Bari mu shigar da kai",
+    "continueWithFacebook": "Ci gaba da Facebook",
+    "continueWithGoogle": "Ci gaba da Google",
+    "continueWithApple": "Ci gaba da Apple",
+    "or": "Ko",
+    "signInWithPassword": "Shiga da kalmar sirri",
+    "dontHaveAccount": "Babu asusu?",
+    "signUp": "Yi rijista"
+  },
+  "signIn": {
+    "title": "Shiga cikin asusun ka",
+    "emailPlaceholder": "Imel",
+    "passwordPlaceholder": "Kalmar sirri",
+    "rememberMe": "Ka tuna da ni",
+    "signInButton": "Shiga",
+    "signInButtonLoading": "Shiga...",
+    "forgotPassword": "Ka manta kalmar sirri?",
+    "orContinueWith": "ko ci gaba da",
+    "dontHaveAccount": "Babu asusu?",
+    "signUpLink": "Yi rijista",
+    "invalidLoginCredentials": "Bayanin shiga mara inganci",
+    "emailAlreadyExists": "Imel ɗin nan yana nan"
+  },
+  "signUp": {
+    "createNewAccount": "Ƙirƙiri sabuwar asusu",
+    "email": "Imel",
+    "password": "Kalmar sirri",
+    "rememberMe": "Ka tuna da ni",
+    "signUp": "Yi rijista",
+    "loading": "Ana lodawa...",
+    "orContinueWith": "ko ci gaba da",
+    "alreadyHaveAnAccount": "Kuna da asusu?",
+    "signIn": "Shiga",
+    "allFieldIsRequired": "Duk filayen suna da mahimmanci",
+    "emailIsRequired": "Imel yana da mahimmanci",
+    "invalidEmailFormat": "Tsarin imel mara inganci",
+    "passwordIsRequired": "Kalmar sirri tana da mahimmanci",
+    "passwordMinLength": "Kalmar sirri dole ne ta kasance aƙalla haruffa 8",
+    "passwordUppercase": "Kalmar sirri dole ne ta ƙunshi mafi ƙarancin harafin babban huro",
+    "passwordLowercase": "Kalmar sirri dole ne ta ƙunshi mafi ƙarancin harafin ƙaramin huro",
+    "passwordDigit": "Kalmar sirri dole ne ta ƙunshi mafi ƙarancin lamba ɗaya",
+    "passwordSpecialChar": "Kalmar sirri dole ne ta ƙunshi mafi ƙarancin harafi na musamman",
+    "tooManyAttempts": "Yawan yunƙurin yawa. Da fatan za a gwada sake."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Barka da safiya",
+      "afternoon": "Barka da rana",
+      "evening": "Barka da yamma"
+    },
+    "doctorSpeciality": "Fannin likita",
+    "seeAll": "Duba duk",
+    "topDoctors": "Mafi kyawun likitoci",
+    "searchPlaceholder": "Bincike...",
+    "specialties": {
+      "general": "Janar",
+      "dentist": "Likitan hakori",
+      "opthamologist": "Likitan ido",
+      "nutritionist": "Likitan gina jiki",
+      "neurologist": "Likitan jijiya",
+      "pediatric": "Likitan yara",
+      "radiologist": "Likitan hoto",
+      "more": "Kari"
+    },
+    "carousel": {
+      "title": "Binciken lafiya!",
+      "description": "Duba matsayin lafiyarka akai-akai don rage yawan kamuwa da cututtuka a nan gaba.",
+      "button": "Duba yanzu"
+    }
+  },
+  "profile": {
+    "title": "Bayyanannun",
+    "notification": "Sanarwa",
+    "payment": "Biya",
+    "security": "Tsaro",
+    "language": "Harshe",
+    "dark_mode": "Yanayin dare",
+    "help_center": "Cibiyar Taimako",
+    "invite_friends": "Gayyata abokai",
+    "logout": "Fita",
+    "edit_profile": "Gyara Bayanan",
+    "medical_checks": "Binciken lafiya!",
+    "health_description": "Duba matsayin lafiyarka akai-akai don rage yawan kamuwa da cututtuka a nan gaba.",
+    "check_now": "Duba yanzu"
+  }
+}

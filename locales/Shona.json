@@ -1,0 +1,102 @@
+{
+  "homes": "Kuumba",
+  "appointment": "Chivanduko",
+  "history": "Nzira dzakareba",
+  "articles": "Maitiro",
+  "profiles": "Pfuma",
+  "onboarding": {
+    "slide1": "Vakawanda vamushandisa nevakuru vanokudzidzisai mabasa enyu!",
+    "slide2": "Maitiro ezuva nezvinyorwa zvakanyanya kumazuva ese",
+    "slide3": "Tibvirei pamberi nekuparadza nekushanda nesu yakanaka iyi saizvozvo!",
+    "next": "Pawo",
+    "getStarted": "Pinda",
+    "welcome": "Murikuhwamisa ku Medica! 👋",
+    "welcomeMessage": "App kubooka online medica yakakosha yemusana iyi yemabasa enyu nemahwindo evarwere!"
+  },
+  "letsYouIn": {
+    "title": "Raramai mukati",
+    "continueWithFacebook": "Rambai naye Facebook",
+    "continueWithGoogle": "Rambai naye Google",
+    "continueWithApple": "Rambai naye Apple",
+    "or": "Kana",
+    "signInWithPassword": "Ramba nenyaya yemafirimu",
+    "dontHaveAccount": "Hamunyari kukhala neakawunti?",
+    "signUp": "Rambai"
+  },
+  "signIn": {
+    "title": "Dzokorora kune Zvako",
+    "emailPlaceholder": "Izvi imeyo",
+    "passwordPlaceholder": "Mupassword",
+    "rememberMe": "Handina kundida zvangu",
+    "signInButton": "Dzokorora",
+    "signInButtonLoading": "Kuisa..",
+    "forgotPassword": "Kupemberera mupassword?",
+    "orContinueWith": "kana dzokorora ne",
+    "dontHaveAccount": "Hamunyari kukhala neakawunti?",
+    "signUpLink": "Rambai",
+    "invalidLoginCredentials": "Zviya zvamakatora zvisiri zvakanaka",
+    "emailAlreadyExists": "Iyo imweyo yemavara aya asipo"
+  },
+  "signUp": {
+    "createNewAccount": "Unde akawunti isina makazara",
+    "email": "Izvi imeyo",
+    "password": "Mupassword",
+    "rememberMe": "Handina kundida zvangu",
+    "signUp": "Rambai",
+    "loading": "Kuisa..",
+    "orContinueWith": "kana dzokorora ne",
+    "alreadyHaveAnAccount": "Imweyo yakawanzika here?",
+    "signIn": "Dzokorora",
+    "allFieldIsRequired": "Mifananidzo yose inoda",
+    "emailIsRequired": "Izvi imeyo inoda",
+    "invalidEmailFormat": "Chiremera chivhura cheemail",
+    "passwordIsRequired": "Mupassword inoda",
+    "passwordMinLength": "Mupassword inofanira kune kumwechenhedeni chaana 8",
+    "passwordUppercase": "Mupassword inofanira kubva muchipinda chinonzi mukuru mukuru",
+    "passwordLowercase": "Mupassword inofanira kubva muchipinda chinonzi kumba kwekutanga",
+    "passwordDigit": "Mupassword inofanira kubva muchipinda chinonzi munhu mukuru",
+    "passwordSpecialChar": "Mupassword inofanira kubva muchipinda chinonzi hukama neshamwari",
+    "tooManyAttempts": "Kune yakanyorwa. Zvirokwazvo vatsikwei."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Mangwana mutauro",
+      "afternoon": "Mhuka yeruvhengo",
+      "evening": "Chisi chisina"
+    },
+    "doctorSpeciality": "Kugadzirisa dota",
+    "seeAll": "Kanganisira Sevanhu",
+    "topDoctors": "Vatsva vakanaka",
+    "searchPlaceholder": "Kuvakira...",
+    "specialties": {
+      "general": "Chigadzirisi",
+      "dentist": "Chikadzi",
+      "opthamologist": "Ophthalmologist",
+      "nutritionist": "Kudya sasina kukurumidza",
+      "neurologist": "Zvinoyera",
+      "pediatric": "Gudo",
+      "radiologist": "Radiologist",
+      "more": "Zvakawanda"
+    },
+    "carousel": {
+      "title": "Chiendakupinda kwamutemo wezvekunze!",
+      "description": "Pinda uye chekupinda nechimiro chako chekutemwa chakakosha!",
+      "button": "Pinda"
+    }
+  },
+  "profile": {
+    "title": "Pfuma",
+    "notification": "Zvakatikweretidzwa",
+    "payment": "Nyika",
+    "security": "Kubatwa kwenyika",
+    "language": "Maitiro",
+    "dark_mode": "Mutemo wechitsvaga yakare",
+    "help_center": "Mushanduri wa",
+    "invite_friends": "Ita vanezuro",
+    "logout": "Tora",
+    "edit_profile": "Ita marwecha amaita",
+    "medical_checks": "Chiendakupinda kwamutemo wezvekunze!",
+    "health_description": "Ita maswera amaita kuzana nekutetengesa muswe wamashirika kumazuva anenge ayi.",
+    "check_now": "Pinda"
+  }
+}

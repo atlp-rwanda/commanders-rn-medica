@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ImageBackground,
   Text,
@@ -12,6 +13,7 @@ import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import Carousel from "react-native-reanimated-carousel";
 
 const CarouselComponent = () => {
+  const { t } =  useTranslation();
   const { width } = useWindowDimensions();
   const scrollOffsetValue = useSharedValue<number>(0);
   const [data, setData] = React.useState([...new Array(4).keys()]);
@@ -80,18 +82,17 @@ const CarouselComponent = () => {
             <View key={index} className="h-full p-6">
               <View className="justify-evenly w-[55%] h-full">
                 <Text className="text-[24px] font-['UrbanistBold'] text-white">
-                  Medical Checks!
+                  {t("home.carousel.title")}
                 </Text>
                 <Text className="text-xs font-['UrbanistRegular'] text-white flex-wrap">
-                  Check your health condition regularly to minimize the
-                  incidence of disease in the future.
+                  {t("home.carousel.description")}
                 </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
                   className="w-[105px] h-8 bg-white rounded-3xl items-center justify-center"
                 >
                   <Text className="text-sm font-['UrbanistSemiBold'] text-lightblue">
-                    Check Now
+                    {t("home.carousel.button")}
                   </Text>
                 </TouchableOpacity>
               </View>

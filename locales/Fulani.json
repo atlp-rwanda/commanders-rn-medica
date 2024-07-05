@@ -1,0 +1,102 @@
+{
+  "homes": "Ndewon",
+  "appointment": "Janfaare",
+  "history": "Taariihi",
+  "articles": "Aaraalu",
+  "profiles": "Jonnannde",
+  "onboarding": {
+    "slide1": "Dokitaaji e ɓe majumaji ɓeen to woni yo fotan jeyngol maa!",
+    "slide2": "Jibinaaaji maa e dottogal maa nden woni ɗo ko adunaaji",
+    "slide3": "A nder nden ndimmir maa e si ngal ngam lewru ɗo e nde!",
+    "next": "Muunu",
+    "getStarted": "Ndanndu",
+    "welcome": "Ndewon Medica! 👋",
+    "welcomeMessage": "Appu maggal ngariyon koowo ɗo ngam ndenndan janfaare dokita e jeyngol maa!"
+  },
+  "letsYouIn": {
+    "title": "Ndenndu maa nden",
+    "continueWithFacebook": "Ndenndu e Facebook",
+    "continueWithGoogle": "Ndenndu e Google",
+    "continueWithApple": "Ndenndu e Apple",
+    "or": "Walli",
+    "signInWithPassword": "Ndenndu e tenngal",
+    "dontHaveAccount": "Ala akaunti?",
+    "signUp": "Ndenndu"
+  },
+  "signIn": {
+    "title": "Ndenndu e Akaunti maa",
+    "emailPlaceholder": "Imeel",
+    "passwordPlaceholder": "Tenngal",
+    "rememberMe": "Tibbin maa",
+    "signInButton": "Ndenndu",
+    "signInButtonLoading": "Ndenndu...",
+    "forgotPassword": "So a yiɗi tenngal?",
+    "orContinueWith": "walli ndenndu e",
+    "dontHaveAccount": "Ala akaunti?",
+    "signUpLink": "Ndenndu",
+    "invalidLoginCredentials": "Jonnannde maɗi ndenndan",
+    "emailAlreadyExists": "Imeel ngal woni wadi"
+  },
+  "signUp": {
+    "createNewAccount": "Ndenndan Akaunti Maaku",
+    "email": "Imeel",
+    "password": "Tenngal",
+    "rememberMe": "Tibbin maa",
+    "signUp": "Ndenndu",
+    "loading": "Nden...",
+    "orContinueWith": "walli ndenndu e",
+    "alreadyHaveAnAccount": "Ala akaunti wadi?",
+    "signIn": "Ndenndu",
+    "allFieldIsRequired": "Laamuje ngalla jaaɓi",
+    "emailIsRequired": "Imeel jaaɓi",
+    "invalidEmailFormat": "Lammere imeel ngala",
+    "passwordIsRequired": "Tenngal jaaɓi",
+    "passwordMinLength": "Tenngal dow no feɓa e koɓɔngol 8 ndiiwon",
+    "passwordUppercase": "Tenngal dow no feɓa e ɗiɗo loowdi",
+    "passwordLowercase": "Tenngal dow no feɓa e ɗiɗo loowdi",
+    "passwordDigit": "Tenngal dow no feɓa e ɗiɗo loowdi",
+    "passwordSpecialChar": "Tenngal dow no feɓa e ɗiɗo jonnannde",
+    "tooManyAttempts": "Jonnannde ngal no feɓa. yiɗdaade bonno."
+  },
+  "home": {
+    "greeting": {
+      "morning": "A njabaama",
+      "afternoon": "A saama",
+      "evening": "A ñaama"
+    },
+    "doctorSpeciality": "Laamuye Dokita",
+    "seeAll": "Njidda fow",
+    "topDoctors": "Dokitaaji ngal dow ɓuri jeyngol",
+    "searchPlaceholder": "Yeeso...",
+    "specialties": {
+      "general": "Kowo",
+      "dentist": "Dokita ñaara",
+      "opthamologist": "Dokita ngiindi",
+      "nutritionist": "Dokita jeyngol ñaara",
+      "neurologist": "Dokita ñaara giidi",
+      "pediatric": "Dokita ñaara",
+      "radiologist": "Dokita ñaara",
+      "more": "Konaa"
+    },
+    "carousel": {
+      "title": "Ayeyngol Lammere!",
+      "description": "Sappu be maayde janfaare ñaara ngala a yimɓe nokko feebal ɗo.",
+      "button": "Ayey ngal"
+    }
+  },
+  "profile": {
+    "title": "Jonnannde",
+    "notification": "Fidaa",
+    "payment": "Teene",
+    "security": "Laamudi",
+    "language": "Leñol",
+    "dark_mode": "Koowo nder e kidi",
+    "help_center": "Koowo Ndenndan",
+    "invite_friends": "Ndenndan puɗi",
+    "logout": "Wona",
+    "edit_profile": "Yimɗe Jonnannde",
+    "medical_checks": "Ayeyngol Lammere!",
+    "health_description": "Sappu be maayde janfaare ñaara ngala a yimɓe nokko feebal ɗo.",
+    "check_now": "Ayey ngal"
+  }
+}

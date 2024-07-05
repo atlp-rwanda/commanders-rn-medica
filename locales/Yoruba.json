@@ -1,0 +1,102 @@
+{
+  "homes": "Ile",
+  "appointment": "Ipinnu",
+  "history": "Itan",
+  "articles": "Àwọn àpilẹ̀kọ",
+  "profiles": "Profaili",
+  "onboarding": {
+    "slide1": "Ẹgbẹẹgbẹrun dokita àti amoye lati ran ọ lọwọ pẹlu ilera rẹ!",
+    "slide2": "Àwọn ayẹwo ilera àti àbẹwò irọrun níbi gbogbo nígbà gbogbo",
+    "slide3": "Ẹ jọ̀wọ̀ jẹ ká bẹ̀rẹ̀ sí wà lára ilera àti wàhálà ní báyìí!",
+    "next": "Tókànwá",
+    "getStarted": "Bẹ̀rẹ̀",
+    "welcome": "Kaabọ si Medica! 👋",
+    "welcomeMessage": "Ẹya ohun elo ti o dara julọ fun àbẹwò dokita ati ìfọwọ́sowọ́pọ̀ fun ilera rẹ̀ àti aini iṣegun!"
+  },
+  "letsYouIn": {
+    "title": "Ẹ jẹ́ ká wọle",
+    "continueWithFacebook": "Tesiwaju pẹlu Facebook",
+    "continueWithGoogle": "Tesiwaju pẹlu Google",
+    "continueWithApple": "Tesiwaju pẹlu Apple",
+    "or": "Tabi",
+    "signInWithPassword": "Wọlé pẹ̀lú ọrọ aṣínà",
+    "dontHaveAccount": "Ṣe o ko ni àkọọlẹ kan?",
+    "signUp": "Forúkọ sílẹ̀"
+  },
+  "signIn": {
+    "title": "Wọlé sí àkọọlẹ rẹ",
+    "emailPlaceholder": "Imeeli",
+    "passwordPlaceholder": "Ọ̀rọ̀ aṣínà",
+    "rememberMe": "Rántí mi",
+    "signInButton": "Wọlé",
+    "signInButtonLoading": "Wọlé...",
+    "forgotPassword": "Ṣe o gbagbe ọrọ aṣínà?",
+    "orContinueWith": "tabi tẹsiwaju pẹlu",
+    "dontHaveAccount": "Ṣe o ko ni àkọọlẹ kan?",
+    "signUpLink": "Forúkọ sílẹ̀",
+    "invalidLoginCredentials": "Àkọọlẹ̀ wọlé ti ko tọ́",
+    "emailAlreadyExists": "Imeeli yìí wà tẹlẹ"
+  },
+  "signUp": {
+    "createNewAccount": "Ṣẹda àkọọlẹ tuntun",
+    "email": "Imeeli",
+    "password": "Ọ̀rọ̀ aṣínà",
+    "rememberMe": "Rántí mi",
+    "signUp": "Forúkọ sílẹ̀",
+    "loading": "Ngbagbọ...",
+    "orContinueWith": "tabi tẹsiwaju pẹlu",
+    "alreadyHaveAnAccount": "Ṣe o ní àkọọlẹ tẹlẹ?",
+    "signIn": "Wọlé",
+    "allFieldIsRequired": "Àwọn ààyè gbogbo jẹ́ pàtàkì",
+    "emailIsRequired": "Imeeli jẹ́ pàtàkì",
+    "invalidEmailFormat": "Àmì imeeli ti ko tọ́",
+    "passwordIsRequired": "Ọ̀rọ̀ aṣínà jẹ́ pàtàkì",
+    "passwordMinLength": "Ọ̀rọ̀ aṣínà gbọdọ jẹ́ o kere ju 8 àwọn ohun",
+    "passwordUppercase": "Ọ̀rọ̀ aṣínà gbọdọ ni lẹta nla o kere ju",
+    "passwordLowercase": "Ọ̀rọ̀ aṣínà gbọdọ ni lẹta kekere o kere ju",
+    "passwordDigit": "Ọ̀rọ̀ aṣínà gbọdọ ni nọmba o kere ju",
+    "passwordSpecialChar": "Ọ̀rọ̀ aṣínà gbọdọ ni akọsílẹ̀ pataki o kere ju",
+    "tooManyAttempts": "Awọn igbiyanju pupọ ju. gbiyanju lẹ́ẹ̀kan náà lẹ́yìn."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Ẹ káàrọ̀",
+      "afternoon": "Ẹ káàsán",
+      "evening": "Ẹ káalẹ"
+    },
+    "doctorSpeciality": "Ọjọ́sẹ̀ Dokita",
+    "seeAll": "Ri gbogbo",
+    "topDoctors": "Àwọn Dokita to ga julọ",
+    "searchPlaceholder": "Wá...",
+    "specialties": {
+      "general": "Àwọn Gbogbogbo",
+      "dentist": "Onísègùn ẹ̀yìn",
+      "opthamologist": "Onísègùn oju",
+      "nutritionist": "Onísègùn ìfunra",
+      "neurologist": "Onísègùn ọpọlọ",
+      "pediatric": "Onísègùn ọmọde",
+      "radiologist": "Onísègùn ọ̀rọ̀ ọnà",
+      "more": "Diẹ̀"
+    },
+    "carousel": {
+      "title": "Ayẹwo ilera!",
+      "description": "Ṣayẹwo ipo ilera rẹ nigbagbogbo lati dínkù irọrun awọn àrùn ni ọjọ iwaju.",
+      "button": "Ṣayẹwo nísinsìnyí"
+    }
+  },
+  "profile": {
+    "title": "Àwọn Profaili",
+    "notification": "Ifitonileti",
+    "payment": "Ìsanwó",
+    "security": "Ààbò",
+    "language": "Èdè",
+    "dark_mode": "Ìpo òru",
+    "help_center": "Ile Iranlọwọ",
+    "invite_friends": "Pe ọ̀rẹ́",
+    "logout": "Jade",
+    "edit_profile": "Ṣatúnṣe Profaili",
+    "medical_checks": "Ayẹwo ilera!",
+    "health_description": "Ṣayẹwo ipo ilera rẹ nigbagbogbo lati dínkù irọrun awọn àrùn ni ọjọ iwaju.",
+    "check_now": "Ṣayẹwo nísinsìnyí"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "homes": "Nyumbani",
+  "appointment": "Miadi",
+  "history": "Historia",
+  "articles": "Makala",
+  "profiles": "Profaili",
+  "onboarding": {
+    "slide1": "Maelfu ya madaktari na wataalamu kusaidia afya yako!",
+    "slide2": "Ukaguzi wa afya na ushauri nasaha kwa urahisi mahali popote wakati wowote",
+    "slide3": "Tuanze kuishi kwa afya na vizuri pamoja nasi sasa hivi!",
+    "next": "Inayofuata",
+    "getStarted": "Anza",
+    "welcome": "Karibu Medica! 👋",
+    "welcomeMessage": "Programu bora zaidi ya miadi ya daktari mtandaoni na ushauri nasaha ya karne kwa mahitaji yako ya kiafya na matibabu!"
+  },
+  "letsYouIn": {
+    "title": "Wacha tukuingize",
+    "continueWithFacebook": "Endelea na Facebook",
+    "continueWithGoogle": "Endelea na Google",
+    "continueWithApple": "Endelea na Apple",
+    "or": "Au",
+    "signInWithPassword": "Ingia kwa nenosiri",
+    "dontHaveAccount": "Hauna akaunti?",
+    "signUp": "Jisajili"
+  },
+  "signIn": {
+    "title": "Ingia kwenye Akaunti Yako",
+    "emailPlaceholder": "Barua pepe",
+    "passwordPlaceholder": "Nenosiri",
+    "rememberMe": "Nikumbuke",
+    "signInButton": "Ingia",
+    "signInButtonLoading": "Inapakia..",
+    "forgotPassword": "Umesahau nenosiri?",
+    "orContinueWith": "au endelea na",
+    "dontHaveAccount": "Hauna akaunti?",
+    "signUpLink": "Jisajili",
+    "invalidLoginCredentials": "Maelezo ya kuingia yasiyo sahihi",
+    "emailAlreadyExists": "Barua pepe hii tayari ipo"
+  },
+  "signUp": {
+    "createNewAccount": "Unda Akaunti Mpya",
+    "email": "Barua pepe",
+    "password": "Nenosiri",
+    "rememberMe": "Nikumbuke",
+    "signUp": "Jisajili",
+    "loading": "Inapakia...",
+    "orContinueWith": "au endelea na",
+    "alreadyHaveAnAccount": "Tayari una akaunti?",
+    "signIn": "Ingia",
+    "allFieldIsRequired": "Sehemu zote zinahitajika",
+    "emailIsRequired": "Barua pepe inahitajika",
+    "invalidEmailFormat": "Muundo wa barua pepe si sahihi",
+    "passwordIsRequired": "Nenosiri linahitajika",
+    "passwordMinLength": "Nenosiri lazima liwe na angalau herufi 8",
+    "passwordUppercase": "Nenosiri lazima liwe na angalau herufi moja kubwa",
+    "passwordLowercase": "Nenosiri lazima liwe na angalau herufi moja ndogo",
+    "passwordDigit": "Nenosiri lazima liwe na angalau tarakimu moja",
+    "passwordSpecialChar": "Nenosiri lazima liwe na angalau herufi moja maalum",
+    "tooManyAttempts": "Majaribio mengi sana. jaribu tena baadaye."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Habari ya asubuhi",
+      "afternoon": "Habari ya mchana",
+      "evening": "Habari ya jioni"
+    },
+    "doctorSpeciality": "Utaalamu wa Daktari",
+    "seeAll": "Tazama Zote",
+    "topDoctors": "Madaktari Bora",
+    "searchPlaceholder": "Tafuta...",
+    "specialties": {
+      "general": "Mkuu",
+      "dentist": "Daktari wa meno",
+      "opthamologist": "Daktari wa macho",
+      "nutritionist": "Mtaalamu wa lishe",
+      "neurologist": "Daktari wa neva",
+      "pediatric": "Daktari wa watoto",
+      "radiologist": "Daktari wa mionzi",
+      "more": "Zaidi"
+    },
+    "carousel": {
+      "title": "Ukaguzi wa Matibabu!",
+      "description": "Kagua hali yako ya kiafya mara kwa mara ili kupunguza uwezekano wa ugonjwa katika siku zijazo.",
+      "button": "Kagua Sasa"
+    }
+  },
+  "profile": {
+    "title": "Profaili",
+    "notification": "Arifa",
+    "payment": "Malipo",
+    "security": "Usalama",
+    "language": "Lugha",
+    "dark_mode": "Hali ya giza",
+    "help_center": "Kituo cha Msaada",
+    "invite_friends": "Alika Marafiki",
+    "logout": "Ondoka",
+    "edit_profile": "Hariri Profaili",
+    "medical_checks": "Ukaguzi wa Matibabu!",
+    "health_description": "Kagua hali yako ya kiafya mara kwa mara ili kupunguza uwezekano wa ugonjwa katika siku zijazo.",
+    "check_now": "Kagua Sasa"
+  }
+}
