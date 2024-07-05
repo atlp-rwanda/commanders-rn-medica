@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import { supabase } from "../supabase";
 import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
 import NotifCard from "@/components/settings/notifCard";
 import { router } from "expo-router";
 
@@ -32,8 +31,8 @@ const Notification = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getNotificationPermissions(); 
-      await fetchUser(); 
+      await getNotificationPermissions();
+      await fetchUser();
     };
 
     fetchData();
@@ -41,12 +40,13 @@ const Notification = () => {
 
   const getNotificationPermissions = async () => {
     const { status } = await Notifications.getPermissionsAsync();
-      setNotificationPermissionStatus(status);
-    
-     if (status !== 'granted') {
-      const { status: newStatus } = await Notifications.requestPermissionsAsync();
-      if (newStatus !== 'granted') {
-        alert('You need to enable notification permissions in settings');
+    setNotificationPermissionStatus(status);
+
+    if (status !== "granted") {
+      const { status: newStatus } =
+        await Notifications.requestPermissionsAsync();
+      if (newStatus !== "granted") {
+        alert("You need to enable notification permissions in settings");
       }
       setNotificationPermissionStatus(newStatus);
     }

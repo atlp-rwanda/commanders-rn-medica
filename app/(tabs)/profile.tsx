@@ -185,7 +185,7 @@ const Profile = () => {
 
   return (
     <View className={`flex-1 w-full mt-[${insets.top}px]`}>
-      <View className="flex-row px-6 pt-6 items-center justify-between mt-6">
+      <View className="flex-row px-6 items-center justify-between mt-6">
         <View className="flex-row items-center">
           <SvgXml xml={medicaLogo} className="mr-2.5" />
           <Text className="text-2xl font-UrbanistBold text-greyscale-900">
@@ -201,12 +201,12 @@ const Profile = () => {
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
       >
-        <View className="items-center pb-10 border-b border-b-greyscale-200 mb-10">
-          <View className="h-[140px] w-[140px] rounded-full">
-            {loading ? (
-              <UIActivityIndicator color={"#246BFD"} size={40} />
-            ) : (
-              <>
+        <View className="items-center h-[245px] pb-10 border-b border-b-greyscale-200 mb-10">
+          {loading ? (
+            <UIActivityIndicator color={"#246BFD"} size={40} />
+          ) : (
+            <>
+              <View className="h-[140px] w-[140px] rounded-full">
                 <View>
                   <Image
                     src={user && user.profile_picture}
@@ -216,33 +216,15 @@ const Profile = () => {
                     <SvgXml xml={edit} />
                   </Touchable>
                 </View>
-              </>
-            )}
-          </View>
-          <Text className="font-UrbanistBold text-2xl text-greyscale-900 mb-2">
-            {loading ? (
-              <DotIndicator
-                size={6}
-                count={3}
-                style={{ height: 20 }}
-                color={"#212121"}
-              />
-            ) : (
-              user && user.full_name
-            )}
-          </Text>
-          <Text className="text-[14px] font-UrbanistSemiBold text-greyscale-900">
-            {loading ? (
-              <DotIndicator
-                size={6}
-                count={3}
-                style={{ height: 20 }}
-                color={"#212121"}
-              />
-            ) : (
-              user && user.phone
-            )}
-          </Text>
+              </View>
+              <Text className="font-UrbanistBold text-2xl text-greyscale-900 mb-2">
+                {user && user.full_name}
+              </Text>
+              <Text className="text-[14px] font-UrbanistSemiBold text-greyscale-900">
+                {user && user.phone}
+              </Text>
+            </>
+          )}
         </View>
         <FlatList
           scrollEnabled={false}

@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "../redux/store/store";
 import { Host } from "react-native-portalize";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Platform } from "react-native";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -32,7 +33,12 @@ export default function RootLayout() {
     <Provider store={store}>
       <GestureHandlerRootView>
         <Host>
-          <Stack screenOptions={{ headerShown: false }}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              statusBarStyle: Platform.select({ android: "dark" }),
+            }}
+          >
             <Stack.Screen name="index" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="counter/Counter" />
