@@ -4,13 +4,15 @@ import { Image, Pressable, StyleSheet, Text } from "react-native";
 
 interface RememberMeProps {
   text: string
-}
+  onValueChange: (value: boolean) => void;
+};
 
-const RememberMe = ({text}: RememberMeProps) => {
+const RememberMe = ({ onValueChange, text }: RememberMeProps) => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const toggleRememberMe = () => {
-    setRememberMe(!rememberMe);
+    setRememberMe((previousState) => !previousState);
+    onValueChange(!rememberMe);
   };
 
   return (
