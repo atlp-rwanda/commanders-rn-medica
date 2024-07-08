@@ -13,6 +13,9 @@ import {
 import { supabase } from "../supabase";
 import Cardcomponent from "./doctorcard/cards";
 import Cardscomponent from "./doctorcard/cardss";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store/store";
+import { getAppointments } from "@/redux/reducers/appointment";
 
 function Screen() {
   const [upcoming, setUpcoming] = useState(true);
@@ -20,11 +23,17 @@ function Screen() {
   const [complete, setComlpete] = useState(false);
   const [notupcome, setNotupcome] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+<<<<<<< HEAD
   const [appointmentData, setAppointmentData] = useState<any[]>([]);
   const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
   const [appointId, setAppointId] = useState({});
   const [canceledData, setcanceledData] = useState<any[]>([]);
 
+=======
+  const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
+  const appointments = useSelector((state: RootState) => state.appointment.appointments);
+  const dispatch = useDispatch();
+>>>>>>> cf07aa0 (messaging appointment and doctor details)
   const handleUpcoming = () => {
     setCancels(false);
     setUpcoming(true);
@@ -58,6 +67,7 @@ function Screen() {
       const { data: userData, error: userError } = await supabase.auth.getUser();
       if (userError) throw userError;
       const userId = userData?.user?.id;
+<<<<<<< HEAD
       const { data, error } = await supabase
         .from("appointment")
         .select(`
@@ -143,6 +153,48 @@ function Screen() {
     });
     setIsModalVisible(true);
   };
+=======
+const{data, error}=await supabase
+.from("appointment")
+.select(`
+  *,
+  doctor(
+    id,
+    name,
+    role,
+    image,
+    hospital
+  ),
+  patient(
+    id,
+    email,
+    phone,
+    full_name,
+    nickname,
+    date_of_birth,
+    gender
+  )
+`)
+.eq("patient_id", userId);
+
+if(error){
+  console.log("Error occured while fetching appointments", error)
+}else{
+  dispatch(getAppointments(data))
+  console.log("fetched data:");
+  setTimeout(()=>{
+    router.push("/(tabs)/appointment")
+  },0)
+}}  
+catch(error){
+console.log(error);
+} 
+}
+useEffect(()=>{
+  
+fetchAppointment();
+},[])
+>>>>>>> cf07aa0 (messaging appointment and doctor details)
 
   return (
     <>
@@ -243,9 +295,14 @@ function Screen() {
           )}
           {upcoming && (
             <View style={styles.content}>
+<<<<<<< HEAD
               {appointmentData.map((appointment: any, index: any) => (
+=======
+              {appointments.map((appointment:any, index:any) => (
+>>>>>>> cf07aa0 (messaging appointment and doctor details)
                 <Cardscomponent
                   key={index}
+                  appointment={appointment}
                   name={appointment.doctor.name}
                   imager={appointment.doctor.image}
                   typecall={appointment.package}
