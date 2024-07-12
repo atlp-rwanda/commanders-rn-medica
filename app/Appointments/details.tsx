@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { back } from "@/assets/icons/userprofile/icons";
 import { NavigationHeader } from "@/components/NavigationHeader";
-import { router, useLocalSearchParams, useRouter } from "expo-router";
+import { router, useGlobalSearchParams, useLocalSearchParams, useRouter } from "expo-router";
 import Touchable from "@/components/common/touchable";
 import { heartFilledIcon } from "@/assets/icons/heart";
 import { videoIcon, videoIconWhite } from "@/assets/icons/video";
@@ -58,11 +58,14 @@ const pkgs = {
 };
 
 const VideoCallAppointment = ({ route }: any) => {
+
   const insets = useSafeAreaInsets();
 
   const { typecall } = useLocalSearchParams<{
     typecall: "Voice call" | "Messaging" | "Video call";
   }>();
+
+  const appointment = useSelector((state: RootState) => state.appointment.selectedAppointment);
 
   return (
     <View className={`flex-1 pt-[${insets.top}px] bg-white`}>
@@ -89,20 +92,20 @@ const VideoCallAppointment = ({ route }: any) => {
           <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
             <View className="flex-row justify-between w-full">
               <Image
-                source={require("../../assets/doctors/doctor2.png")}
+                source={{uri:appointment.doctor.image}}
                 className="w-28 h-28"
               />
               <View className="justify-evenly pl-1 w-[60%]">
                 <Text className="text-[18px] font-[UrbanistBold] text-greyscale-900">
-                  Dr. Maria Foose
+                 {appointment.doctor.name}
                 </Text>
                 <View className="border-t border-t-[#EEEEEE] w-full" />
                 <Text className="font-[UrbanistMedium] text-xs text-greyscale-800">
-                  Dermatologists
+                {appointment.doctor.role}
                 </Text>
-                <Text className="font-[UrbanistMedium] text-xs text-greyscale-800">
+                {/* <Text className="font-[UrbanistMedium] text-xs text-greyscale-800">
                   The Venus Hospital in Paris, France
-                </Text>
+                </Text> */}
               </View>
             </View>
           </View>
@@ -112,23 +115,23 @@ const VideoCallAppointment = ({ route }: any) => {
             Scheduled Appointment
           </Text>
           <Text className="text-[16px] font-UrbanistRegular text-greyscale-800 mb-3">
-            Today, December 22, 2022
+          {appointment.appointment_date}
           </Text>
           <Text className="text-[16px] font-UrbanistRegular text-greyscale-800 mb-3">
-            10:00 - 10:30 AM (30 minutes)
+          {appointment.appointment_time}
           </Text>
         </View>
         <View className="mb-5 mx-6">
           <Text className="text-[20px] font-UrbanistBold text-greyscale-900 mb-4">
             Patient Information
           </Text>
-          <Detail title={"Full Name"} text={"Andrew Ainsley"} />
-          <Detail title={"Gender"} text={"Male"} />
-          <Detail title={"Age"} text={"27"} />
+          <Detail title={"Full Name"} text={appointment.patient.full_name} />
+          <Detail title={"Gender"} text={appointment.patient.gender} />
+          <Detail title={"Age"} text={appointment.patient.date_of_birth} />
           <Detail
-            title={"Problem"}
+            title={""}
             text={
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. view more"
+              appointment.Reason_couse_toUpdated
             }
           />
         </View>

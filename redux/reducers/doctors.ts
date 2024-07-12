@@ -27,6 +27,7 @@ interface DoctorsState {
   doctors: Doctor[];
   reviews: Review[];
   status: "idle" | "loading" | "failed";
+  
 }
 
 const initialState: DoctorsState = {

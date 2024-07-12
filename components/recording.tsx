@@ -29,6 +29,9 @@ export default function Recording() {
   }, [recording]);
 
   async function startRecording() {
+    // TODO: 
+    // Change the voiceIcon to stopIcon
+    
     try {
       if (permissionResponse?.status !== "granted") {
         alert("Requesting permission..");
@@ -51,6 +54,7 @@ export default function Recording() {
   }
 
   async function stopRecording() {
+  
     try {
       if (recording) {
         alert(
@@ -62,9 +66,14 @@ export default function Recording() {
           allowsRecordingIOS: false,
         });
         const uri = recording.getURI();
+
         console.log("Recording stopped and stored at", uri);
+       // change the stop icon to voiceIcon
+       // Save Uri to supabase
+
         setRecording(undefined);
         setCurrentDuration(0);
+       
       }
     } catch (err) {
       console.error("Failed to stop recording", err);
