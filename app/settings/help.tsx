@@ -5,102 +5,70 @@ import FaqButtons from "@/components/cards/faqButtons";
 import { SearchInput } from "@/components/faqSearch";
 import * as Linking from "expo-linking";
 import { router } from "expo-router";
-import { useState } from "react";
-import { FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SvgXml } from "react-native-svg";
+import { supabase } from "../supabase";
+
+interface Question {
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
+}
+
+interface Contact {
+  id: number;
+  media: string;
+  icon: string;
+  link: string;
+}
 
 const Help = () => {
-  const [selected, setSelected] = useState("FAQ");
-  const [expandedQuestion, setExpandedQuestion] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("general");
-  const [contact, setContact] = useState([
-    {
-      media: "Customer Service",
-      icon: require("../../assets/contact/headset.png"),
-      link: "/settings/customerService",
-    },
-    {
-      media: "WhatsApp",
-      icon: require("../../assets/contact/whatsapp.png"),
-      link: "https://wa.me/0765432180",
-    },
-    {
-      media: "Website",
-      icon: require("../../assets/contact/website.png"),
-      link: "https://andela.com/rwanda",
-    },
-    {
-      media: "Facebook",
-      icon: require("../../assets/contact/facebook.png"),
-      link: "https://www.facebook.com/Andela-Rwanda/",
-    },
-    {
-      media: "Twitter",
-      icon: require("../../assets/contact/twitter.png"),
-      link: "https://www.twitter.com/andela",
-    },
-    {
-      media: "Instagram",
-      icon: require("../../assets/contact/instagram.png"),
-      link: "https://www.instagram.com/thisisandela/",
-    },
-  ]);
+  const [selected, setSelected] = useState<"FAQ" | "Contact us">("FAQ");
+  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("general");
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [contact, setContact] = useState<Contact[]>([]);
 
-  const [questions, setQuestions] = useState([
-    {
-      question: "What is Medica?",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "general",
-    },
-    {
-      question: "How to use Medica?",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "general",
-    },
-    {
-      question: "How do I cancel an appointment?",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "account",
-    },
-    {
-      question: "How do I cancel an appointment?",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "general",
-    },
-    {
-      question: "How do I save the recording?",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "general",
-    },
-    {
-      question: "How do I pay for my appointment?",
-      answer: "Download it , sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "account",
-    },
-    {
-      question: "How do I exit the app?",
-      answer: "log out on profile, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "general",
-    },
-    {
-      question: "How do I exit the app?",
-      answer: "log out on profile, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "payment",
-    },
-    {
-      question: "How do I reschedule?",
-      answer: "log out on profile, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "service",
-    },
-    {
-      question: "can I get a discount?",
-      answer: "log out on profile, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      category: "payment",
-    },
-  ]);
+  useEffect(() => {
+    const fetchQuestionsData = async () => {
+      const { data, error } = await supabase
+        //@ts-ignore
+        .from<Question>("questions")
+        .select("*");
+      if (error) {
+        console.error(error);
+      } else {
+        setQuestions(data || []);
+      }
+    };
 
-  const handlePress = (item: any) => {
+    const fetchContactData = async () => {
+      const { data, error } = await supabase
+        //@ts-ignore
+        .from<Contact>("contact")
+        .select("*");
+      if (error) {
+        console.error(error);
+      } else {
+        setContact(data || []);
+      }
+    };
+
+    fetchQuestionsData();
+    fetchContactData();
+  }, []);
+
+  const handlePress = (item: Contact) => {
     if (item.media === "Customer Service") {
       router.push(item.link);
     } else {
@@ -108,98 +76,250 @@ const Help = () => {
     }
   };
 
-  const toggleExpand = (question: any) => {
-    setExpandedQuestion(expandedQuestion === question ? null : question);
+  const toggleExpand = (questionId: number) => {
+    setExpandedQuestion((prevId) =>
+      prevId === questionId ? null : questionId
+    );
   };
 
   const filteredQuestions = questions.filter(
     (q) => q.category === selectedCategory
   );
 
-  const searchedQuestions = questions.filter(
-    (q) => q.question.toLowerCase().includes(searchQuery.toLowerCase())
+  const searchedQuestions = questions.filter((q) =>
+    q.question.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  const handleCategorySelect = (category: any) => {
+
+  const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
   };
+
   return (
-    <View className="bg-white flex-1 px-4 py-10">
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        paddingHorizontal: 20,
+        paddingTop: 20,
+      }}
+    >
       <NavigationHeader title={"Help Center"} onBack={router.back}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log("Menu pressed")}>
           <SvgXml xml={Menu} />
         </TouchableOpacity>
       </NavigationHeader>
 
-      <View className="py-3 px-3 w-full justify-around ">
-        <View className="flex-row justify-around">
-          <Pressable className="flex-initial items-center w-2/3" onPress={() => setSelected("FAQ")}>
-            <Text className={`font-UrbanistSemiBold text-[18px] ${selected === 'FAQ' ? 'text-lightblue' : 'text-grey'} pb-2`}>FAQ</Text>
-            <View className={`w-[100%] h-[4px] bg-lightblue rounded-xl ${selected === 'FAQ' ? '' : 'hidden'}`} />
-          </Pressable>
-          <Pressable className=" flex-initial items-center w-2/3" onPress={() => setSelected("Contact us")}>
-            <Text className={`font-UrbanistSemiBold text-[18px] ${selected === 'Contact us' ? 'text-lightblue' : 'text-grey'} pb-2`}>Contact us</Text>
-            <View className={`w-[100%] h-[4px] bg-lightblue rounded-xl ${selected === 'Contact us' ? '' : 'hidden'}`} />
-          </Pressable>
-        </View>
-        <View className=" border-b-[2px] border-[#EEEEEE] relative bottom-[2.6px] z-[-1]" />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          paddingVertical: 10,
+        }}
+      >
+        <Pressable
+          style={{ flex: 1, alignItems: "center" }}
+          onPress={() => setSelected("FAQ")}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: "UrbanistSemiBold",
+              color: selected === "FAQ" ? "#0165fc" : "#808080",
+              paddingBottom: 2,
+            }}
+          >
+            FAQ
+          </Text>
+          {selected === "FAQ" && (
+            <View
+              style={{
+                width: "100%",
+                height: 4,
+                backgroundColor: "#0165fc",
+                borderRadius: 2,
+              }}
+            />
+          )}
+        </Pressable>
+        <Pressable
+          style={{ flex: 1, alignItems: "center" }}
+          onPress={() => setSelected("Contact us")}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: "UrbanistSemiBold",
+              color: selected === "Contact us" ? "#0165fc" : "#808080",
+              paddingBottom: 2,
+            }}
+          >
+            Contact us
+          </Text>
+          {selected === "Contact us" && (
+            <View
+              style={{
+                width: "100%",
+                height: 4,
+                backgroundColor: "#0165fc",
+                borderRadius: 2,
+              }}
+            />
+          )}
+        </Pressable>
       </View>
+      <View
+        style={{
+          borderBottomWidth: 2,
+          borderBottomColor: "#EEEEEE",
+          bottom: -2.6,
+          zIndex: -1,
+        }}
+      />
 
-      {selected == "FAQ" && (
+      {selected === "FAQ" && (
         <View>
-          <FaqButtons selectedCategory={selectedCategory} handleCategorySelect={handleCategorySelect} />
-         
-            <View className="mx-3 my-3 ">
-              <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
+          <FaqButtons
+            selectedCategory={selectedCategory}
+            handleCategorySelect={handleCategorySelect}
+          />
+
+          <View style={{ marginVertical: 10 }}>
+            <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
+          </View>
+          {searchQuery.length > 0 && searchedQuestions.length > 0 && (
+            <View
+              style={{
+                padding: 20,
+                backgroundColor: "white",
+                borderRadius: 20,
+                elevation: 10,
+                shadowColor: "rgba(4, 6, 15, 0.5)",
+                shadowRadius: 10,
+                shadowOpacity: 0.2,
+              }}
+            >
+              {searchedQuestions.map((item, index) => (
+                <View key={item.id}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "#212121",
+                      fontFamily: "UrbanistSemiBold",
+                    }}
+                  >
+                    {item.question}
+                  </Text>
+                  {index < searchedQuestions.length - 1 && (
+                    <View
+                      style={{
+                        borderBottomWidth: 1,
+                        borderBottomColor: "#EEEEEE",
+                        width: "100%",
+                        marginTop: 10,
+                      }}
+                    />
+                  )}
+                </View>
+              ))}
             </View>
-            {searchQuery.length > 0 && searchedQuestions.length > 0 && (
-              <View className=" p-5 bg-white rounded-[20px] mx-3" style={{ elevation: 10, shadowColor: "rgba(4, 6, 15, 0.5)", shadowRadius: 10, shadowOpacity: 0.2 }}>
-                {searchedQuestions.map((item, index) => (
-                  <View key={item.question}>
-                    <Text className="text-[14px] text-[#212121] font-UrbanistSemiBold">{item.question}</Text>
-                    {index < searchedQuestions.length - 1 && (
-                      <View className="border-[#EEEEEE] border-[1px] w-full my-3"></View>
-                    )}
+          )}
+          <FlatList
+            data={filteredQuestions}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View
+                style={{
+                  marginTop: 20,
+                  padding: 20,
+                  backgroundColor: "white",
+                  borderRadius: 20,
+                  elevation: 10,
+                  shadowColor: "rgba(4, 6, 15, 0.5)",
+                  shadowRadius: 10,
+                  shadowOpacity: 0.2,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: "#212121",
+                      fontFamily: "UrbanistBold",
+                    }}
+                  >
+                    {item.question}
+                  </Text>
+                  <TouchableOpacity onPress={() => toggleExpand(item.id)}>
+                    <SvgXml xml={dropdownIcon} />
+                  </TouchableOpacity>
+                </View>
+                {expandedQuestion === item.id && (
+                  <View>
+                    <View
+                      style={{
+                        borderBottomWidth: 1,
+                        borderBottomColor: "#EEEEEE",
+                        width: "100%",
+                        marginVertical: 10,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: "#212121",
+                        fontFamily: "UrbanistRegular",
+                        marginTop: 10,
+                      }}
+                    >
+                      {item.answer}
+                    </Text>
                   </View>
-                ))}
+                )}
               </View>
             )}
-            <FlatList
-              data={filteredQuestions}
-              renderItem={({ item }) => (
-                <View className="my-3 p-5 bg-white rounded-[20px]   mx-3 " style={{ elevation: 10, shadowColor: "rgba(4, 6, 15, 0.5)", shadowRadius: 10, shadowOpacity: 0.2 }}>
-                  <View>
-                    <View className="flex-row justify-between">
-                      <Text className="text-[18px] text-[#212121] font-UrbanistBold">{item.question}</Text>
-                      <TouchableOpacity onPress={() => toggleExpand(item.question)}>
-                        <SvgXml xml={dropdownIcon} />
-                      </TouchableOpacity>
-                    </View>
-                    {expandedQuestion === item.question && (
-                      <View>
-                        <View className="border-[#EEEEEE] border-[1px] w-full my-3"></View>
-                        <Text className="text-[16px] text-[#212121] font-UrbanistRegular mt-2">
-                          {item.answer}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                </View>
-              )}
-            />
-          </View>
-       
+          />
+        </View>
       )}
 
       {selected === "Contact us" && (
-        <View className="mt-3">
+        <View style={{ marginTop: 20 }}>
           <FlatList
             data={contact}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <View>
                 <TouchableOpacity onPress={() => handlePress(item)}>
-                  <View className="flex-row my-3 p-5 bg-white rounded-[20px] mx-3 " style={{ elevation: 10, shadowColor: "rgba(4, 6, 15, 0.5)", shadowRadius: 10, shadowOpacity: 0.2 }}>
-                    <Image source={item.icon} className="w-[20px] h-[20.86px]" />
-                    <Text className="text-[18px] text-[#212121] font-UrbanistBold mt-[-2px] ml-4">
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginTop: 20,
+                      padding: 20,
+                      backgroundColor: "white",
+                      borderRadius: 20,
+                      elevation: 10,
+                      shadowColor: "rgba(4, 6, 15, 0.5)",
+                      shadowRadius: 10,
+                      shadowOpacity: 0.2,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: item.icon }}
+                      style={{ width: 20, height: 20.86 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "#212121",
+                        fontFamily: "UrbanistBold",
+                        marginTop: -2,
+                        marginLeft: 4,
+                      }}
+                    >
                       {item.media}
                     </Text>
                   </View>
@@ -210,7 +330,6 @@ const Help = () => {
         </View>
       )}
     </View>
-
   );
 };
 
