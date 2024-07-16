@@ -50,6 +50,7 @@
     "expo-local-authentication": "^14.0.1",
     "expo-media-library": "~16.0.4",
     "expo-modules-core": "~1.12.15",
+    "expo-router": "~3.5.17",
     "expo-notifications": "^0.28.9",
     "expo-router": "~3.5.18",
     "expo-status-bar": "~1.12.1",
