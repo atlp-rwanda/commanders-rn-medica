@@ -25,6 +25,7 @@ import { RootState } from "@/redux/store/store";
 import { supabase } from "../supabase";
 import { getMessages } from "@/redux/reducers/appointment";
 import { SendMessageButton } from "@/components/SendMessageButton";
+import checkSession from "@/utils/checkSession";
 export default function messagingAppointment() {
   const [visible, setVisible] = useState(false);
   const [isSession, setIsSession] = useState(true);
@@ -36,6 +37,7 @@ export default function messagingAppointment() {
   const messages = useSelector(
     (state: RootState) => state.appointment.messages
   );
+  console.log("hello ", appointment);
   const dispatch = useDispatch();
   const toggleModal = () => {
     setVisible(!visible);
@@ -85,27 +87,26 @@ export default function messagingAppointment() {
     .subscribe();
 
   useEffect(() => {
+    // checkSession();
     fetchMessages();
   }, [dispatch]);
 
-  async function handleSendMessage() {
+  async function handleSendMessage(message: string, type: string) {
     const { data, error } = await supabase
       .from("messages")
       .insert([
         {
-          message: textMessage,
+          message: message || textMessage,
           sender_id: userId,
           appointment_id: appointment.id,
-          type: "message",
+          type: type || "message",
         },
       ])
       .select();
 
     if (data) {
-      console.log("data inserted well");
       if (textMessage.trim().length > 0) {
-        console.log("Message sent:", textMessage);
-        setTextMessage(""); // Clear the input field
+        setTextMessage("");
       }
     } else {
       console.log("data note inserted well", error);
@@ -164,29 +165,41 @@ export default function messagingAppointment() {
                 key={index}
                 direction={message.sender_id === userId ? "end" : "start"}
                 message={message.message}
+                type={message.type}
                 time={moment(`${message.created_at}`).calendar()}
                 color={message.sender_id === userId ? "lightblue" : "lightgrey"}
               />
             ))}
         </ScrollView>
-        {isSession && (
+        {!checkSession(
+          appointment.duration,
+          appointment.appointment_date,
+          appointment.appointment_time
+        ) && (
           <View className="flex-row justify-center items-center gap-2">
             <View className="flex-1">
               <ChatInput
                 onChangeText={(text) => setTextMessage(text)}
-                onKeyPress={() => handleSendMessage()}
+                onKeyPress={() => handleSendMessage(textMessage, "message")}
+                handleMessage={handleSendMessage}
                 autoFocus={true}
               />
             </View>
             {/* Replace recording icon onChangeText to send Icon */}
             {textMessage.trim().length === 0 ? (
-              <Recording />
+              <Recording direction={""} handleMessage={handleSendMessage} />
             ) : (
-              <SendMessageButton onPress={handleSendMessage} />
+              <SendMessageButton
+                onPress={() => handleSendMessage(textMessage, "message")}
+              />
             )}
           </View>
         )}
-        {!isSession && (
+        {checkSession(
+          appointment.duration,
+          appointment.appointment_date,
+          appointment.appointment_time
+        ) && (
           <View className="flex-row justify-center items-center my-3">
             <View className="bg-[#75757512] justify-center items-center rounded-lg px-6 py-1.5">
               <Text className="text-sm text-[#757575] font-UrbanistSemiBold">
