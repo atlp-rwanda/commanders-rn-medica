@@ -25,7 +25,7 @@ import { RootState } from "@/redux/store/store";
 import { supabase } from "../supabase";
 import { getMessages } from "@/redux/reducers/appointment";
 import { SendMessageButton } from "@/components/SendMessageButton";
-import checkSession from "@/utils/checkSession";
+import checkSession, { isSessionInFuture } from "@/utils/checkSession";
 export default function messagingAppointment() {
   const [visible, setVisible] = useState(false);
   const [isSession, setIsSession] = useState(true);
@@ -175,26 +175,40 @@ export default function messagingAppointment() {
           appointment.duration,
           appointment.appointment_date,
           appointment.appointment_time
-        ) && (
-          <View className="flex-row justify-center items-center gap-2">
-            <View className="flex-1">
-              <ChatInput
-                onChangeText={(text) => setTextMessage(text)}
-                onKeyPress={() => handleSendMessage(textMessage, "message")}
-                handleMessage={handleSendMessage}
-                autoFocus={true}
-              />
+        ) &&
+          (!isSessionInFuture(
+            appointment.duration,
+            appointment.appointment_date,
+            appointment.appointment_time
+          ) ? (
+            <View className="flex-row justify-center items-center gap-2">
+              <View className="flex-1">
+                <ChatInput
+                  onChangeText={(text) => setTextMessage(text)}
+                  onKeyPress={() => handleSendMessage(textMessage, "message")}
+                  handleMessage={handleSendMessage}
+                  autoFocus={true}
+                />
+              </View>
+              {/* Replace recording icon onChangeText to send Icon */}
+              {textMessage.trim().length === 0 ? (
+                <Recording direction={""} handleMessage={handleSendMessage} />
+              ) : (
+                <SendMessageButton
+                  onPress={() => handleSendMessage(textMessage, "message")}
+                />
+              )}
             </View>
-            {/* Replace recording icon onChangeText to send Icon */}
-            {textMessage.trim().length === 0 ? (
-              <Recording direction={""} handleMessage={handleSendMessage} />
-            ) : (
-              <SendMessageButton
-                onPress={() => handleSendMessage(textMessage, "message")}
-              />
-            )}
-          </View>
-        )}
+          ) : (
+            <View className="flex-row justify-center items-center my-3">
+              <View className="bg-[#75757512] justify-center items-center rounded-lg px-6 py-1.5">
+                <Text className="text-sm text-[#757575] font-UrbanistSemiBold">
+                  Session is Not Yet Started
+                </Text>
+              </View>
+            </View>
+          ))}
+
         {checkSession(
           appointment.duration,
           appointment.appointment_date,
