@@ -29,6 +29,8 @@ function Screen() {
   );
   const [canceledData, setcanceledData] = useState<any[]>([]);
   const [appointId, setAppointId] = useState({});
+  const [completAppointment, setCompletedAppointment] = useState<any[]>([]);
+
   const dispatch = useDispatch();
   const handleUpcoming = () => {
     setCancels(false);
@@ -87,11 +89,14 @@ function Screen() {
   )
         `
         )
-        .eq("patient_id", userId);
+        .eq("patient_id", userId)
+        .eq("status", "Booked").order("appointment_date", { ascending: true }) 
+        .order("appointment_time", { ascending: true })
 
       if (error) {
         console.log("Error occurred while fetching appointments", error);
       } else {
+        console.log(data)
         dispatch(getAppointments(data));
         if (data.length === 0) {
           setNotupcome(true);
@@ -108,6 +113,9 @@ function Screen() {
   useEffect(() => {
     fetchAppointment();
   }, []);
+
+
+   
 
   const cancelAppointment = async () => {
     try {
@@ -133,6 +141,43 @@ function Screen() {
   useEffect(() => {
     cancelAppointment();
   }, []);
+
+  const fetchCompletedAppointment=async()=>{
+    try{
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
+      const userId = userData?.user?.id;
+  const{data, error}=await supabase
+  .from("appointment")
+  .select(`
+  *,
+  doctor(
+    id,
+    name,
+    role,
+    image,
+    hospital
+  )
+  `)
+  .eq("patient_id", userId)
+  .eq("status", "Completed").order("appointment_date", { ascending: false }) 
+  .order("appointment_time", { ascending: false })
+  
+  if(error){
+  console.log("Error occured while fetching appointments", error)
+  }else{
+    console.log(data)
+  setCompletedAppointment(data);
+  
+  }}  
+  catch(error){
+  console.log(error);
+  } 
+  }
+  useEffect(()=>{
+  
+  fetchCompletedAppointment();
+  },[])
 
   const getPackageIcon = (typecall: any) => {
     switch (typecall) {
@@ -261,6 +306,38 @@ function Screen() {
               ))}
             </View>
           )}
+
+         {complete && (
+            <View style={styles.content}>
+               {completAppointment.map((appointment:any, index:any) => (
+              <Cardscomponent
+                key={index}
+                name={appointment.doctor.name}
+                imager={appointment.doctor.image}
+                typecall={appointment.package}
+                action="Complete"
+                date={appointment.appointment_date}
+                time={appointment.appointment_time.slice(0,5)}
+                imagerr={getPackageIcon(appointment.package)}
+                styles={styles.completeStyles}
+                chance="Book Again"
+                cantchance="Leave a Review"
+                backcad="bg-white rounded-xl flex-row p-4 w-400 items-center gap-7"
+                fact={() => router.push({pathname:"/Appointments/voice-call/writeReview",
+                params:{
+                    appointmentId:appointment.doctor.id,
+                    doctorImage:appointment.doctor.image,
+                    role:appointment.doctor.role,
+                    hospital:appointment.doctor.hospital,
+                    name:appointment.doctor.name
+                }})}
+                cancle={()=>router.push({pathname:"/doctor-appointments/book-appointment",
+                  params:{doctorId:appointment.doctor.id, }})}
+              />
+              ))}
+            </View>
+          )}
+
           {upcoming && (
             <View style={styles.content}>
               {appointments.map((appointment: any, index: any) => (

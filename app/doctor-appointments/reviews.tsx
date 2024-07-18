@@ -10,8 +10,8 @@ import { useSelector } from "react-redux";
 export default function DoctorReviewsScreen() {
   const reviews = useSelector((state: RootState) => state.doctors.reviews);
   return (
-    <View className="px-5 flex-1">
-      <NavigationHeader title={"4.8 (4,942 reviews)"}>
+    <View className="px-6 flex-1">
+      <NavigationHeader title={ ` (${reviews.length} reviews)`}>
         <TouchableOpacity className="w-7 h-7">
           <SvgXml
             xml={moreOutlinedIcon}

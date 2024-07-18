@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MenuIcons } from "../../assets/icons";
 import { heart } from "../../assets/icons/heart";
 import { notification } from "../../assets/icons/notification";
-import DoctorCard from "../../components/cards/doctorCard";
+import DoctorCard from "../../components/cards/doctCard";
 import CarouselComponent from "../../components/carousel";
 import { SearchInput } from "../../components/searchinput2";
 import { supabase } from "../supabase";

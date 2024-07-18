@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, Modal, ScrollView, SafeAreaView, Pressable } from "react-native";
-import { router } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import { useFonts } from 'expo-font';
 import FiveStarRating from "../doctorcard/star";
+import { supabase } from "../../supabase";
 
 interface CustomCheckBoxProps {
   selected: boolean;
@@ -21,6 +22,8 @@ export default function Writereview() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isoption, setIsoption] = useState("");
   const [text, setText] = useState('');
+  const [selectedStars, setSelectedStars] = useState(0);
+  const [patientImageUrl, setPatientImageUrl] = useState("");
   const [fontLoaded] = useFonts({
     'UrbanistBold': require('../../../assets/fonts/Urbanist-Bold.ttf'),
     'UrbanistRegular': require("../../../assets/fonts/Urbanist-Regular.ttf"),
@@ -28,18 +31,98 @@ export default function Writereview() {
     'UrbanistMedium': require("../../../assets/fonts/Urbanist-Medium.ttf")
   });
 
+ 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.log(error);
+        return;
+      }
+      const userId = data.user?.id;
+
+      const { data: patientData, error: errordata } = await supabase
+        .from("patient")
+        .select("profile_picture,full_name")
+        .eq("id", userId);
+
+      if (errordata) {
+        console.log(errordata);
+      } else {
+        const patient = patientData?.[0];
+        if (patient?.profile_picture) {
+          const { data: publicUrlData, error: publicUrlError } = await supabase
+            .storage
+            .from("files")
+            .createSignedUrl(`${patient.profile_picture}`, 63072000);
+
+          if (publicUrlError) {
+            console.error("Error fetching signed URL:", publicUrlError.message);
+            return;
+          }
+
+          setPatientImageUrl(publicUrlData.signedUrl || "");
+        }
+      }
+    };
+    fetchUserProfile();
+  }, []);
+
   const handleChangeText = (value: string) => {
     setText(value);
   };
 
+  const handleStarPress = (index: number) => {
+    setSelectedStars(index + 1);
+  };
   const isSubmitEnabled = text.trim().length > 0 && isoption.length > 0;
+
+  const Options = ["Yes", "No"];
+  const { appointmentId, doctorImage, role, hospital, name } = useGlobalSearchParams<{ appointmentId: string, doctorImage: string, role: string, hospital: string, name: string }>();
+
+  const writeReview = async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      console.log(error);
+      return;
+    }
+    const userId = data.user?.id;
+
+    const { data: patientData, error: errordata } = await supabase
+      .from("patient")
+      .select("profile_picture,full_name")
+      .eq("id", userId);
+
+    if (errordata) {
+      console.log(errordata);
+    } else {
+      const patient = patientData?.[0];
+
+      const { data: reviewData, error: reviewDataError } = await supabase
+        .from("reviews")
+        .insert({
+          doctorId: appointmentId,
+          stars: selectedStars,
+          content: text,
+          image: patientImageUrl,
+          role: role,
+          hospital: hospital,
+          name: patient?.full_name,
+          liked: "false",
+        })
+
+      if (reviewDataError) {
+        console.log(reviewDataError);
+      } else {
+        console.log(reviewData);
+        setIsModalVisible(true)
+      }
+    }
+  };
 
   if (!fontLoaded) {
     return null;
   }
-
-  const Options = ["Yes", "No"];
-
   return (
     <>
       <Modal
@@ -52,7 +135,7 @@ export default function Writereview() {
             <Image source={require("../../../assets/appointmentIcon/review.png")} />
             <Text className="text-[#246bfd] font-UrbanistBold text-[20px]">Review successful!</Text>
             <Text className="font-UrbanistRegular text-center  w-[300px] text-[16px]">Your review has been successfully submitted. thank you very much!</Text>
-            <TouchableOpacity onPress={() => { setIsModalVisible(false) }}
+            <TouchableOpacity onPress={() => router.push("/(tabs)/")}
               className='w-[276px] bg-blue-600 rounded-[100px] h-[58px] justify-center mt-5'
             >
               <Text className='text-white text-center font-UrbanistBold'>OK</Text>
@@ -62,7 +145,6 @@ export default function Writereview() {
       </Modal>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
-
           <View className="w-[370px]">
             <View className="w-[370px] flex flex-row items-center pb-10 pt-5">
               <TouchableOpacity onPress={() => router.back()}>
@@ -71,14 +153,14 @@ export default function Writereview() {
               <Text className="text-[#212121] font-UrbanistBold text-[24px] pl-5">Write a Review</Text>
             </View>
             <View className="w-[370px] flex justify-center items-center gap-5 mb-2">
-              <Image source={require("../../../assets/doctors/Ellipse.png")} />
+              <Image source={{ uri: doctorImage }} style={{ width: 100, height: 100, borderRadius: 50 }} />
               <View>
                 <Text className="text-[#212121] font-UrbanistBold text-[20px] text-center">How was your experience </Text>
-                <Text className="text-[#212121] font-UrbanistBold text-[20px] text-center">with Dr. Drake Boeson?</Text>
+                <Text className="text-[#212121] font-UrbanistBold text-[20px] text-center">with <Text>{name}</Text>?</Text>
               </View>
               <View className=" w-[350px] flex flex-row  justify-center pb-3">
                 <SafeAreaView>
-                  <FiveStarRating />
+                  <FiveStarRating selectedStars={selectedStars} onStarPress={handleStarPress} />
                 </SafeAreaView>
               </View>
             </View>
@@ -92,7 +174,7 @@ export default function Writereview() {
                 placeholder="Your review here..."
                 style={styles.textInput}
               />
-              <Text className="text-[#212121] font-UrbanistBold text-[20px] pb-5 pt-3">Would you recommend Dr. Drake Boeson to your friends?</Text>
+              <Text className="text-[#212121] font-UrbanistBold text-[20px] pb-5 pt-3">Would you recommend <Text>{name}</Text> to your friends?</Text>
               <View className="flex flex-row items-center pl-2 justify-between w-[130px]">
                 {Options.map((option, index) => (
                   <View key={index} className="flex flex-row items-center justify-center gap-2">
@@ -106,7 +188,6 @@ export default function Writereview() {
               </View>
             </View>
           </View>
-
           <View className="flex flex-row w-[370px] justify-between items-center  pt-3">
             <TouchableOpacity onPress={() => router.back()}>
               <View className=" rounded-3xl pb-3 pt-3 pl-14 pr-14  bg-slate-100 ">
@@ -117,7 +198,7 @@ export default function Writereview() {
             </TouchableOpacity>
             <View style={styles.container}>
               <Pressable
-                onPress={() => setIsModalVisible(true)}
+                onPress={() => writeReview()}
                 style={[
                   styles.button,
                   { backgroundColor: isSubmitEnabled ? '#246bfd' : '#3062cb' }
@@ -133,7 +214,6 @@ export default function Writereview() {
     </>
   )
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
