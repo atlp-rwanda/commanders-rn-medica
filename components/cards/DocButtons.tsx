@@ -28,26 +28,58 @@ const DocButton: React.FC<DocButtonProps> = ({ selectedCategory, onCategorySelec
     };
 
     return (
-
-        <View style={styles.btns}>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                <TouchableOpacity style={getButtonStyle("all")} onPress={() => onCategorySelect("all")}>
-                    <Text style={getButtonTextStyle("all")}>All</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={getButtonStyle("general")} onPress={() => onCategorySelect("general")}>
-                    <Text style={getButtonTextStyle("general")}>General</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={getButtonStyle("dentist")} onPress={() => onCategorySelect("dentist")}>
-                    <Text style={getButtonTextStyle("dentist")}>Dentist</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={getButtonStyle("nutritionist")} onPress={() => onCategorySelect("nutritionist")}>
-                    <Text style={getButtonTextStyle("nutritionist")}>Nutritionist</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={getButtonStyle("pediatric")} onPress={() => onCategorySelect("pediatric")}>
-                    <Text style={getButtonTextStyle("pediatric")}>Pediatric</Text>
-                </TouchableOpacity>
-            </ScrollView>
-        </View>
+      <View style={styles.btns}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity
+            style={getButtonStyle("all")}
+            onPress={() => onCategorySelect("all")}
+          >
+            <Text style={getButtonTextStyle("all")}>All</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle("general")}
+            onPress={() => onCategorySelect("general")}
+          >
+            <Text style={getButtonTextStyle("general")}>General</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle("dentist")}
+            onPress={() => onCategorySelect("dentist")}
+          >
+            <Text style={getButtonTextStyle("dentist")}>Dentist</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle("nutritionist")}
+            onPress={() => onCategorySelect("nutritionist")}
+          >
+            <Text style={getButtonTextStyle("nutritionist")}>Nutritionist</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle("pediatric")}
+            onPress={() => onCategorySelect("pediatric")}
+          >
+            <Text style={getButtonTextStyle("pediatric")}>Pediatric</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle("neurologist")}
+            onPress={() => onCategorySelect("neurologist")}
+          >
+            <Text style={getButtonTextStyle("neurologist")}>Neurologist</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle("radiologist")}
+            onPress={() => onCategorySelect("radiologist")}
+          >
+            <Text style={getButtonTextStyle("radiologist")}>Radiologist</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle("more")}
+            onPress={() => onCategorySelect("more")}
+          >
+            <Text style={getButtonTextStyle("more")}>More</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
     );
 };
 

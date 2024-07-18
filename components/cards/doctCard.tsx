@@ -14,7 +14,7 @@ type docCardProps = {
   hospital: string;
   reviews: string;
   image: string;
-  images: ImageSourcePropType;
+  images?: ImageSourcePropType;
   onPress?: () => void;
 };
 

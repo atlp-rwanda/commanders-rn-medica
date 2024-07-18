@@ -12,6 +12,8 @@ import { SearchInput } from "../../components/searchinput2";
 export default function searchDoctor() {
 
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRating, setSelectedRating] = useState(0); 
   const rotateValue = new Animated.Value(0);
   const rotate = rotateValue.interpolate({
     inputRange: [0, 1],
@@ -27,7 +29,6 @@ export default function searchDoctor() {
       useNativeDriver: true,
     }).start(() => {
       setTimeout(() => {
-        router.push("/Doctors/searchNotFound");
       }, 2000);
     });
   };
@@ -37,21 +38,16 @@ export default function searchDoctor() {
 
   }
   )
+  
   return (
-
     <View className="flex-1 bg-white px-4 py-5">
-      <View className="pt-10 ">
-        <View className="flex-row justify-around">
-          <NavigationHeader title="" />
-          <SearchInput />
-        </View>
-        <DocButton selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
-      </View>
       <View className="flex-1 justify-center items-center">
         <View>
-
-          <Animated.View style={{ transform: [{ rotate }] }}><Image source={require("../../assets/doctors/loading.png")} /></Animated.View>
+          <Animated.View style={{ transform: [{ rotate }] }}>
+            <Image source={require("../../assets/doctors/loading.png")} />
+          </Animated.View>
         </View>
       </View>
-    </View>)
+    </View>
+  );
 }

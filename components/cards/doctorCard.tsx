@@ -12,7 +12,7 @@ import { SvgXml } from "react-native-svg";
 type docCardProps = {
   name: string;
   role: string;
-  stars: string;
+  Stars: string;
   hospital: string;
   reviews: string;
   image: string;
@@ -29,6 +29,8 @@ export default function DoctorCard(props: docCardProps) {
   if(!props.name){
     console.log("here is your image --->",props.image)
   }
+
+  console.log(props.Stars, props.hospital)
   return (
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
@@ -57,7 +59,7 @@ export default function DoctorCard(props: docCardProps) {
             <View className="flex-row gap-1">
               <Image source={require("../../assets/doctors/star.png")} />
               <Text className="font-[UrbanistMedium] text-xs">
-                {props.stars}
+                {props.Stars}
               </Text>
               <Text className="font-[UrbanistMedium] text-xs">
                 ({props.reviews} reviews)
