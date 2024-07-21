@@ -14,20 +14,22 @@ import PlayButton from "@/components/cards/PlayButton";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SvgXml } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { DoctorCard } from "./types";
 import { moreTransparent } from "@/assets/icons/more";
 import { back } from "@/assets/icons/userprofile/icons";
+import { supabase } from "../supabase";
 
 const VideoRecord: React.FC = () => {
   const router = useRouter();
-  const { doctor: doctorString } = useLocalSearchParams();
-  const doctor: DoctorCard = doctorString
-    ? JSON.parse(doctorString as string)
-    : null;
-
+ 
+  
+const {appointmentId}=useLocalSearchParams();
   const [modalVisible, setModalVisible] = useState(false);
   const [videoDuration, setVideoDuration] = useState<number>(0);
+  const[ name, setName]=useState("");
+  const[date, setDate]=useState("");
+  const[time, setTime]=useState("");
+  const[packageType, setPackage]=useState("");
+  const[image, setImage]=useState("");
 
   useEffect(() => {
     const fetchDuration = async () => {
@@ -40,9 +42,7 @@ const VideoRecord: React.FC = () => {
     fetchDuration();
   }, []);
 
-  if (!doctor) {
-    return null;
-  }
+ 
 
   const handlePress = () => {
     router.push("/chat-history/PlayRecord");
@@ -64,7 +64,7 @@ const VideoRecord: React.FC = () => {
     setModalVisible(false);
   };
 
-  const { name, images, callDay, callTime } = doctor;
+  
 
   const formatTime = (timeInSeconds: number) => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -79,6 +79,21 @@ const VideoRecord: React.FC = () => {
       return `${minutes}:${String(seconds).padStart(2, "0")} minutes`;
     }
   };
+  useEffect(()=>{
+    const fetchAppointments=async()=>{
+    const {data:AppointmentData, error:Error}=await supabase.from("appointment").select("*, doctor(name,image)").eq("id",appointmentId).single();
+    if(Error) throw Error
+    if(AppointmentData){
+   setName(AppointmentData.doctor.name);
+   setPackage(AppointmentData.package);
+   setImage(AppointmentData.doctor.image);
+   setTime(AppointmentData.appointment_time);
+   setDate(AppointmentData.appointment_date);
+    
+    }
+    }
+    fetchAppointments();
+      },[appointmentId])
 
   return (
     <SafeAreaView style={areaView}>
@@ -89,12 +104,12 @@ const VideoRecord: React.FC = () => {
             <SvgXml xml={moreTransparent} onPress={handleMorePress} />
           </View>
           <View style={{ rowGap: 28, backgroundColor: "#FAFAFA" }}>
-            <DoctorVideo
+          <DoctorVideo
               doctorName={name}
-              doctorImage={images}
-              callType="Video Call"
-              callDay={callDay}
-              callTime={callTime}
+              doctorImage={image}
+              callType={packageType}
+              callDay={date}
+              callTime={time.slice(0, 5)}
               isVideoCallScreen={true}
             />
             <View
