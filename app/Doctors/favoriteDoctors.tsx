@@ -112,7 +112,7 @@ export default function DoctorDetails() {
 						<View className="flex-row">
 							<TouchableOpacity
 								onPress={() => {
-									router.push("/Doctors/searchDoctor");
+									router.push("/Doctors/doctorsFound");
 								}}>
 								<Image
 									source={require("../../assets/doctors/searchIcon.png")}

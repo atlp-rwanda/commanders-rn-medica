@@ -6,7 +6,7 @@ export interface Doctor {
   id?: number;
   name: string;
   role: string;
-  stars: string;
+  stars: number;
   hospital: string;
   reviews: string;
   image: ImageSourcePropType;
