@@ -25,12 +25,14 @@ import {
 } from "@/assets/icons/file";
 import { Text } from "./ThemedText";
 import { supabase } from "@/app/supabase";
+import upload from "@/utils/upload";
 
 interface Props {
   value?: string;
   autoFocus?: boolean;
   onChangeText?: (text: string) => void;
   onKeyPress: (text?: string | undefined) => void;
+  handleMessage: (message: string, type: string) => void;
 }
 
 export const ChatInput: React.FC<Props> = ({
@@ -38,6 +40,7 @@ export const ChatInput: React.FC<Props> = ({
   autoFocus,
   onChangeText,
   onKeyPress,
+  handleMessage,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isVisible, setVisible] = useState(false);
@@ -70,46 +73,10 @@ export const ChatInput: React.FC<Props> = ({
     if (!result.canceled) {
       console.log("...called...");
       setImage(result.assets[0].uri);
-      const data = await uploadImage(result.assets[0].uri);
-      console.log("...image...", data);
+      const imgUrl = await upload(result.assets[0].uri, "image");
+      console.log("...image...", imgUrl);
+      handleMessage(imgUrl, "image");
     }
-  };
-
-  const uploadImage = async (uri: any) => {
-    console.log(uri);
-    const response = await fetch(uri);
-    console.log(response);
-
-    const blob = await response.blob();
-    console.log(blob);
-    const filename = uri.split("/").pop();
-    console.log("... here ...", filename);
-
-    const result = await supabase.storage
-      .from("files")
-      .upload(`public/${filename}`, blob);
-    console.log(result);
-
-    //   console.log("errro", result)
-    //   console.log("data", data)
-
-    // if (error) {
-    //   console.log('Error uploading image:', error);
-    //   // return null;
-    // }
-
-    // const { data:{publicUrl} } = supabase
-    //   .storage
-    //   .from('files')
-    //   .getPublicUrl(`public/${filename}`);
-    //   console.log(publicUrl)
-
-    // if (!publicUrl) {
-    //   console.log('Error getting public URL:');
-    //   // return null;
-    // }
-
-    return "publicUrl";
   };
 
   const handleDocumentPicker = async () => {
@@ -118,6 +85,7 @@ export const ChatInput: React.FC<Props> = ({
       copyToCacheDirectory: true,
     });
   };
+
   const openCamera = async () => {
     // Request camera permissions
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -136,6 +104,8 @@ export const ChatInput: React.FC<Props> = ({
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      const imgUrl = await upload(result.assets[0].uri, "image");
+      handleMessage(imgUrl, "image");
     }
   };
   const handleAudioPicker = async () => {
@@ -143,6 +113,15 @@ export const ChatInput: React.FC<Props> = ({
       type: "audio/*",
       copyToCacheDirectory: true,
     });
+
+    if (!result.canceled) {
+      console.log("...called...");
+      setImage(result.assets[0].uri);
+      const imgUrl = await upload(result.assets[0].uri, "audio");
+      console.log("test .....", imgUrl);
+      console.log("...image...", result.assets[0].uri);
+      handleMessage(imgUrl, "audio");
+    }
   };
 
   return (
@@ -188,14 +167,14 @@ export const ChatInput: React.FC<Props> = ({
               }}
             >
               <View className="flex-row items-center">
-                <View className="flex-1 items-center">
+                {/* <View className="flex-1 items-center">
                   <TouchableOpacity onPress={handleDocumentPicker}>
                     <SvgXml xml={documentIcon} width={65} height={65} />
                     <Text className="mt-3 text-center font-UrbanistSemiBold">
                       Document
                     </Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
                 <View className="flex-1 items-center">
                   <TouchableOpacity onPress={handleImagePicker}>
                     <SvgXml xml={gallery} width={65} height={65} />
