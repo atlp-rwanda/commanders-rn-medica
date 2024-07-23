@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Dimensions,
   Pressable,
@@ -8,9 +8,10 @@ import {
   Text,
   View,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { screenbgcolor } from "@/styles/usecolor";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import BackIcon from "../../components/BackIcon";
 import EmailPasswordInput from "../../components/EmailPasswordInput";
 import Or from "../../components/Or";
@@ -24,6 +25,13 @@ import { useTranslation } from "react-i18next";
 
 const { width: screenWidth } = Dimensions.get("window");
 
+interface Setting {
+  id: number;
+  title: string;
+  value: boolean;
+  auth?: boolean;
+}
+
 const SignIn = () => {
   const { t } = useTranslation();
   const [isEmailActive, setIsEmailActive] = useState<boolean>(false);
@@ -34,6 +42,77 @@ const SignIn = () => {
   const [isPasswordFilled, setIsPasswordFilled] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+
+ useFocusEffect(
+   useCallback(() => {
+     const loadSettings = async () => {
+       await loadCredentials();
+       await loadRememberMeSetting();
+     };
+
+     loadSettings();
+   }, [])
+ );
+
+  const loadCredentials = async () => {
+    try {
+      const storedEmail = await AsyncStorage.getItem("email");
+      const storedPassword = await AsyncStorage.getItem("password");
+      if (storedEmail) setEmail(storedEmail);
+      if (storedPassword) setPassword(storedPassword);
+    } catch (error) {
+      console.error("Failed to load credentials", error);
+    }
+  };
+
+  const loadRememberMeSetting = async () => {
+    try {
+      const storedSettings = await AsyncStorage.getItem("securitySettings");
+      if (storedSettings) {
+        const settings: Setting[] = JSON.parse(storedSettings);
+        const rememberMeSetting = settings.find(
+          (setting) => setting.title === "Remember me"
+        );
+        if (rememberMeSetting) setRememberMe(rememberMeSetting.value);
+      }
+    } catch (error) {
+      console.error("Failed to load remember me setting", error);
+    }
+  };
+
+  const saveRememberMeSetting = async (value: boolean) => {
+    try {
+      const storedSettings = await AsyncStorage.getItem("securitySettings");
+      let settings: Setting[] = storedSettings
+        ? JSON.parse(storedSettings)
+        : [];
+      settings = settings.map((setting) =>
+        setting.title === "Remember me" ? { ...setting, value } : setting
+      );
+      await AsyncStorage.setItem("securitySettings", JSON.stringify(settings));
+    } catch (error) {
+      console.error("Failed to save remember me setting", error);
+    }
+  };
+
+  const saveCredentials = async () => {
+    if (rememberMe) {
+      try {
+        await AsyncStorage.setItem("email", email);
+        await AsyncStorage.setItem("password", password);
+      } catch (error) {
+        console.error("Failed to save credentials", error);
+      }
+    } else {
+      try {
+        await AsyncStorage.removeItem("email");
+        await AsyncStorage.removeItem("password");
+      } catch (error) {
+        console.error("Failed to remove credentials", error);
+      }
+    }
+  };
 
   const handleEmailActiveChange = (isActive: boolean) => {
     setIsEmailActive(isActive);
@@ -51,6 +130,11 @@ const SignIn = () => {
   const handlePasswordChange = (text: string) => {
     setPassword(text);
     setIsPasswordFilled(!!text);
+  };
+
+  const handleRememberMeChange = (value: boolean) => {
+    setRememberMe(value);
+    saveRememberMeSetting(value);
   };
 
   async function signInWithEmail() {
@@ -74,6 +158,7 @@ const SignIn = () => {
       setError(t("signIn.invalidLoginCredentials"));
       setLoading(false);
     } else {
+      await saveCredentials();
       router.push("/(tabs)/");
       setLoading(false);
     }
@@ -110,8 +195,8 @@ const SignIn = () => {
               value={password}
               onChangeText={handlePasswordChange}
             />
-            <RememberMe text={t("signIn.rememberMe")} />
-            <View style={{ rowGap: 20, width: "100%" }}>
+            <RememberMe text={t("signIn.rememberMe")} onValueChange={handleRememberMeChange} />
+            <View style={styles.inputContainer}>
               <Button
                 title={
                   loading
