@@ -3,23 +3,22 @@ import { loudspeakerIcon } from "@/assets/icons/loudspeaker";
 import { voiceIcon } from "@/assets/icons/voice";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import { Text } from "@/components/ThemedText";
+import { RootState } from "@/redux/store/store";
+import { videoSDKToken } from "@/utils/api";
+import { MeetingProvider, useMeeting } from "@videosdk.live/react-native-sdk";
 import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
+import { useSelector } from "react-redux";
 
-export default function VoiceCallScreen() {
+const MeetingView: React.FC<{
+  isRinging: boolean;
+}> = ({ isRinging }) => {
   const insets = useSafeAreaInsets();
-  const [isRinging, setIsRinging] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsRinging(false);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { localMicOn, toggleMic, leave } = useMeeting({});
 
   return (
     <LinearGradient
@@ -70,7 +69,10 @@ export default function VoiceCallScreen() {
             height={28}
           />
         </TouchableOpacity>
-        <TouchableOpacity className="bg-white/40 p-5 rounded-full mx-6">
+        <TouchableOpacity
+          className={`${localMicOn ? "bg-white/50" : "bg-error/80"} p-5 rounded-full mx-6`}
+          onPress={() => toggleMic()}
+        >
           <SvgXml
             xml={voiceIcon}
             className="text-white"
@@ -78,9 +80,13 @@ export default function VoiceCallScreen() {
             height={28}
           />
         </TouchableOpacity>
-        <TouchableOpacity className="bg-error p-5 rounded-full" onPress={()=>{
+        <TouchableOpacity
+          className="bg-error p-5 rounded-full"
+          onPress={() => {
+            leave();
             router.push("/Appointments/voice-call/session-ended");
-        }}>
+          }}
+        >
           <SvgXml
             xml={callxIcon}
             className="text-white"
@@ -90,5 +96,40 @@ export default function VoiceCallScreen() {
         </TouchableOpacity>
       </View>
     </LinearGradient>
+  );
+};
+
+export default function VoiceCallScreen() {
+  const [isRinging, setIsRinging] = useState(true);
+  const { meetId } = useLocalSearchParams<{ meetId: string }>();
+  const { user } = useSelector((state: RootState) => state.getProfileReducer);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsRinging(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    meetId && (
+      <MeetingProvider
+        config={{
+          meetingId: meetId,
+          micEnabled: true,
+          webcamEnabled: false,
+          name: user.full_name,
+          notification: {
+            title: `Voice call meet`,
+            message: `Meeting with ${user.full_name}`,
+          },
+          participantId: user.id,
+        }}
+        token={videoSDKToken}
+        joinWithoutUserInteraction
+      >
+        <MeetingView isRinging={isRinging} />
+      </MeetingProvider>
+    )
   );
 }

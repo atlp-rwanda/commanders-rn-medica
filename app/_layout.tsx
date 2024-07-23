@@ -1,6 +1,6 @@
 import { useFonts } from "expo-font";
-import { router, SplashScreen, Stack } from "expo-router";
-import { SetStateAction, useEffect, useState } from "react";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { store } from "../redux/store/store";
 import { Host } from "react-native-portalize";
@@ -13,16 +13,16 @@ import {
   View,
   ActivityIndicator,
   Alert,
-  TextInput,
-  Button,
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
   Text,
 } from "react-native";
-import { SvgXml } from "react-native-svg";
-import { back } from "@/assets/icons/userprofile/icons";
+import { LogBox } from "react-native";
+import { register } from "@videosdk.live/react-native-sdk";
 
+LogBox.ignoreAllLogs();
+register();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     UrbanistBold: require("../assets/fonts/Urbanist-Bold.ttf"),
@@ -50,70 +50,68 @@ export default function RootLayout() {
     checkAuthentication();
   }, []);
 
- const checkAuthentication = async () => {
-   try {
-     const storedSettings = await AsyncStorage.getItem("securitySettings");
-     const settings = storedSettings ? JSON.parse(storedSettings) : [];
-     const faceIDSetting = settings.find(
-       (setting: { title: string; }) => setting.title === "Biometric"
-     );
-     const PIN = settings.find(
-       (setting: { title: string }) => setting.title === "PIN"
-     );
+  const checkAuthentication = async () => {
+    try {
+      const storedSettings = await AsyncStorage.getItem("securitySettings");
+      const settings = storedSettings ? JSON.parse(storedSettings) : [];
+      const faceIDSetting = settings.find(
+        (setting: { title: string }) => setting.title === "Biometric"
+      );
+      const PIN = settings.find(
+        (setting: { title: string }) => setting.title === "PIN"
+      );
 
-     if (faceIDSetting && faceIDSetting.value === true) {
-       const { success } = await LocalAuthentication.authenticateAsync({
-         promptMessage: "Authenticate to access the app",
-         fallbackLabel: "Use Passcode",
-       });
+      if (faceIDSetting && faceIDSetting.value === true) {
+        const { success } = await LocalAuthentication.authenticateAsync({
+          promptMessage: "Authenticate to access the app",
+          fallbackLabel: "Use Passcode",
+        });
 
-       if (success) {
-         setIsAuthenticated(true);
-         return;
-       }
-     } else if (PIN && PIN.value === true) {
-       
-       const storedPin = await AsyncStorage.getItem("pin");
-       if (storedPin) {
-         setShowPinInput(true);
-       } else {
-         setIsAuthenticated(true);
-       }
-     }
+        if (success) {
+          setIsAuthenticated(true);
+          return;
+        }
+      } else if (PIN && PIN.value === true) {
+        const storedPin = await AsyncStorage.getItem("pin");
+        if (storedPin) {
+          setShowPinInput(true);
+        } else {
+          setIsAuthenticated(true);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to check authentication", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-   } catch (error) {
-     console.error("Failed to check authentication", error);
-   } finally {
-     setLoading(false);
-   }
- };
+  const handlePinSubmit = async () => {
+    try {
+      const storedPin = await AsyncStorage.getItem("pin");
 
- const handlePinSubmit = async () => {
-   try {
-     const storedPin = await AsyncStorage.getItem("pin");
+      if (storedPin === pin) {
+        setIsAuthenticated(true);
+      } else {
+        Alert.alert("Authentication failed", "Invalid PIN entered.");
+      }
+    } catch (error) {
+      console.error("Failed to retrieve PIN from storage", error);
+      Alert.alert(
+        "Authentication failed",
+        "An error occurred while retrieving PIN."
+      );
+    }
+  };
 
-     if (storedPin === pin) {
-       setIsAuthenticated(true);
-     } else {
-       Alert.alert("Authentication failed", "Invalid PIN entered.");
-     }
-   } catch (error) {
-     console.error("Failed to retrieve PIN from storage", error);
-     Alert.alert(
-       "Authentication failed",
-       "An error occurred while retrieving PIN."
-     );
-   }
- };
+  if (!loaded || loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
- if (!loaded || loading) {
-   return (
-     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-       <ActivityIndicator size="large" color="#0000ff" />
-     </View>
-   );
- }
- 
   if (!loaded || loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -135,12 +133,12 @@ export default function RootLayout() {
               style={{
                 fontFamily: "UrbanistSemiBold",
                 fontSize: 20,
-                marginBottom: 50
+                marginBottom: 50,
               }}
             >
               Authenticate to access the app
             </Text>
-            
+
             <OtpInput
               numberOfDigits={4}
               secureTextEntry={true}
