@@ -1,25 +1,28 @@
 import { Text } from "@/components/ThemedText";
-import { Image, ImageSourcePropType, View } from "react-native";
+import { router } from "expo-router";
+import { Image, ImageSourcePropType, TouchableOpacity, View } from "react-native";
 
 export type NotificationType = "appointment" | "schedule" | "service" | "card";
 export type NotificationState = "error" | "success" | "warning" | "info";
 
 export type Notification = {
+  id: String;
   title: String;
   description: String;
   date: String;
   time: String;
   type: NotificationType;
   state: NotificationState;
-  new?: boolean;
+  delete?:boolean;
 };
 
 type NotificationComponentProps = {
   notification: Notification;
+  onDeletePress: (id: String) => void;
 };
 
 export default function NotificationComponent({
-  notification,
+  notification, onDeletePress
 }: NotificationComponentProps) {
   return (
     <View className="py-3 px-4 my-3 gap-3">
@@ -33,13 +36,13 @@ export default function NotificationComponent({
             {notification.date} | {notification.time}
           </Text>
         </View>
-        {notification.new && (
-          <View className="bg-primary-500 rounded-md px-[10px] py-[6px]">
-            <Text className="text-white text-xs">New</Text>
-          </View>
+        {notification.delete && (
+          <TouchableOpacity className="bg-red-400 rounded-md px-[10px] py-[6px]" onPress={()=> onDeletePress(notification.id)}>
+            <Text className="text-white text-xs">Clear</Text>
+          </TouchableOpacity>
         )}
       </View>
-      <Text className="text-gray-500 text-base opacity-90">
+      <Text className="text-gray-500 text-base opacity-90" onPress={()=>router.push("/appointment")}>
         {notification.description}
       </Text>
     </View>
