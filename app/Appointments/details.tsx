@@ -168,7 +168,10 @@ const VideoCallAppointment = ({ route }: any) => {
           <Detail title={"Age"} text={appointment.patient.date_of_birth} />
           <Detail title={""} text={appointment.Reason_couse_toUpdated} />
         </View>
-        {/* <TextInput onChangeText={setJointMeetId} className="bg-white" /> */}
+        {/* <TextInput
+          onChangeText={setJointMeetId}
+          className="bg-white border border-primary-100"
+        /> */}
         <View className="mb-5 mx-6">
           <Text className="text-[20px] font-UrbanistBold text-greyscale-900 mb-4">
             Your Package

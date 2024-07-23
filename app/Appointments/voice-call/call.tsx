@@ -16,23 +16,9 @@ import { useSelector } from "react-redux";
 
 const MeetingView: React.FC<{
   isRinging: boolean;
-  micEnabled: boolean;
-  setMicEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ isRinging, micEnabled, setMicEnabled }) => {
+}> = ({ isRinging }) => {
   const insets = useSafeAreaInsets();
-  const {
-    participants,
-    meetingId,
-    localMicOn,
-    join,
-    leave,
-    end,
-    muteMic,
-    unmuteMic,
-  } = useMeeting();
-  useEffect(() => {
-    join();
-  }, [meetingId]);
+  const { localMicOn, toggleMic, leave } = useMeeting({});
 
   return (
     <LinearGradient
@@ -84,8 +70,8 @@ const MeetingView: React.FC<{
           />
         </TouchableOpacity>
         <TouchableOpacity
-          className="bg-white/50 p-5 rounded-full mx-6"
-          onPress={() => (localMicOn ? muteMic() : unmuteMic())}
+          className={`${localMicOn ? "bg-white/50" : "bg-error/80"} p-5 rounded-full mx-6`}
+          onPress={() => toggleMic()}
         >
           <SvgXml
             xml={voiceIcon}
@@ -115,13 +101,10 @@ const MeetingView: React.FC<{
 
 export default function VoiceCallScreen() {
   const [isRinging, setIsRinging] = useState(true);
-  const [micEnabled, setMicEnabled] = useState(false);
   const { meetId } = useLocalSearchParams<{ meetId: string }>();
   const { user } = useSelector((state: RootState) => state.getProfileReducer);
-  // const { join } = useMeeting();
 
   useEffect(() => {
-    // join('')
     const timer = setTimeout(() => {
       setIsRinging(false);
     }, 5000);
@@ -133,7 +116,7 @@ export default function VoiceCallScreen() {
       <MeetingProvider
         config={{
           meetingId: meetId,
-          micEnabled: micEnabled,
+          micEnabled: true,
           webcamEnabled: false,
           name: user.full_name,
           notification: {
@@ -143,12 +126,9 @@ export default function VoiceCallScreen() {
           participantId: user.id,
         }}
         token={videoSDKToken}
+        joinWithoutUserInteraction
       >
-        <MeetingView
-          isRinging={isRinging}
-          micEnabled={micEnabled}
-          setMicEnabled={setMicEnabled}
-        />
+        <MeetingView isRinging={isRinging} />
       </MeetingProvider>
     )
   );

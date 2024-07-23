@@ -27,7 +27,9 @@
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO",
-        "READ_CONTACTS"
+        "READ_CONTACTS",
+        "BLUETOOTH_ADMIN",
+        "BLUETOOTH_SCAN"
       ]
     },
     "web": {
