@@ -23,7 +23,7 @@ export default function DoctorCard(props: DocCardProps) {
     <ScrollView className="mb-6">
       <View className="bg-white rounded-3xl p-4">
         <View className="flex-row ">
-          <Image source={props.doctorImage} className="w-28 h-28" />
+          <Image source={{uri:props.doctorImage}} className="w-28 h-28" />
           <View className="flex-1 pl-4 justify-around">
             <Text className="font-[18px] font-[UrbanistBold]">
               {props.doctorName}

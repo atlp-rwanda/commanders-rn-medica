@@ -9,9 +9,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { play } from "@/assets/icons/playBtn";
 import { download } from '@/assets/icons/download';
 import { deleteRed } from '@/assets/icons/delete';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { AVPlaybackSource, AVPlaybackStatus, AVPlaybackStatusSuccess, Audio } from "expo-av";
 import { Sound } from 'expo-av/build/Audio';
+import { supabase } from '../supabase';
 
 const { width } = Dimensions.get('window');
 const WAVEFORM_ELEMENTS_COUNT = 50;
@@ -23,18 +24,26 @@ export default function SingleCall() {
     const [duration, setDuration] = useState<number | any>(1);
     const [sound, setSound] = useState<Sound | null>(null);
     const progressAnim = useRef(new Animated.Value(0)).current;
+    const { appointmentId } = useLocalSearchParams();
     const intervalRef = useRef<NodeJS.Timer | null>(null);
     const [waveformHeights, setWaveformHeights] = useState<number[]>([]);
-
+    const [appointment, setAppointment] = useState<any[]>([]);
+    const [name, setName] = useState("");
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+    const [packageType, setPackage] = useState("");
+    const [image, setImage] = useState("");
     const generateWaveformHeights = () => {
+
         return Array.from({ length: WAVEFORM_ELEMENTS_COUNT }, () => Math.random() * 50 + 10);
     };
-    const handleLoad= async()=>{
+    const handleLoad = async () => {
         const { sound } = await Audio.Sound.createAsync(require('@/assets/Travis-Mafia.mp3'));
+
         setSound(sound);
         await sound.loadAsync(require('@/assets/Travis-Mafia.mp3'));
         const status = await sound.getStatusAsync();
-        if (status.isLoaded){
+        if (status.isLoaded) {
             setDuration(status.durationMillis);
         }
     }
@@ -80,12 +89,12 @@ export default function SingleCall() {
 
     const formatTime = (millis: number) => {
         const minutes = Math.floor(millis / 60 / 1000);
-        const seconds= Math.round(((millis/60/1000)-minutes)*60);
-        return seconds<10? `${minutes} minutes and 0${seconds} seconds`:`${minutes} minutes and ${seconds} seconds`;;
+        const seconds = Math.round(((millis / 60 / 1000) - minutes) * 60);
+        return seconds < 10 ? `${minutes} minutes and 0${seconds} seconds` : `${minutes} minutes and ${seconds} seconds`;;
     }
-    useEffect(()=>{
+    useEffect(() => {
         handleLoad();
-    },[])
+    }, [])
     useEffect(() => {
         intervalRef.current = setInterval(() => {
             handleProgress();
@@ -110,6 +119,20 @@ export default function SingleCall() {
     useEffect(() => {
         setWaveformHeights(generateWaveformHeights());
     }, [sound]);
+
+    useEffect(() => {
+        const fetchAppointments = async () => {
+            const { data: AppointmentData, error: Error } = await supabase.from("appointment").select("*, doctor(name,image)").eq("id", appointmentId).single()
+            if (AppointmentData) {
+                setName(AppointmentData.doctor.name);
+                setPackage(AppointmentData.package);
+                setImage(AppointmentData.doctor.image);
+                setTime(AppointmentData.appointment_time);
+                setDate(AppointmentData.appointment_date);
+            }
+        }
+        fetchAppointments();
+    }, [appointmentId])
 
     return (
         <>
@@ -138,13 +161,12 @@ export default function SingleCall() {
                         <SvgXml xml={moreTransparent} onPress={() => setVisible(!visible)} />
                     </View>
                 </View>
-
                 <CallsCard
-                    name='Dr Dustin Bugingo'
-                    type='Voice call'
-                    date='Today'
-                    time='14:00 PM'
-                    image={require('@/assets/doctors/doc1.png')}
+                    name={name}
+                    type={packageType}
+                    date={date}
+                    time={time.slice(0, 5)}
+                    image={image}
                     icon={phone}
                 />
                 <View className='border-[1px] border-[#EEEEEE] my-5' />
@@ -160,13 +182,13 @@ export default function SingleCall() {
                             {waveformHeights.map((height, index) => {
                                 const barWidth = width * 0.75 / WAVEFORM_ELEMENTS_COUNT;
                                 const barProgress = progressAnim.interpolate({
-                                    inputRange: [0, (index ) / WAVEFORM_ELEMENTS_COUNT * width],
+                                    inputRange: [0, (index) / WAVEFORM_ELEMENTS_COUNT * width],
                                     outputRange: [0, 1],
                                     extrapolate: 'clamp',
                                 });
                                 const backgroundColor = barProgress.interpolate({
                                     inputRange: [0, 1],
-                                    outputRange: ['#E9F0FF','#246BFD']
+                                    outputRange: ['#E9F0FF', '#246BFD']
                                 });
                                 return (
                                     <Pressable
