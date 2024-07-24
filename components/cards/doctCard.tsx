@@ -1,13 +1,10 @@
 import { Text } from "react-native";
-import React from "react";
-import {
-  Image,
-  ImageSourcePropType,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
-type docCardProps = {
+import React, { useState, useEffect } from "react";
+import { supabase } from "../../app/supabase";
+import { Image, ImageSourcePropType, Pressable, StyleSheet, View } from "react-native";
+
+type DocCardProps = {
+  id: string;
   name: string;
   role: string;
   stars: string;
@@ -18,12 +15,50 @@ type docCardProps = {
   onPress?: () => void;
 };
 
-export default function DoctorCard(props: docCardProps) {
+export default function DoctorCard(props: DocCardProps) {
+  const [allReviews, setAllReviews] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const getReviews = async () => {
+    try {
+      const { data: doctorData, error: doctorError } = await supabase
+        .from("doctor")
+        .select("id")
+        .eq("id", props.id)
+        .single();
+
+      if (doctorError) {
+        console.error("Error fetching doctor data:", doctorError);
+        return;
+      }
+
+      const doctorId = doctorData.id;
+      const { data: reviewData, error: reviewError } = await supabase
+        .from("reviews")
+        .select("*")
+        .eq("doctorId", doctorId);
+
+      if (reviewError) {
+        console.error("Error fetching review data:", reviewError);
+        return;
+      }
+      setAllReviews(reviewData);
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getReviews();
+  }, []);
+   const review_count =allReviews.length
   return (
     <Pressable onPress={props.onPress} style={styles.container}>
       <View className="bg-white rounded-3xl p-4 mb-6" style={styles.card1}>
         <View className="flex-row justify-between w-full">
-          <Image source={{uri:props.image}} className="w-28 h-28" />
+          <Image source={{ uri: props.image }} className="w-28 h-28" />
           <View className="justify-evenly pl-1 w-[60%]">
             <View className="justify-between w-full items-center flex-row">
               <Text className="font-[18px] font-[UrbanistBold]">
@@ -47,7 +82,7 @@ export default function DoctorCard(props: docCardProps) {
                 {props.stars}
               </Text>
               <Text className="font-[UrbanistMedium] text-xs">
-                ({props.reviews} reviews)
+                ({loading ? "Loading..." : `${review_count} reviews`})
               </Text>
             </View>
           </View>
@@ -56,6 +91,7 @@ export default function DoctorCard(props: docCardProps) {
     </Pressable>
   );
 }
+
 const styles = StyleSheet.create({
   card1: { elevation: 5 },
   container: {

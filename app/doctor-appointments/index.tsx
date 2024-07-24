@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import { getReview } from "@/redux/Thunk/doctorThunk";
 import { getReviews } from "@/redux/reducers/doctors";
+
 export default function DoctorAppointmentScreen() {
   const { doctorId } = useGlobalSearchParams<{ doctorId: string }>();
   let { liked = 'false' } = useGlobalSearchParams<{ liked: string }>();
@@ -26,8 +27,10 @@ export default function DoctorAppointmentScreen() {
   const [loading, setLoading] = useState(true);
   const [patientCount, setPatientCount] = useState(0);
   const [userID, setUserID] = useState('');
+  const [rating,setAverageRating]=useState(0)
 
   const reviews = useSelector((state: RootState) => state.doctors.reviews).slice(0, 2);
+  const review = useSelector((state: RootState) => state.doctors.reviews);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,15 +49,20 @@ export default function DoctorAppointmentScreen() {
         if (error) {
           throw error;
         }
-        
-        if (error) {
-          throw error;
+        setDoctor(data);
+        const res = await dispatch(getReview(`${doctorId}`) as any).unwrap();
+        dispatch(getReviews(res) as any);
+
+        let starsSum = 0;
+        for (const review of res) {
+          starsSum += Number(review.stars);
+        }
+        if (res.length > 0) {
+          setAverageRating(starsSum / res.length);
+        } else {
+          setAverageRating(0);
         }
 
-        setDoctor(data);
-        const res = await dispatch(getReview(`${doctorId}`)as any).unwrap();
-        dispatch(getReviews(res)as any)
-        
       } catch (error) {
         console.error("Error fetching doctor data:", error);
       } finally {
@@ -64,29 +72,28 @@ export default function DoctorAppointmentScreen() {
 
     fetchDoctor();
   }, [doctorId]);
-  useEffect(()=>{
-    const abc = async()=>{
-      const { data, error } = await supabase
-      .from("appointment")
-      .select("*")
-      .eq("doctor_id", doctorId);
-     setPatientCount(data?.length as number)
 
+
+  useEffect(() => {
+    const abc = async () => {
+      const { data, error } = await supabase
+        .from("appointment")
+        .select("*")
+        .eq("doctor_id", doctorId);
+      setPatientCount(data?.length as number);
     }
     abc();
-   
-  },[doctorId])
-
+  }, [doctorId]);
   return (
     <View className="px-5 flex-1">
       <NavigationHeader title={doctor?.name || ""}>
         <TouchableOpacity className="w-7 h-7 mr-2" onPress={
-          async() => {
+          async () => {
             if (favorite) {
               const { error } = await supabase
-              .from("favorites")
-              .delete()
-              .eq("doctor_id", doctorId)
+                .from("favorites")
+                .delete()
+                .eq("doctor_id", doctorId)
                 .eq("user_id", userID);
               if (error) {
                 alert('Try again please!')
@@ -97,10 +104,10 @@ export default function DoctorAppointmentScreen() {
             }
             else {
               const { data, error } = await supabase
-              .from('favorites')
-              .insert([
-                {user_id: userID, doctor_id: doctorId },
-              ])
+                .from('favorites')
+                .insert([
+                  { user_id: userID, doctor_id: doctorId },
+                ])
                 .select()
               if (error) {
                 alert('Try again please!')
@@ -122,7 +129,6 @@ export default function DoctorAppointmentScreen() {
           />
         </TouchableOpacity>
       </NavigationHeader>
-
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {doctor && <MinimalDoctorCard {...doctor} />}
@@ -151,7 +157,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={starIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              {doctor?.Stars.length}
+              {rating}
             </Text>
             <Text className="text-sm">rating</Text>
           </View>
@@ -160,7 +166,7 @@ export default function DoctorAppointmentScreen() {
               <SvgXml xml={chatIcon} className="text-primary-500" />
             </View>
             <Text className="text-primary-500 font-UrbanistBold text-xl mb-1">
-              {reviews.length}
+              {review.length}
             </Text>
             <Text className="text-sm">reviews</Text>
           </View>
@@ -169,13 +175,13 @@ export default function DoctorAppointmentScreen() {
         <View className="mb-6">
           <Text className="text-xl font-UrbanistBold mb-2">About me</Text>
           <Text>
-          {doctor?.about}
+            {doctor?.about}
           </Text>
         </View>
 
         <View className="mb-6">
           <Text className="text-xl font-UrbanistBold mb-2">Working Time</Text>
-        <Text>{doctor?.time}</Text>
+          <Text>{doctor?.time}</Text>
         </View>
 
         <View className="mb-3">
@@ -188,11 +194,12 @@ export default function DoctorAppointmentScreen() {
               See All
             </Link>
           </View>
-          {reviews.map((review, index) =>{
-            review.name = doctor?.name as any
-            return(
-            <ReviewCard key={index} {...review} />
-          )})}
+          {reviews.map((review, index) => {
+            review.name = doctor?.name as any;
+            return (
+              <ReviewCard key={index} {...review} />
+            )
+          })}
         </View>
       </ScrollView>
       <View className="py-3">

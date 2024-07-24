@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -16,20 +15,19 @@ const StarCheckbox: React.FC<StarCheckboxProps> = ({ checked, onPress }) => {
   );
 };
 
-const FiveStarRating: React.FC = () => {
-  const [selectedStars, setSelectedStars] = useState(0);
+interface FiveStarRatingProps {
+  selectedStars: number;
+  onStarPress: (index: number) => void;
+}
 
-  const handleStarPress = (index: number) => {
-    setSelectedStars(index + 1);
-  };
-
+const FiveStarRating: React.FC<FiveStarRatingProps> = ({ selectedStars, onStarPress }) => {
   return (
     <View style={styles.container}>
       {[0, 1, 2, 3, 4].map((index) => (
         <StarCheckbox
           key={index}
           checked={index < selectedStars}
-          onPress={() => handleStarPress(index)}
+          onPress={() => onStarPress(index)}
         />
       ))}
     </View>
@@ -48,4 +46,3 @@ const styles = StyleSheet.create({
 });
 
 export default FiveStarRating;
-
