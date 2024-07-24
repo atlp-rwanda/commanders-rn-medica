@@ -4,25 +4,20 @@ import {
   ScrollView,
   Image,
   Pressable,
-  FlatList,
   TouchableOpacity,
   Modal,
   Dimensions,
 } from "react-native";
-import { useState } from "react";
-import { NavigationHeader } from "@/components/NavigationHeader";
-import { Icon } from "@/components/Icon";
+import { useState, useEffect } from "react";
 import { SvgXml } from "react-native-svg";
 import { moreTransparent } from "@/assets/icons/more";
 import { searchDark } from "@/assets/icons/search";
 import { back } from "@/assets/icons/userprofile/icons";
-import { doubleTick } from "@/assets/icons/doubletick";
-import { download } from "@/assets/icons/download";
-import { deleteBtn, deleteRed } from "@/assets/icons/delete";
+import moment from "moment";
 import Chat from "@/components/chats/chat";
 import Index from "./VideoCall";
-import { MessagesType, messages } from "./data";
 import VoiceCalls from "./voiceCalls";
+import { supabase } from "../supabase";
 
 
 export default function Chathistory() {
@@ -31,31 +26,58 @@ export default function Chathistory() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [docName, setDocname] = useState("");
-  const handleDocName = (doc: string) => {
+  const [messages, setMessage]=useState<any[]>([]);
+  const [userId, setUserId] = useState("");
+  const [appointment, setAppointment]=useState<any[]>([]);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState<string | null>(null);
+
+  const handleDocName = (doc: string, appointmentId: string) => {
     setDocname(doc);
+    setSelectedAppointmentId(appointmentId);
     setIsModalVisible(true);
   };
-  const renderItems = ({ item }: { item: MessagesType }) => {
+
+  useEffect(()=>{
+const fetchAppointments=async()=>{
+const {data, error}=await supabase.auth.getUser();
+if(error) throw error;
+const userId=data?.user?.id;
+setUserId(userId);
+const {data:AppointmentData, error:Error}=await supabase.from("appointment").select("*, doctor(name,image)").eq("patient_id", userId).eq("package","Messaging")
+if(Error) throw Error
+if(AppointmentData){
+setAppointment(AppointmentData);
+}
+const{data:MessageData, error:MessageError}=await supabase.from("messages").select("*")
+if(MessageData){
+  setMessage(MessageData);
+}
+if(MessageError)throw MessageError;
+
+}
+fetchAppointments();
+  },[])
+  const renderHistory = (appointment: any, index:number) => {
+    const latestMessage = messages
+    .filter((message: any) => message.appointment_id === appointment.id)
+    .slice(-1)[0]?.message;
     return (
-      <View className="flex flex-row w-1/1 justify-between items-center py-3 ">
+      <View key={index} className="flex flex-row w-1/1 justify-between items-center py-3 ">
         <View className="flex-none w-[20%]">
-          <Image source={item.image} style={{ width: 58, height: 58 }} />
+          <Image source={{uri:appointment.doctor.image}} style={{ width: 58, height: 58 }} />
         </View>
         <TouchableOpacity
           className="flex-auto w-[73%] pl-2"
-          onPress={() => handleDocName(item.name)}
+          onPress={() => handleDocName(appointment.doctor.name, appointment.id)}
         >
           <Text className="font-UrbanistBold text-[16px] pb-2">
-            {item.name}
+            {appointment.doctor.name}
           </Text>
-          <Text className="font-UrbanistRegular text-grey">{item.message}</Text>
+          <Text className="font-UrbanistRegular text-grey"> {latestMessage ? latestMessage: ""}</Text>
         </TouchableOpacity>
         <View className="flex-auto w-[30%] justify-start">
           <Text className="font-UrbanistRegular text-grey pb-2 text-right">
-            {item.date}
-          </Text>
-          <Text className="font-UrbanistRegular text-grey text-right">
-            {item.time}
+            {appointment.appointment_date}
           </Text>
         </View>
       </View>
@@ -71,27 +93,7 @@ export default function Chathistory() {
         >
           <View className="w-[100%]">
             <View className="w-[37%] relative top-[50px] left-[59%] p-4 right-0 bg-white rounded-xl">
-              <TouchableOpacity className="flex-row gap-2 py-2">
-                <SvgXml xml={deleteBtn} />
-                <Text className="font-UrbanistSemiBold">Clear chat</Text>
-              </TouchableOpacity>
-              <View className="w-[85%] ml-3 pt-2 border-b-[1px] border-grey opacity-40" />
-              <TouchableOpacity className="flex-row gap-2 pb-2 pt-4 ">
-                <SvgXml xml={download} />
-                <Text className="font-UrbanistSemiBold"> Export chat</Text>
-              </TouchableOpacity>
-              <View className="w-[85%] ml-3 pb-2 border-b-[1px] border-grey opacity-40" />
-              <TouchableOpacity
-                className="flex-row gap-2 pt-3"
-                onPress={() => {
-                  setVisible(false);
-                }}
-              >
-                <SvgXml xml={deleteRed} stroke={"#F75555"} />
-                <Text className="font-UrbanistSemiBold text-[#F75555]">
-                  Delete chat
-                </Text>
-              </TouchableOpacity>
+              
             </View>
           </View>
         </View>
@@ -106,11 +108,7 @@ export default function Chathistory() {
               </Text>
             </View>
             <View className="flex-row items-center justify-center gap-3 mx-1">
-              <SvgXml xml={searchDark} />
-              <SvgXml
-                xml={moreTransparent}
-                onPress={() => setVisible(!visible)}
-              />
+             
             </View>
           </View>
           <ScrollView
@@ -124,58 +122,28 @@ export default function Chathistory() {
                 </Text>
               </View>
             </View>
-
-            <Chat
-              direction="end"
-              message="Hi, good afternoon Dr. Drake... 😁😁"
-              time="16:00 PM"
-              color="lightblue"
-            />
-            <Chat
-              direction="end"
-              message="I'm Andrew, I have a problem with my immune system 😢"
-              time="16:00 PM"
-              color="lightblue"
-            />
-            <Chat
-              direction="start"
-              message="Hello, good afternoon too Andrew 😁"
-              time="16:01 PM"
-              color="lightgrey"
-            />
-            <Chat
-              direction="start"
-              message="Can you tell me the problem you are having? So that I can identify it."
-              time="16:01 PM"
-              color="lightgrey"
-            />
-            <Chat
-              direction="end"
-              message="Recently I often feel unwell. I also sometimes experience pain in the legs, and I don't know why 😭😭
-                        Do you know anything doc?"
-              time="16:02 PM"
-              color="lightblue"
-            />
-            <View className={`w-[100%] flex items-end my-3`}>
+            {messages
+    .filter((message: any) => message.appointment_id === selectedAppointmentId)
+    .map((message: any, index: any) => (
+      <Chat
+      key={index}
+      direction={message.sender_id === userId ? "end" : "start"}
+      message={message.message}
+      time={moment(`${message.created_at}`).calendar()}
+      color={message.sender_id === userId ? "lightblue" : "lightgrey"}
+    />
+            ))}
+            <View className="flex-row justify-center items-center my-3">
+              <View className="w-1/3 bg-[#75757512] justify-center items-center rounded-xl">
+                <Text className="text-[13px] p-1 text-[#757575] font-UrbanistSemiBold">
+                  Session Ended
+                </Text>
+              </View>
+            </View>
+ <View className={`w-[100%] flex items-end my-3`}>
               <View
                 className={` rounded-xl p-4 w-3/4 flex justify-end gap-r-2`}
               >
-                <View className={` w-[73%] flex-row gap-x-4 pb-3`}>
-                  <Image
-                    source={require("../../assets/images/chat/leg.png")}
-                    style={{ width: 100, height: 100 }}
-                    resizeMode="contain"
-                  />
-                  <Image
-                    source={require("../../assets/images/chat/leg1.png")}
-                    style={{ width: 100, height: 100 }}
-                    resizeMode="contain"
-                  />
-                </View>
-                {/* <View className="flex-row items-center gap-x-1 justify-end">
-                                    <Text className={`font-UrbanistRegular text-[10px]`}>16:03 PM</Text>
-                                    <SvgXml xml={doubleTick} stroke={'black'} />
-                                </View> */}
               </View>
             </View>
           </ScrollView>
@@ -189,10 +157,6 @@ export default function Chathistory() {
               style={{ width: 28, height: 28 }}
             />
             <Text className="text-[24px] font-UrbanistBold px-4">History</Text>
-          </View>
-          <View className="flex-row items-center justify-center gap-3 mx-1">
-            <SvgXml xml={searchDark} />
-            <SvgXml xml={moreTransparent} />
           </View>
         </View>
         <View className="my-4 w-1/1 justify-between mr-3">
@@ -249,16 +213,12 @@ export default function Chathistory() {
           </View>
           <View className="w-[100%] border-b-[2px] border-[#EEEEEE] relative bottom-[2.6px] z-[-1]"></View>
         </View>
-
         {selected === "Messages" && (
-          <FlatList
-            data={messages}
-            renderItem={renderItems}
-            style={{ height: "82%" }}
-            showsVerticalScrollIndicator={false}
-          />
+          <ScrollView style={{ height: "82%" }} showsVerticalScrollIndicator={false}>
+            {appointment.map((appointmentItem,index) => renderHistory(appointmentItem,index))}
+          </ScrollView>
         )}
-
+{selected==="Calls"&&<VoiceCalls/>}
         {selected === "Videos" && <Index />}
       </View>
     </>

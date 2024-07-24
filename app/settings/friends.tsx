@@ -12,7 +12,7 @@ import { router } from "expo-router";
 import { Icon } from "@/components/Icon";
 import * as Contacts from "expo-contacts";
 import { supabase } from "../supabase";
-
+import { UIActivityIndicator } from "react-native-indicators";
 interface Contact {
   image: any;
   name: string;
@@ -167,7 +167,7 @@ export default function Friends() {
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
-        <Text>Loading...</Text>
+       <UIActivityIndicator color={"#246BFD"} size={32} />
       </View>
     );
   }

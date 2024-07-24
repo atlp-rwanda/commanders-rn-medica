@@ -13,6 +13,9 @@ import {
 import { supabase } from "../supabase";
 import Cardcomponent from "./doctorcard/cards";
 import Cardscomponent from "./doctorcard/cardss";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store/store";
+import { getAppointments } from "@/redux/reducers/appointment";
 
 function Screen() {
   const [upcoming, setUpcoming] = useState(true);
@@ -20,11 +23,13 @@ function Screen() {
   const [complete, setComlpete] = useState(false);
   const [notupcome, setNotupcome] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [appointmentData, setAppointmentData] = useState<any[]>([]);
   const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
-  const [appointId, setAppointId] = useState({});
+  const appointments = useSelector(
+    (state: RootState) => state.appointment.appointments
+  );
   const [canceledData, setcanceledData] = useState<any[]>([]);
-
+  const [appointId, setAppointId] = useState({});
+  const dispatch = useDispatch();
   const handleUpcoming = () => {
     setCancels(false);
     setUpcoming(true);
@@ -55,12 +60,14 @@ function Screen() {
 
   const fetchAppointment = async () => {
     try {
-      const { data: userData, error: userError } = await supabase.auth.getUser();
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
       if (userError) throw userError;
       const userId = userData?.user?.id;
       const { data, error } = await supabase
         .from("appointment")
-        .select(`
+        .select(
+          `
           *,
           doctor(
             id,
@@ -68,14 +75,24 @@ function Screen() {
             role,
             image,
             hospital
-          )
-        `)
+          ),
+          patient(
+    id,
+    email,
+    phone,
+    full_name,
+    nickname,
+    date_of_birth,
+    gender
+  )
+        `
+        )
         .eq("patient_id", userId);
 
       if (error) {
         console.log("Error occurred while fetching appointments", error);
       } else {
-        setAppointmentData(data);
+        dispatch(getAppointments(data));
         if (data.length === 0) {
           setNotupcome(true);
           setUpcoming(false);
@@ -92,10 +109,10 @@ function Screen() {
     fetchAppointment();
   }, []);
 
-
   const cancelAppointment = async () => {
     try {
-      const { data: userData, error: userError } = await supabase.auth.getUser();
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
       if (userError) throw userError;
       const userId = userData?.user?.id;
       const { data, error } = await supabase
@@ -117,14 +134,13 @@ function Screen() {
     cancelAppointment();
   }, []);
 
-
   const getPackageIcon = (typecall: any) => {
     switch (typecall) {
-      case 'Voice Call':
+      case "Voice Call":
         return require("../../assets/appointmentIcon/voice.png");
-      case 'Video Call':
+      case "Video Call":
         return require("../../assets/appointmentIcon/video.png");
-      case 'Messaging':
+      case "Messaging":
         return require("../../assets/appointmentIcon/message.png");
       default:
         return null;
@@ -136,13 +152,17 @@ function Screen() {
       appointmentId: appointment.id,
       appointment_date: appointment.appointment_date,
       appointment_time: appointment.appointment_time,
-      doctorId:appointment.doctor?.id,
-      doctorname:appointment.doctor.name,
-      doctimage:appointment.doctor.image,
-      typecall:appointment.package
+      doctorId: appointment.doctor?.id,
+      doctorname: appointment.doctor.name,
+      doctimage: appointment.doctor.image,
+      typecall: appointment.package,
     });
     setIsModalVisible(true);
   };
+
+  useEffect(() => {
+    fetchAppointment();
+  }, []);
 
   return (
     <>
@@ -226,26 +246,27 @@ function Screen() {
         >
           {cancels && (
             <View style={styles.content}>
-            {canceledData.map((canceled,index)=>(
-              <Cardcomponent
-                 key={index}
-                 name={canceled.doctorname}
-                 imager={canceled.doctimage}
-                 typecall={canceled.package}
-                 action="Cancelled"
-                 date={canceled.appointment_date}
-                 time={canceled.appointment_time.slice(0, 5)}
-                 imagerr={getPackageIcon(canceled.package)}
-                 styles={styles.cancelStyles}
-              />
-            ))}
+              {canceledData.map((canceled, index) => (
+                <Cardcomponent
+                  key={index}
+                  name={canceled.doctorname}
+                  imager={canceled.doctimage}
+                  typecall={canceled.package}
+                  action="Cancelled"
+                  date={canceled.appointment_date}
+                  time={canceled.appointment_time.slice(0, 5)}
+                  imagerr={getPackageIcon(canceled.package)}
+                  styles={styles.cancelStyles}
+                />
+              ))}
             </View>
           )}
           {upcoming && (
             <View style={styles.content}>
-              {appointmentData.map((appointment: any, index: any) => (
+              {appointments.map((appointment: any, index: any) => (
                 <Cardscomponent
                   key={index}
+                  appointment={appointment}
                   name={appointment.doctor.name}
                   imager={appointment.doctor.image}
                   typecall={appointment.package}
@@ -262,8 +283,8 @@ function Screen() {
                       pathname: "/Appointments/reschedul",
                       params: {
                         appointmentId: appointment.id,
-                        appointmentdate:appointment.appointment_date,
-                        appointmentime:appointment.appointment_time,
+                        appointmentdate: appointment.appointment_date,
+                        appointmentime: appointment.appointment_time,
                       },
                     })
                   }
@@ -275,7 +296,9 @@ function Screen() {
 
           {notupcome && (
             <View style={styles.centerbar}>
-              <Image source={require("../../assets/appointmentIcon/first.png")} />
+              <Image
+                source={require("../../assets/appointmentIcon/first.png")}
+              />
               <Text style={styles.centerbartitle}>
                 You don't have an appointment yet
               </Text>
@@ -341,7 +364,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 50,
     paddingTop: 20,
-    height:"80%"
+    height: "80%",
   },
   centerbar: {
     display: "flex",
@@ -349,7 +372,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "76%",
     gap: 20,
-    
   },
   centerbartitle: {
     fontSize: 20,

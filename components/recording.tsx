@@ -4,7 +4,14 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { getDurationFormatted } from "./utils";
-export default function Recording() {
+import upload from "@/utils/upload";
+
+interface RecordProps {
+  direction: string | null;
+  handleMessage: (message: string, type: string) => void;
+}
+
+const Recording: React.FC<RecordProps> = ({ direction, handleMessage }) => {
   const [recording, setRecording] = useState<Audio.Recording | undefined>(
     undefined
   );
@@ -29,6 +36,9 @@ export default function Recording() {
   }, [recording]);
 
   async function startRecording() {
+    // TODO:
+    // Change the voiceIcon to stopIcon
+
     try {
       if (permissionResponse?.status !== "granted") {
         alert("Requesting permission..");
@@ -53,20 +63,30 @@ export default function Recording() {
   async function stopRecording() {
     try {
       if (recording) {
-        alert(
-          "Recording stopped and the recording duration is " +
-            getDurationFormatted(currentDuration)
-        );
+        // alert(
+        //   "Recording stopped and the recording duration is " +
+        //     getDurationFormatted(currentDuration)
+        // );
         await recording.stopAndUnloadAsync();
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: false,
         });
         const uri = recording.getURI();
+
         console.log("Recording stopped and stored at", uri);
+        // change the stop icon to voiceIcon
+        // Save Uri to supabase
+        const audio = await upload(uri, "audio");
+        console.log("...image...", audio);
+        handleMessage(audio, "audio");
         setRecording(undefined);
         setCurrentDuration(0);
       }
     } catch (err) {
+      if (recording) await recording.stopAndUnloadAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+      });
       console.error("Failed to stop recording", err);
     }
   }
@@ -89,4 +109,6 @@ export default function Recording() {
       </TouchableOpacity>
     </View>
   );
-}
+};
+
+export default Recording;

@@ -6,7 +6,7 @@ export interface Doctor {
   id?: number;
   name: string;
   role: string;
-  stars: string;
+  stars: number;
   hospital: string;
   reviews: string;
   image: ImageSourcePropType;
@@ -27,6 +27,7 @@ interface DoctorsState {
   doctors: Doctor[];
   reviews: Review[];
   status: "idle" | "loading" | "failed";
+  
 }
 
 const initialState: DoctorsState = {

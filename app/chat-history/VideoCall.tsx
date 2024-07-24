@@ -1,64 +1,45 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { View, ScrollView } from "react-native";
 import DoctorVideo from "@/components/cards/DoctorVideo";
 import { useRouter } from "expo-router";
-import { DoctorCard } from "./types"; // Import the types
-
+import { DoctorCard } from "./types"; 
+import { supabase } from "../supabase";
 const VideoCall = () => {
   const router = useRouter();
+  const [appointment, setAppointment]=useState<any[]>([]);
 
-  const docCards: DoctorCard[] = [
-    {
-      name: "Dr. Randy Wigham",
-      callDay: "Wednesday",
-      callTime: "1:00 PM",
-      images: require("../../assets/doctors/doc2.png"),
-    },
-    {
-      name: "Dr. Jenny Watson",
-      callDay: "Wednesday",
-      callTime: "1:00 PM",
-      images: require("../../assets/doctors/doc3.png"),
-    },
-    {
-      name: "Dr. Raul Zirkind",
-      callDay: "Wednesday",
-      callTime: "1:00 PM",
-      images: require("../../assets/doctors/doc1.png"),
-    },
-    {
-      name: "Dr. Elijah Baranick",
-      callDay: "Wednesday",
-      callTime: "1:00 PM",
-      images: require("../../assets/doctors/doc2.png"),
-    },
-    {
-      name: "Dr. Stephen Shute",
-      callDay: "Wednesday",
-      callTime: "1:00 PM",
-      images: require("../../assets/doctors/doc5.png"),
-    },
-  ];
-
-  const handlePress = (doctor: DoctorCard) => {
+  useEffect(()=>{
+    const fetchAppointments=async()=>{
+    const {data, error}=await supabase.auth.getUser();
+    if(error) throw error;
+    const userId=data?.user?.id;
+    const {data:AppointmentData, error:Error}=await supabase.from("appointment").select("*, doctor(name,image)").eq("patient_id", userId).eq("package","Video Call")
+    if(Error) throw Error
+    if(AppointmentData){
+    setAppointment(AppointmentData);
+    }
+    }
+    fetchAppointments();
+      },[])
+ 
+  const handlePress = (appointmentId:any) => {
     router.push({
       pathname: "/chat-history/VideoRecord",
-      params: { doctor: JSON.stringify(doctor) },
+      params: {appointmentId},
     });
   };
-
   return (
     <View style={{ backgroundColor: "white" }}>
       <ScrollView style={{ backgroundColor: "#FAFAFA", paddingBottom: 6 }}>
-        {docCards.map((doctor, index) => (
+        {appointment.map((appointments, index) => (
           <DoctorVideo
             key={index}
-            onPress={() => handlePress(doctor)}
-            doctorName={doctor.name}
-            doctorImage={doctor.images}
-            callType="Video Call"
-            callDay={doctor.callDay}
-            callTime={doctor.callTime}
+            onPress={() => handlePress(appointments.id)}
+            doctorName={appointments.doctor.name}
+            doctorImage={appointments.doctor.image}
+            callType={appointments.package}
+            callDay={appointments.appointment_date}
+            callTime={appointments.appointment_time.slice(0,5)}
             isVideoCallScreen={false}
           />
         ))}

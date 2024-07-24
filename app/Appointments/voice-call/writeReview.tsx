@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, Modal, ScrollView, SafeAreaView, Pressable } from "react-native";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useFonts } from 'expo-font';
 import FiveStarRating from "../doctorcard/star";
+import { supabase } from "@/app/supabase";
 
 interface CustomCheckBoxProps {
   selected: boolean;
@@ -21,12 +22,9 @@ export default function Writereview() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isoption, setIsoption] = useState("");
   const [text, setText] = useState('');
-  const [fontLoaded] = useFonts({
-    'UrbanistBold': require('../../../assets/fonts/Urbanist-Bold.ttf'),
-    'UrbanistRegular': require("../../../assets/fonts/Urbanist-Regular.ttf"),
-    'Urbanist-SemiBold': require("../../../assets/fonts/Urbanist-SemiBold.ttf"),
-    'UrbanistMedium': require("../../../assets/fonts/Urbanist-Medium.ttf")
-  });
+ const [name, setName]=useState("");
+ const [image, setImage]=useState("");
+ const {appointmentId}=useLocalSearchParams();
 
   const handleChangeText = (value: string) => {
     setText(value);
@@ -34,12 +32,20 @@ export default function Writereview() {
 
   const isSubmitEnabled = text.trim().length > 0 && isoption.length > 0;
 
-  if (!fontLoaded) {
-    return null;
-  }
+  
 
   const Options = ["Yes", "No"];
 
+  useEffect(()=>{
+    const fetchDoctor=async()=>{
+    const {data, error}=await supabase.from("doctor").select("*").eq("id",appointmentId).single();
+    if(data){
+      setName(data.name);
+      console.log(data.name);
+      setImage(data.image)
+    }
+  if (error) throw error}
+  fetchDoctor()},[])
   return (
     <>
       <Modal
@@ -71,10 +77,10 @@ export default function Writereview() {
               <Text className="text-[#212121] font-UrbanistBold text-[24px] pl-5">Write a Review</Text>
             </View>
             <View className="w-[370px] flex justify-center items-center gap-5 mb-2">
-              <Image source={require("../../../assets/doctors/Ellipse.png")} />
+              <Image source={{uri:image}} style={styles.doctorImage}/>
               <View>
                 <Text className="text-[#212121] font-UrbanistBold text-[20px] text-center">How was your experience </Text>
-                <Text className="text-[#212121] font-UrbanistBold text-[20px] text-center">with Dr. Drake Boeson?</Text>
+                <Text className="text-[#212121] font-UrbanistBold text-[20px] text-center">with {name}?</Text>
               </View>
               <View className=" w-[350px] flex flex-row  justify-center pb-3">
                 <SafeAreaView>
@@ -92,7 +98,7 @@ export default function Writereview() {
                 placeholder="Your review here..."
                 style={styles.textInput}
               />
-              <Text className="text-[#212121] font-UrbanistBold text-[20px] pb-5 pt-3">Would you recommend Dr. Drake Boeson to your friends?</Text>
+              <Text className="text-[#212121] font-UrbanistBold text-[20px] pb-5 pt-3">Would you recommend {name} to your friends?</Text>
               <View className="flex flex-row items-center pl-2 justify-between w-[130px]">
                 {Options.map((option, index) => (
                   <View key={index} className="flex flex-row items-center justify-center gap-2">
@@ -183,5 +189,11 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     width: '100%',
     minHeight: 100,
+  },
+  doctorImage: {
+    width: 120,  
+    height: 120, 
+    borderRadius: 60, 
+    marginBottom: 10,
   },
 });

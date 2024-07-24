@@ -17,7 +17,7 @@ import { heart } from "../../assets/icons/heart";
 import { notification } from "../../assets/icons/notification";
 import DoctorCard from "../../components/cards/doctorCard";
 import CarouselComponent from "../../components/carousel";
-import { SearchInput } from "../../components/searchInput";
+import { SearchInput } from "../../components/searchinput2";
 import { supabase } from "../supabase";
 import { Doctor } from "@/redux/reducers/doctors";
 import { getProfileImage } from "@/utils/profile";
@@ -29,6 +29,8 @@ import {
 	SkypeIndicator,
 	UIActivityIndicator,
 } from "react-native-indicators";
+import DocButton from "@/components/cards/DocButtons";
+import SearchDoctor from "../Doctors/searchDoctor";
 
 
 
@@ -49,7 +51,12 @@ const Home = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
   const insets = useSafeAreaInsets();
+  const [loadingDoctor, setLoading] = useState(true);
   const [selectedRole, setSelectedRole] = useState(0);
+  const [noResults, setNoResults] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedRating, setSelectedRating] = useState(0);
   const { t } = useTranslation();
 
   const roleFilters = [
@@ -64,73 +71,104 @@ const Home = () => {
   ];
   
 
-	const { loading, user } = useSelector(
-		(state: RootState) => state.getProfileReducer
-  );
-	const fetchDoctors = async () => {
-    try {
-      const { data } = await supabase.auth.getUser();
-      const user_id = data.user?.id;
-      console.log("Userid: " + user_id);
-			let { data: doctorsData, error } = await supabase
-				.from("doctor")
-				.select("*");
+	  const { loading, user } = useSelector(
+      (state: RootState) => state.getProfileReducer
+    );
+
+  const fetchDoctors = async () => {
+      setLoading(true);
+      try {
+        const { data: userData } = await supabase.auth.getUser();
+        const user_id = userData.user?.id;
+
+        const { data: doctorsData, error: doctorsError } = await supabase
+          .from("doctor")
+          .select("*");
+        if (doctorsError) throw doctorsError;
 
         const { data: favoriteData, error: favoriteError } = await supabase
-        .from('favorites')
-        .select('doctor_id')
-        .eq('user_id', user_id);
-    
-      if (favoriteError) {
-        console.error('Error fetching favorites:', favoriteError);
-        return [];
+          .from("favorites")
+          .select("doctor_id")
+          .eq("user_id", user_id);
+        if (favoriteError) throw favoriteError;
+
+        const favoriteDoctorIds = favoriteData.map(
+          (favorite) => favorite.doctor_id
+        );
+        const doctorsWithLikedStatus = doctorsData?.map((doctor) => ({
+          ...doctor,
+          liked: favoriteDoctorIds.includes(doctor.id),
+        }));
+
+        setDoctors(doctorsWithLikedStatus || []);
+        setFilteredDoctors(doctorsWithLikedStatus || []);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false); 
       }
-    
-    //   console.log("Favorites:----->", favoriteData);
-    
-      const favoriteDoctorIds = favoriteData.map(favorite => favorite.doctor_id);
-    
-      const doctorsWithLikedStatus = doctorsData?.map(doctor => ({
-        ...doctor,
-        liked: favoriteDoctorIds.includes(doctor.id)
-      }));
-      setDoctors(doctorsWithLikedStatus || []);
-      setFilteredDoctors(doctorsWithLikedStatus || []);
-		} catch (error) {
-			console.error("Error:", error);
-		}
-	};
+    };
 
-	useEffect(() => {
-		const unsubscribeFocus = navigation.addListener('focus', () => {
-			fetchDoctors();
-		});
-		fetchDoctors();
-		dispatch(getProfile() as unknown as UnknownAction);
-		return () => {
-			unsubscribeFocus();
-		  };
-	}, [navigation, select]);
+    useEffect(() => {
+      const unsubscribeFocus = navigation.addListener("focus", fetchDoctors);
+      fetchDoctors();
+      dispatch(getProfile() as unknown as UnknownAction);
+      return () => {
+        unsubscribeFocus();
+      };
+    }, [navigation]);
 
-	const greeting = () => {
-    const date = new Date();
-    const hour = date.getHours();
-    return hour < 12 && hour >= 5
-      ? t("home.greeting.morning")
-      : hour >= 12 && hour < 18
-        ? t("home.greeting.afternoon")
-        : t("home.greeting.evening");
-  };
+    const greeting = () => {
+      const hour = new Date().getHours();
+      return hour < 12 && hour >= 5
+        ? t("home.greeting.morning")
+        : hour >= 12 && hour < 18
+          ? t("home.greeting.afternoon")
+          : t("home.greeting.evening");
+    };
 
-	useEffect(() => {
-		setFilteredDoctors(
-			selectedRole === 0
-				? doctors
-				: doctors.filter(
-						(doctor) => doctor.role === roleFilters[selectedRole]
-				  )
-		);
-	}, [selectedRole, doctors]);
+    useEffect(() => {
+      setFilteredDoctors(
+        selectedRole === 0
+          ? doctors
+          : doctors.filter(
+              (doctor) => doctor.role === roleFilters[selectedRole]
+            )
+      );
+    }, [selectedRole, doctors]);
+
+    useEffect(() => {
+      const filtered = doctors.filter((doctor) =>
+        doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredDoctors(filtered);
+    }, [searchQuery, doctors]);
+
+    const applyFilters = () => {
+      let filtered = doctors;
+      if (selectedCategory !== "all") {
+        filtered = filtered.filter(
+          (doctor) =>
+            doctor.role.toLowerCase() === selectedCategory.toLowerCase()
+        );
+      }
+      if (selectedRating > 0) {
+        filtered = filtered.filter(
+          (doctor) => doctor.stars >= selectedRating
+        );
+      }
+      if (searchQuery) {
+        filtered = filtered.filter((doctor) =>
+          doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      setFilteredDoctors(filtered);
+      setNoResults(filtered.length === 0); 
+    };
+
+    useEffect(() => {
+      applyFilters();
+    }, [selectedCategory, selectedRating, searchQuery, doctors]);
 
   return (
     <ScrollView
@@ -196,7 +234,14 @@ const Home = () => {
             />
           </Link>
         </View>
-        <SearchInput />
+        <SearchInput
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          selectedRating={selectedRating}
+          setSelectedRating={setSelectedRating}
+        />
         <CarouselComponent />
         <FlatList
           data={select}
@@ -206,7 +251,10 @@ const Home = () => {
               <Text className="text-[20px] font-['UrbanistBold']">
                 {t("home.doctorSpeciality")}
               </Text>
-              <TouchableOpacity activeOpacity={0.8}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setSelectedCategory("all")}
+              >
                 <Text className="text-[16px] font-['UrbanistBold'] text-lightblue">
                   {t("home.seeAll")}
                 </Text>
@@ -226,6 +274,7 @@ const Home = () => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 className="bg-[#246BFD14] p-2.5 items-center justify-center rounded-full mb-3 w-[60px] h-[60px]"
+                onPress={() => setSelectedCategory(item.name.toLowerCase())}
               >
                 <SvgXml xml={MenuIcons[item.name.toLowerCase()]} />
               </TouchableOpacity>
@@ -257,63 +306,49 @@ const Home = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={roleFilters}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        className="w-full"
-        contentContainerStyle={{ alignItems: "center", marginBottom: 12 }}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            key={index}
-            activeOpacity={0.8}
-            className={`px-4 py-1 border-lightblue border ${
-              index === 0 ? "ml-6" : "ml-0"
-            } ${
-              selectedRole === index ? "bg-lightblue" : "bg-transparent"
-            } rounded-2xl items-center justify-center ${
-              index === select.length - 1 ? "mr-6" : "mr-3"
-            }`}
-            onPress={() => {
-              setSelectedRole(index);
-              setFilteredDoctors(
-                index === 0
-                  ? doctors
-                  : doctors.filter(
-                      (doctor) => doctor.role === roleFilters[index]
-                    )
-              );
-            }}
-          >
-            <Text
-              className={`${
-                selectedRole === index ? "text-[#FFFFFF]" : "text-lightblue"
-              } font-[UrbanistSemiBold]`}
-            >
-              {item}
-            </Text>
-          </TouchableOpacity>
-        )}
+      <DocButton
+        selectedCategory={selectedCategory}
+        onCategorySelect={setSelectedCategory}
       />
       <View className="px-6 mb-0 w-full">
-        {filteredDoctors.map((item, index) => (
-          //@ts-ignore
-          <DoctorCard
-            key={index}
-            {...item}
-            onPress={() => {
-              router.push({
-                pathname: "/doctor-appointments/",
-                params: {
-                  doctorId: item.id,
-                },
-              });
-            }}
-          />
-        ))}
+        {loadingDoctor ? (
+          <View className="flex-1 justify-center">
+           <SearchDoctor />
+          </View>
+        ) : filteredDoctors.length === 0 ? (
+          <View className="px-6 mb-0 w-full">
+            <Image source={require("../../assets/doctors/notfound.png")} />
+            <Text className="text-[24px] font-UrbanistBold text-center py-[15px]">
+              Not Found
+            </Text>
+
+            <Text className="text-[#212121] font-UrbanistRegular text-center text-[18px] mx-[15px]">
+              Sorry, we couldn't find any results based on your search or filter
+              criteria. Please adjust your filters or try searching with
+              different keywords.
+            </Text>
+          </View>
+        ) : (
+          filteredDoctors.map((item, index) => (
+            //@ts-ignore
+            <DoctorCard
+              key={index}
+              {...item}
+              onPress={() => {
+                router.push({
+                  pathname: "/doctor-appointments/",
+                  params: {
+                    doctorId: item.id,
+                  },
+                });
+              }}
+            />
+          ))
+        )}
       </View>
     </ScrollView>
   );
 };
+
 
 export default Home;

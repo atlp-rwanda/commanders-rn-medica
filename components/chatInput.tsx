@@ -24,17 +24,23 @@ import {
   gallery,
 } from "@/assets/icons/file";
 import { Text } from "./ThemedText";
+import { supabase } from "@/app/supabase";
+import upload from "@/utils/upload";
 
 interface Props {
   value?: string;
   autoFocus?: boolean;
   onChangeText?: (text: string) => void;
+  onKeyPress: (text?: string | undefined) => void;
+  handleMessage: (message: string, type: string) => void;
 }
 
 export const ChatInput: React.FC<Props> = ({
   value,
   autoFocus,
   onChangeText,
+  onKeyPress,
+  handleMessage,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isVisible, setVisible] = useState(false);
@@ -62,9 +68,14 @@ export const ChatInput: React.FC<Props> = ({
       aspect: [4, 3],
       quality: 1,
     });
-
+    console.log("image length", result.assets?.length);
+    console.log(result.canceled);
     if (!result.canceled) {
+      console.log("...called...");
       setImage(result.assets[0].uri);
+      const imgUrl = await upload(result.assets[0].uri, "image");
+      console.log("...image...", imgUrl);
+      handleMessage(imgUrl, "image");
     }
   };
 
@@ -73,13 +84,13 @@ export const ChatInput: React.FC<Props> = ({
       type: "*/*",
       copyToCacheDirectory: true,
     });
+  };
 
-  }
   const openCamera = async () => {
     // Request camera permissions
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (permissionResult.granted === false) {
-      alert('Permission to access camera is required!');
+      alert("Permission to access camera is required!");
       return;
     }
 
@@ -93,6 +104,8 @@ export const ChatInput: React.FC<Props> = ({
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      const imgUrl = await upload(result.assets[0].uri, "image");
+      handleMessage(imgUrl, "image");
     }
   };
   const handleAudioPicker = async () => {
@@ -100,6 +113,15 @@ export const ChatInput: React.FC<Props> = ({
       type: "audio/*",
       copyToCacheDirectory: true,
     });
+
+    if (!result.canceled) {
+      console.log("...called...");
+      setImage(result.assets[0].uri);
+      const imgUrl = await upload(result.assets[0].uri, "audio");
+      console.log("test .....", imgUrl);
+      console.log("...image...", result.assets[0].uri);
+      handleMessage(imgUrl, "audio");
+    }
   };
 
   return (
@@ -118,6 +140,7 @@ export const ChatInput: React.FC<Props> = ({
       <TextInput
         value={value}
         autoFocus={autoFocus}
+        onSubmitEditing={() => onKeyPress(value)}
         placeholder="Type a message.... "
         placeholderTextColor="#BDBDBD"
         onChangeText={onChangeText}
@@ -144,14 +167,14 @@ export const ChatInput: React.FC<Props> = ({
               }}
             >
               <View className="flex-row items-center">
-                <View className="flex-1 items-center">
+                {/* <View className="flex-1 items-center">
                   <TouchableOpacity onPress={handleDocumentPicker}>
                     <SvgXml xml={documentIcon} width={65} height={65} />
                     <Text className="mt-3 text-center font-UrbanistSemiBold">
                       Document
                     </Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
                 <View className="flex-1 items-center">
                   <TouchableOpacity onPress={handleImagePicker}>
                     <SvgXml xml={gallery} width={65} height={65} />
@@ -185,14 +208,19 @@ export const ChatInput: React.FC<Props> = ({
         visible={modalCamera}
         animationType="fade"
         transparent={true}
-        onRequestClose={openCamera}>
+        onRequestClose={openCamera}
+      >
         <TouchableWithoutFeedback onPress={() => setModalCamera(false)}>
           <View className="flex-1  justify-center items-center">
             <Camera />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-      <TouchableOpacity activeOpacity={0.8} style={styles.icon} onPress={openCamera}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.icon}
+        onPress={openCamera}
+      >
         <SvgXml xml={isFocused ? focusCamera : cameraIcon} />
       </TouchableOpacity>
     </View>

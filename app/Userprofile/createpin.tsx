@@ -12,52 +12,58 @@ import {
 import { OtpInput } from "react-native-otp-entry";
 import { SvgXml } from "react-native-svg";
 import { supabase } from "../supabase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function CreatePin() {
   const [pin, setPin] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  const handlePinSubmit = async () => {
-    if (pin.length !== 4) {
-      setError("Invalid PIN, Please enter a 4-digit PIN.");
-      return;
-    }
+ const handlePinSubmit = async () => {
+   if (pin.length !== 4) {
+     setError("Invalid PIN, Please enter a 4-digit PIN.");
+     return;
+   }
 
-    setLoading(true);
-    setError("");
+   setLoading(true);
+   setError("");
 
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
+   const {
+     data: { user },
+     error: userError,
+   } = await supabase.auth.getUser();
 
-    if (userError) {
-      setError("Failed to retrieve user. Please log in again.");
-      setLoading(false);
-      return;
-    }
+   if (userError) {
+     setError("Failed to retrieve user. Please log in again.");
+     setLoading(false);
+     return;
+   }
 
-    if (user) {
-      const userId = user.id;
+   if (user) {
+     const userId = user.id;
 
-      const { error: insertError } = await supabase
-        .from("patient")
-        .update({ pin })
-        .eq("id", userId);
+     const { error: insertError } = await supabase
+       .from("patient")
+       .update({ pin })
+       .eq("id", userId);
 
-      setLoading(false);
+     setLoading(false);
 
-      if (insertError) {
-        setError("Failed to save PIN. Please try again.");
-      } else {
-        router.push("/Userprofile/setfingerprint");
-      }
-    } else {
-      setError("User not found. Please log in again.");
-      setLoading(false);
-    }
-  };
+     if (insertError) {
+       setError("Failed to save PIN. Please try again.");
+     } else {
+       try {
+         await AsyncStorage.setItem("pin", pin);
+         router.push("/Userprofile/setfingerprint");
+       } catch (error) {
+         setError("Failed to save PIN locally. Please try again.");
+       }
+     }
+   } else {
+     setError("User not found. Please log in again.");
+     setLoading(false);
+   }
+ };
 
   return (
     <KeyboardAvoidingView className="flex-1">
