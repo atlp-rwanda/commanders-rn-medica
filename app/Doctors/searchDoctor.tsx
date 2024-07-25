@@ -8,44 +8,22 @@ import { View, Image,  Animated,
   Easing
 } from "react-native";
 import { SearchInput } from "../../components/searchinput2";
+import { UIActivityIndicator } from "react-native-indicators";
 
 export default function searchDoctor() {
 
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRating, setSelectedRating] = useState(0); 
-  const rotateValue = new Animated.Value(0);
-  const rotate = rotateValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
+  const [loading, setLoading]=useState(true);
 
-  const spin = () => {
-    rotateValue.setValue(0);
-    Animated.timing(rotateValue, {
-      toValue: 1,
-      duration: 2500,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    }).start(() => {
-      setTimeout(() => {
-      }, 2000);
-    });
-  };
-  useEffect(() => {
-
-    spin();
-
-  }
-  )
+  
   
   return (
     <View className="flex-1 bg-white px-4 py-5">
       <View className="flex-1 justify-center items-center">
         <View>
-          <Animated.View style={{ transform: [{ rotate }] }}>
-            <Image source={require("../../assets/doctors/loading.png")} />
-          </Animated.View>
+      <UIActivityIndicator color={"#246BFD"} size={32} />
         </View>
       </View>
     </View>

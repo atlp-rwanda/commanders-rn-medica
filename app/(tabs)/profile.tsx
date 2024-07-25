@@ -90,7 +90,7 @@ const Profile = () => {
         nextTo: "notification",
         leftIcon: icons.notification,
       },
-      { text: t("profile.payment"), nextTo: "payment", leftIcon: icons.wallet },
+      // { text: t("profile.payment"), nextTo: "payment", leftIcon: icons.wallet },
       {
         text: t("profile.security"),
         nextTo: "security",
@@ -101,12 +101,12 @@ const Profile = () => {
         nextTo: "language",
         leftIcon: icons.language,
       },
-      {
-        text: t("profile.dark_mode"),
-        nextTo: "mode",
-        leftIcon: icons.eye,
-        mode: true,
-      },
+      // {
+      //   text: t("profile.dark_mode"),
+      //   nextTo: "mode",
+      //   leftIcon: icons.eye,
+      //   mode: true,
+      // },
       {
         text: t("profile.help_center"),
         nextTo: "help",
@@ -192,9 +192,9 @@ const Profile = () => {
             {t("profile.title")}
           </Text>
         </View>
-        <Touchable>
+        {/* <Touchable>
           <SvgXml xml={moreOutlinedIcon} className="self-end" />
-        </Touchable>
+        </Touchable> */}
       </View>
       <ScrollView
         className="flex-1 p-6"

@@ -10,7 +10,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-
+import { UIActivityIndicator } from "react-native-indicators";
 interface Article {
   id: number;
   title: string;
@@ -133,7 +133,7 @@ export default function BookMarkedArticle() {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {loading ? (
-          <Text>Loading...</Text>
+    <UIActivityIndicator color={"#246BFD"} size={32} />
         ) : (
           bookmarkedArticles.map((article, index) => (
             <ArticleCard key={index} article={article} />

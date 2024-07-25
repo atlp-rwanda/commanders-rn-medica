@@ -58,7 +58,8 @@ export default function DoctorAppointmentScreen() {
           starsSum += Number(review.stars);
         }
         if (res.length > 0) {
-          setAverageRating(starsSum / res.length);
+         let average= Math.round(starsSum / res.length)
+          setAverageRating(average);
         } else {
           setAverageRating(0);
         }

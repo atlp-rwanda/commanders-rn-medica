@@ -12,7 +12,7 @@ import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import FieldComponent from "@/components/FieldComponent";
 import ArticleCard from "@/components/cards/ArticleCard";
 import { supabase } from "../supabase";
-
+import { UIActivityIndicator } from "react-native-indicators";
 interface Article {
   id: number;
   title: string;
@@ -76,7 +76,7 @@ export default function Article() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading...</Text>
+      <UIActivityIndicator color={"#246BFD"} size={32} />
       </View>
     );
   }

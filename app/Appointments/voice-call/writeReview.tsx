@@ -264,4 +264,10 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 100,
   },
+  doctorImage: {
+    width: 120,  
+    height: 120, 
+    borderRadius: 60, 
+    marginBottom: 10,
+  },
 });

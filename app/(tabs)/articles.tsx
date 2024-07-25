@@ -6,18 +6,7 @@ const Articles = () => {
   return (
  <>
  <Article/>
- </>
-
-
- 
-    
-    // <Article/>
-    // <SeeAllArticles/>
-    // <ArticlesDetails/>
-    // <BookMarkedArticle/>
-    
-      
-    
+ </>  
   );
 };
 

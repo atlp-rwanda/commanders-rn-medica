@@ -4,7 +4,6 @@ import { router, useNavigation } from "expo-router";
 import FieldComponent from "@/components/FieldComponent";
 import ArticleCard from "@/components/cards/ArticleCard";
 import { supabase } from "../supabase";
-
 interface Article {
   id: number;
   title: string;

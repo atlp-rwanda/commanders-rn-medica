@@ -1,5 +1,4 @@
 import { leftArrowBlue, leftFilledArrowIcon } from "@/assets/icons/arrow";
-import { heart, heartFilledIcon } from "@/assets/icons/heart";
 import {
     Image,
     ImageSourcePropType,
@@ -16,7 +15,7 @@ export type CallsType = {
     time: string;
     date: string;
     icon?: any;
-    image: ImageSourcePropType;
+    image: any;
     onPress?: () => void;
 };
 
@@ -25,7 +24,7 @@ export default function CallsCard(props: CallsType) {
         <Pressable onPress={props.onPress} style={styles.container}>
             <View className="bg-white rounded-3xl p-4 mb-6 mr-1" style={styles.card1}>
                 <View className="flex-row justify-between w-full">
-                    <Image source={props.image} className="w-24 h-24" />
+                    <Image source={{uri:props.image}} className="w-24 h-24" />
                     <View className="justify-evenly pl-2 w-[50%]">
                         <View className="justify-between w-full items-center flex-row">
                             <Text className="text-[16px] font-[UrbanistBold]">

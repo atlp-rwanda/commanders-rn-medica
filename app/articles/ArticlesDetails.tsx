@@ -10,7 +10,7 @@ import {
   Share,
 } from "react-native";
 import { supabase } from "../supabase";
-
+import { UIActivityIndicator } from "react-native-indicators";
 interface Article {
   id: string;
   title: string;
@@ -209,11 +209,7 @@ export default function ArticlesDetails() {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text
-          style={{ fontSize: 20, fontFamily: "UrbanistBold", color: "#212121" }}
-        >
-          Loading...
-        </Text>
+           <UIActivityIndicator color={"#246BFD"} size={32} />
       </View>
     );
   }
