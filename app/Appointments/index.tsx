@@ -90,7 +90,7 @@ function Screen() {
         `
         )
         .eq("patient_id", userId)
-        .eq("status", "Booked").order("appointment_date", { ascending: true }) 
+        .eq("status", "Approved").order("appointment_date", { ascending: true }) 
         .order("appointment_time", { ascending: true })
 
       if (error) {
@@ -225,7 +225,7 @@ function Screen() {
             </View>
             <View>
               <View className="flex flex-row items-center justify-center gap-4">
-                <Image
+                {/* <Image
                   className="w-[25px] h-[25px]"
                   source={require("../../assets/doctors/searchIcon.png")}
                 />
@@ -234,7 +234,7 @@ function Screen() {
                     className="w-[25px] h-[25px]"
                     source={require("../../assets/doctors/menu.png")}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </View>
@@ -291,6 +291,7 @@ function Screen() {
         >
           {cancels && (
             <View style={styles.content}>
+              <ScrollView  showsVerticalScrollIndicator={false}>
               {canceledData.map((canceled, index) => (
                 <Cardcomponent
                   key={index}
@@ -304,11 +305,13 @@ function Screen() {
                   styles={styles.cancelStyles}
                 />
               ))}
+              </ScrollView>
             </View>
           )}
 
          {complete && (
             <View style={styles.content}>
+              <ScrollView showsVerticalScrollIndicator={false}>
                {completAppointment.map((appointment:any, index:any) => (
               <Cardscomponent
                 key={index}
@@ -335,11 +338,13 @@ function Screen() {
                   params:{doctorId:appointment.doctor.id, }})}
               />
               ))}
+              </ScrollView>
             </View>
           )}
 
           {upcoming && (
             <View style={styles.content}>
+              <ScrollView showsVerticalScrollIndicator={false}>
               {appointments.map((appointment: any, index: any) => (
                 <Cardscomponent
                   key={index}
@@ -368,6 +373,7 @@ function Screen() {
                   cancle={() => openCancelModal(appointment)}
                 />
               ))}
+              </ScrollView>
             </View>
           )}
 

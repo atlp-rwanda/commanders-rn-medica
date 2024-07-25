@@ -30,7 +30,7 @@ const pkgs = {
     period: "30 mins",
     icon: chatIcon,
     button: {
-      title: "Message (Start at 16:00 PM)",
+      title: "Message ",
       icon: chatIconWhite,
       nextTo: "/messagingAppointment/messaging",
     },
@@ -43,7 +43,7 @@ const pkgs = {
     period: "30 mins",
     icon: callIcon,
     button: {
-      title: "Voice Call (Start at 14:00 PM)",
+      title: "Voice Call ",
       icon: callIconWhite,
       nextTo: "/Appointments/voice-call/call",
     },
@@ -56,7 +56,7 @@ const pkgs = {
     period: "30 mins",
     icon: callIcon,
     button: {
-      title: "Video Call (Start at 10:00 AM)",
+      title: "Video Call",
       icon: videoIconWhite,
       nextTo: "/videoCallAppointment",
     },
@@ -111,14 +111,14 @@ const VideoCallAppointment = ({ route }: any) => {
         <NavigationHeader
           title={"My Appointment"}
           onBack={router.back}
-          children={
-            <Touchable>
-              <Image
-                source={require("../../assets/doctors/menu.png")}
-                className="w-7 h-7"
-              />
-            </Touchable>
-          }
+          // children={
+          //   // <Touchable>
+          //   //   <Image
+          //   //     source={require("../../assets/doctors/menu.png")}
+          //   //     className="w-7 h-7"
+          //   //   />
+          //   // </Touchable>
+          // }
         />
       </View>
       <ScrollView className={`flex-1 pt-2`}>

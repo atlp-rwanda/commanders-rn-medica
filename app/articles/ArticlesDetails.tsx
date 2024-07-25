@@ -262,12 +262,12 @@ export default function ArticlesDetails() {
               source={require("../../assets/articlesImages/rwiza.png")}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={more}>
+          {/* <TouchableOpacity onPress={more}>
             <Image
               style={{ height: 1.17, width: 1.17, padding: 10 }}
               source={require("../../assets/articlesImages/Group.png")}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 

@@ -97,7 +97,7 @@ export default function VoiceCallScreen() {
               height={20}
             />
             <Text className="text-white font-UrbanistBold">
-              Voice Call (Start at 14:00 PM)
+              Voice Call 
             </Text>
           </TouchableOpacity>
         </View>

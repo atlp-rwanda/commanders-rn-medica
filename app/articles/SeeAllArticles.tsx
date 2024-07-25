@@ -99,18 +99,18 @@ export default function SeeAllArticles() {
               padding: 15,
             }}
           >
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Image
                 style={{ position: "relative", marginTop: 10 }}
                 source={require("../../assets/articlesImages/Search.png")}
               />
-            </TouchableOpacity>
-            <TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity>
               <Image
                 style={{ position: "relative", marginTop: 12 }}
                 source={require("../../assets/articlesImages/Group.png")}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <View style={{ padding: 5 }}>
