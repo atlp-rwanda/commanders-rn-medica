@@ -45,17 +45,17 @@ const AppointmentPkg: React.FC<Props> = ({
           <Text className="text-[16px] font-UrbanistBold text-greyscale-900">
             {title}
           </Text>
-          <Text className="text-[18px] font-UrbanistBold text-primary-500">
+          {/* <Text className="text-[18px] font-UrbanistBold text-primary-500">
             {price}
-          </Text>
+          </Text> */}
         </View>
         <View className="flex-row w-full justify-between items-center">
           <Text className="text-[12px] font-UrbanistMedium text-greyscale-700">
             {description}
           </Text>
-          <Text className="text-[10px] font-UrbanistMedium text-greyscale-700">
+          {/* <Text className="text-[10px] font-UrbanistMedium text-greyscale-700">
             (paid)
-          </Text>
+          </Text> */}
         </View>
       </View>
     </View>

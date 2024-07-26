@@ -55,10 +55,10 @@ const DocButton: React.FC<DocButtonProps> = ({ selectedCategory, onCategorySelec
             <Text style={getButtonTextStyle("nutritionist")}>Nutritionist</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={getButtonStyle("pediatric")}
-            onPress={() => onCategorySelect("pediatric")}
+            style={getButtonStyle("pediatrician")}
+            onPress={() => onCategorySelect("pediatrician")}
           >
-            <Text style={getButtonTextStyle("pediatric")}>Pediatric</Text>
+            <Text style={getButtonTextStyle("pediatrician")}>Pediatrician</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={getButtonStyle("neurologist")}
@@ -67,10 +67,10 @@ const DocButton: React.FC<DocButtonProps> = ({ selectedCategory, onCategorySelec
             <Text style={getButtonTextStyle("neurologist")}>Neurologist</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={getButtonStyle("radiologist")}
-            onPress={() => onCategorySelect("radiologist")}
+            style={getButtonStyle("cardiologist")}
+            onPress={() => onCategorySelect("cardiologist")}
           >
-            <Text style={getButtonTextStyle("radiologist")}>Radiologist</Text>
+            <Text style={getButtonTextStyle("cardiologist")}>Cardiologist</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={getButtonStyle("more")}

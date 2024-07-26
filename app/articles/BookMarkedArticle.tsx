@@ -122,12 +122,12 @@ export default function BookMarkedArticle() {
             padding: 15,
           }}
         >
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Image source={require("../../assets/articlesImages/Search.png")} />
-          </TouchableOpacity>
-          <TouchableOpacity>
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity>
             <Image source={require("../../assets/articlesImages/Group.png")} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 

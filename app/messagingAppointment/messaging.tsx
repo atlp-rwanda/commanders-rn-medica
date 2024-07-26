@@ -116,7 +116,7 @@ export default function messagingAppointment() {
   return (
     <View className="flex-1 bg-white py-10 px-6">
       <NavigationHeader title={appointment.doctor.name} onBack={router.back}>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Image
             source={require("@/assets/icons/search.png")}
             className="w-6 h-6 mr-3"
@@ -124,7 +124,7 @@ export default function messagingAppointment() {
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleModal}>
           <SvgXml xml={Menu} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Modal
           visible={visible}
           animationType="fade"
@@ -134,7 +134,7 @@ export default function messagingAppointment() {
           <TouchableWithoutFeedback onPress={() => setVisible(false)}>
             <View className={` absolute w-[100%] right-0 z-[0] top-[5px]`}>
               <View className="w-[100%]">
-                <View className="w-[37%] relative top-[50px] left-[59%] p-4 right-0 bg-white rounded-xl">
+                {/* <View className="w-[37%] relative top-[50px] left-[59%] p-4 right-0 bg-white rounded-xl">
                   <TouchableOpacity className="flex-row gap-2 py-2">
                     <SvgXml xml={deleteBtn} />
                     <Text className="font-UrbanistSemiBold">Clear chat</Text>
@@ -144,7 +144,7 @@ export default function messagingAppointment() {
                     <SvgXml xml={download} />
                     <Text className="font-UrbanistSemiBold">Export chat</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
             </View>
           </TouchableWithoutFeedback>

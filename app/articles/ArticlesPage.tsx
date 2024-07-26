@@ -93,10 +93,10 @@ export default function Article() {
           </View>
           <View style={styles.headerRight}>
             <TouchableOpacity>
-              <Image
+              {/* <Image
                 style={styles.headerIcon}
                 source={require("../../assets/articlesImages/Search.png")}
-              />
+              /> */}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>

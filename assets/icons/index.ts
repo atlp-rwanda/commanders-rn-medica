@@ -10,8 +10,8 @@ import { more } from "./more";
 import { neurologist } from "./neurologist";
 import { nutritionist } from "./nutritionist";
 import { opthamologist } from "./opthamologist";
-import { pediatric } from "./pediatric";
-import { radiologist } from "./radiologist";
+import { pediatric } from "./pediatrician";
+import { radiologist } from "./cardiologist";
 
 export enum TabsType {
   HOME = "Home",
